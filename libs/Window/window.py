@@ -1,19 +1,26 @@
 # window.py
 
-# Importing Qt
+# Importing system files
 from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui # type: ignore
-from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMainWindow # type: ignore
+from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMainWindow, QMessageBox # type: ignore
 from PySide6.QtCore import QTimer, QFile # type: ignore
 from PySide6.QtUiTools import QUiLoader # type: ignore
 
+# Imporing program files
+from libs.Logging.logging import Logging
+
 # Main class window for managing window and loading GUI
-class Window(QMainWindow):
+class Window(QMainWindow, Logging):
     def __init__(self, app) -> None:
         # Init QMainWindow
         super().__init__()
 
         # Save parent 
         self.app = app
+
+        '''
+        Load user interface 
+        '''
 
         # Load QtUi file 
         ui_file = QFile("QtGuiFiles/MainWindow.ui")
@@ -33,6 +40,16 @@ class Window(QMainWindow):
         # Process events
         QtWidgets.QApplication.processEvents()
 
+        '''
+        Set actions for all menu in tool bar like settings, help and more...
+        '''
+
+        self.ui.actionSettings.triggered.connect(self._openSettings)
+
+        '''
+        Other windows settings like size, title and more...
+        '''
+
         # Title
         self.setWindowTitle(f"WebScope | {self.app.version}")  
 
@@ -41,6 +58,10 @@ class Window(QMainWindow):
 
         # Go to center of screen
         self._center()
+
+    '''
+    Private functions.
+    '''
 
     # Center function
     # No logging
@@ -57,3 +78,72 @@ class Window(QMainWindow):
 
         # Move to center
         self.move(x, y)
+
+    # Settings function
+    def _openSettings(self):
+        # Print info message
+        self.printf(status="INFO", msg="Opening settings menu.")
+
+        '''
+        Load user interface file to settings window menu.
+        '''
+
+        # Load Ui file
+        ui_file = QtCore.QFile("QtGuiFiles/SettingsWindow.ui")
+
+        # Read Ui file
+        ui_file.open(QtCore.QFile.ReadOnly)
+
+        # Load to settingsWindow
+        self.settingsWindow = QtUiTools.QUiLoader().load(ui_file)
+
+        # Process events
+        QtWidgets.QApplication.processEvents()
+
+        # Close Ui file
+        ui_file.close()
+
+        '''
+        Title, size and other settings.
+        '''
+
+        # Dialog properties like title, size and more
+        self.settingsWindow.setWindowTitle(f"WebScope | {self.app.version} | Settings")
+
+        # Set size
+        self.settingsWindow.setFixedSize(400, 300)
+
+        # Set window icon
+        self.settingsWindow.setWindowIcon(QtGui.QIcon("Application/assets/icons/icon.png"))
+
+        # Exec settings window
+        self.settingsWindow.exec()
+
+    '''
+    Public functions.
+    '''
+    # Close event
+    def closeEvent(self, event):
+        # Get reply by user
+        reply = QMessageBox.question(
+            self,
+            "Confirm",               
+            "Do you really want quit application?", 
+            QMessageBox.Yes | QMessageBox.No,  
+            QMessageBox.No             
+        )
+
+        # Check reply
+        if reply == QMessageBox.Yes:
+            # If yes print info
+            self.printf(status="INFO", msg="Quiting application")
+
+            # Quit app
+            self.app.quit()
+        else:
+            # Ignore and close just the dialog, keep main window opened
+            event.ignore()
+
+
+
+

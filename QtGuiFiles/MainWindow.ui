@@ -34,6 +34,9 @@
     <addaction name="actionAbout"/>
     <addaction name="actionDocumentation"/>
     <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionReport_bug"/>
+    <addaction name="actionIdeas"/>
    </widget>
    <widget class="QMenu" name="menuTarget">
     <property name="title">
@@ -59,6 +62,8 @@
     <property name="title">
      <string>Plugins</string>
     </property>
+    <addaction name="actionAdd_2"/>
+    <addaction name="actionInstall"/>
    </widget>
    <addaction name="menuWindow"/>
    <addaction name="menuTarget"/>
@@ -114,6 +119,31 @@
   <action name="actionSQL_Injection_2">
    <property name="text">
     <string>SQL Injection</string>
+   </property>
+  </action>
+  <action name="actionPlugins">
+   <property name="text">
+    <string>Plugins</string>
+   </property>
+  </action>
+  <action name="actionAdd_2">
+   <property name="text">
+    <string>Manage</string>
+   </property>
+  </action>
+  <action name="actionInstall">
+   <property name="text">
+    <string>Install</string>
+   </property>
+  </action>
+  <action name="actionReport_bug">
+   <property name="text">
+    <string>Report bug</string>
+   </property>
+  </action>
+  <action name="actionIdeas">
+   <property name="text">
+    <string>Ideas</string>
    </property>
   </action>
  </widget>

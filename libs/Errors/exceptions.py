@@ -13,3 +13,12 @@ class TooManyArgumentsError(Exception):
 
         # Exit program
         sys.exit(1)
+
+# Unknown command
+class UnknownCommandError(Exception):
+    def __init__(self, msg=None):
+        # Check message
+        print(msg) if msg else print("Unknown command! Try --help for help menu.")
+
+        # Exit program
+        sys.exit(1)

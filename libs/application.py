@@ -7,7 +7,7 @@ import os
 import math
 
 from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui # type: ignore
-from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication # type: ignore
+from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMessageBox # type: ignore
 from PySide6.QtCore import QTimer, QFile # type: ignore
 from PySide6.QtUiTools import QUiLoader # type: ignore
 
@@ -50,7 +50,7 @@ class Application(Logging, QApplication):
         self.window = Window(app=self)
 
         # Config module
-        self.config = Config(parent=self)
+        self.config = Config()
 
         # Error module
         self.error = Error(parent=self)
@@ -66,6 +66,7 @@ class Application(Logging, QApplication):
     def _setup(self) -> None:
         # Print DEBUG
         self.printf(status="DEBUG", msg="Inicializing application")
+
         # Process index variable
         self.process_index = 0
 
@@ -110,8 +111,14 @@ class Application(Logging, QApplication):
             # Stop timer
             self.timer.stop()
 
+            # Delete timer
+            del(self.timer)
+
             # Close loading window
             self.setupWindow.close()
+
+            # Delete setup window
+            del(self.setupWindow)
 
             # Show main window
             self.window.show()
