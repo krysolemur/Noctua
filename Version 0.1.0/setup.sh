@@ -4,7 +4,7 @@
 
 # Installing python3 
 echo -n "Installing python... "
-if apt install python3 > /dev/null 2>&1; then
+if sudo apt install python3 > /dev/null 2>&1; then
     echo -e "[ \e[32mOK\e[0m ]"
 else
     echo -e "[ \e[31mERROR\e[0m ]"
@@ -13,7 +13,7 @@ fi
 
 # Installing pip
 echo -n "Installing pip... "
-if apt install python3-pip > /dev/null 2>&1; then
+if sudo apt install python3-pip > /dev/null 2>&1; then
     echo -e "[ \e[32mOK\e[0m ]"
 else
     echo -e "[ \e[31mERROR\e[0m ]"
@@ -22,7 +22,7 @@ fi
 
 # Intalling virtual enviroment
 echo -n "Intalling virtual enviroment... "
-if apt install python3-venv > /dev/null 2>&1; then
+if sudo apt install python3-venv > /dev/null 2>&1; then
     echo -e "[ \e[32mOK\e[0m ]"
 else
     echo -e "[ \e[31mERROR\e[0m ]"
@@ -31,7 +31,7 @@ fi
 
 # Creating virtual enviroment
 echo -n "Creating virtual enviroment... "
-if python3 -m venv venv > /dev/null 2>&1; then
+if sudo python3 -m venv venv > /dev/null 2>&1; then
     echo -e "[ \e[32mOK\e[0m ]"
 else
     echo -e "[ \e[31mERROR\e[0m ]"
@@ -49,7 +49,7 @@ fi
 
 # Installing python packages and dependences
 echo -n "Installing python packages and dependences... "
-if venv/bin/pip install -r requirements.txt > /dev/null 2>&1; then
+if sudo venv/bin/pip install -r requirements.txt > /dev/null 2>&1; then
     echo -e "[ \e[32mOK\e[0m ]"
 else
     echo -e "[ \e[31mERROR\e[0m ]"
