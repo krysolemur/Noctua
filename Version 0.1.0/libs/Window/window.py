@@ -8,6 +8,7 @@ from PySide6.QtUiTools import QUiLoader # type: ignore
 
 # Imporing program files
 from libs.Logging.logging import Logging
+from libs.SettingsWindow.settingswindow import SettingsWindow
 
 # Main class window for managing window and loading GUI
 class Window(QMainWindow, Logging):
@@ -81,40 +82,8 @@ class Window(QMainWindow, Logging):
 
     # Settings function
     def _openSettings(self):
-        # Print info message
-        self.printf(status="INFO", msg="Opening settings menu.")
-
-        '''
-        Load user interface file to settings window menu.
-        '''
-
-        # Load Ui file
-        ui_file = QtCore.QFile("QtGuiFiles/SettingsWindow.ui")
-
-        # Read Ui file
-        ui_file.open(QtCore.QFile.ReadOnly)
-
-        # Load to settingsWindow
-        self.settingsWindow = QtUiTools.QUiLoader().load(ui_file)
-
-        # Process events
-        QtWidgets.QApplication.processEvents()
-
-        # Close Ui file
-        ui_file.close()
-
-        '''
-        Title, size and other settings.
-        '''
-
-        # Dialog properties like title, size and more
-        self.settingsWindow.setWindowTitle(f"WebScope | {self.app.version} | Settings")
-
-        # Set size
-        self.settingsWindow.setFixedSize(400, 300)
-
-        # Set window icon
-        self.settingsWindow.setWindowIcon(QtGui.QIcon("Application/assets/icons/icon.png"))
+        # Create settings window object
+        self.settingsWindow = SettingsWindow(app=self.app)
 
         # Exec settings window
         self.settingsWindow.exec()
@@ -122,6 +91,7 @@ class Window(QMainWindow, Logging):
     '''
     Public functions.
     '''
+    
     # Close event
     def closeEvent(self, event):
         # Get reply by user

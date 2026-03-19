@@ -80,7 +80,7 @@ if __name__ == "__main__":
             # Raise too many arguments exception
             raise TooManyArgumentsError()
         else:
-            None
+            print("Run \"python3 main.py --run\" to start application.")
     except Exception as e:
         # Print exception
         traceback.print_exception(type(e), e, e.__traceback__)

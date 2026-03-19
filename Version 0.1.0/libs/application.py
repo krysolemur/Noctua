@@ -35,8 +35,9 @@ class Application(Logging, QApplication):
 
         # List of all proccesses with their labels
         self.all_proccess = [
-            (self.checkForUpdates, "Checking for updates..."),
-            (self.checkConfigDir, "Checkfing config directory...")
+            (self._checkNetworkConnection, "Checking internet connection..."),
+            (self._checkForUpdates, "Checking for updates..."),
+            (self._checkConfigDir, "Checkfing config directory...")
         ]
 
         # Application version
@@ -61,6 +62,10 @@ class Application(Logging, QApplication):
 
         # Setup application
         self._setup()
+
+    '''
+    Private functions.
+    '''
 
     # Setup function
     def _setup(self) -> None:
@@ -166,10 +171,14 @@ class Application(Logging, QApplication):
         # Count + 1 process index
         self.process_index += 1
 
+    # Checking internet connection
+    def _checkNetworkConnection(self):
+        None
+
     # Function that check for updates
-    def checkForUpdates(self):
+    def _checkForUpdates(self):
         None
 
     # Checking config files
-    def checkConfigDir(self):
+    def _checkConfigDir(self):
         None
