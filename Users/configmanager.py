@@ -24,8 +24,14 @@ class ConfigManager(Logging):
         # Default user config
         self.user_config = {}
 
+        # Default general config
+        self.general_config = {}
+
         # Config folder path
         self.config_dir = "Users"
+
+        # general.json path
+        self.general_path = "general.json"
 
         '''
         Check all config files for all users.
@@ -59,3 +65,16 @@ class ConfigManager(Logging):
 
                         # Close file
                         config.close()
+
+        # Check general.json in main directory
+        if not os.path.exists(self.general_path):
+            # Print warning
+            self.printf(status="WARNING", msg=f"General config doesen't exists! Creating new.")
+
+            # Create general.json
+            with open(self.general_path, "w") as config:
+                # Write default settings
+                json.dump(self.general_config, config, indent=4)
+
+                # Close file
+                config.close()

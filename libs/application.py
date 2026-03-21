@@ -13,7 +13,7 @@ from PySide6.QtCore import QTimer, QFile # type: ignore
 from PySide6.QtUiTools import QUiLoader # type: ignore
 
 # Importing program files
-from libs.Window.window import Window
+from libs.MainWindow.mainwindow import MainWindow
 from libs.Logging.logging import Logging
 from libs.Errors.errors import Error
 from Users.usersmanager import UsersManager
@@ -32,7 +32,7 @@ class Application(Logging, QApplication):
         self.timer = QTimer()
 
         # Info message
-        self.printf(msg="Creating application", status="INFO")
+        self.printi(msg="Creating application")
 
         '''
         Setting all applications variables.
@@ -58,7 +58,7 @@ class Application(Logging, QApplication):
         self.error = Error()
 
         # Window module
-        self.window = Window(app=self)
+        self.window = MainWindow(app=self)
 
         '''
         Running program.
@@ -182,14 +182,14 @@ class Application(Logging, QApplication):
             self.setupDialog.loadingBar.setValue(self.setupDialog.loadingBar.value() + (100 // len(all_proccess)))
 
             # OK message
-            self.printf(status="OK", msg="", function=process[0].__name__)
+            self.printo(msg="", function=process[0].__name__)
         except Exception as e:
             '''
             Set error look.
             '''
 
             # Error message
-            self.printf(status="ERROR", exception=e, msg="")
+            self.printe(exception=e, msg="", function=self._run_next_process.__name__)
 
             # Set ERROR Color
             self.setupDialog.statusLabel.setStyleSheet("color: #ff0000")
@@ -213,21 +213,7 @@ class Application(Logging, QApplication):
 
     # Check user directory
     def _checkUserDir(self) -> None:
-        # Check Users folder
-        if not os.path.exists(self.users.users_dir):
-            # Print warning
-            self.printf(status="WARNING", msg="Users directory doesen't exists! Creating new.")
-
-            # Create
-            os.makedirs(self.users.users_dir)
-
-        # Check defautl user folder 
-        if not os.path.exists(self.users.default_dir):
-            # Print warning
-            self.printf(status="WARNING", msg="Default user doesen't exists! Creating new.")
-
-            # Create
-            self.users.addUser("Default")
+        None
 
     # Checking config files
     def _checkConfigDir(self) -> None:

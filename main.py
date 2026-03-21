@@ -36,7 +36,7 @@ class Main(Logging):
 
 
         # Starting info message
-        self.printf(msg="Starting WebScope", status="INFO")
+        self.printi(msg="Starting WebScope")
 
 
         # Init application

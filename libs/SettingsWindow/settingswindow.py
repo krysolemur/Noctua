@@ -24,7 +24,7 @@ class SettingsWindow(Logging, QDialog):
         self.app = app
 
         # Print info message
-        self.printf(status="INFO", msg="Opening settings menu")
+        self.printi(msg="Opening settings menu")
 
         '''
         Load user interface file to settings window menu.
@@ -62,7 +62,7 @@ class SettingsWindow(Logging, QDialog):
     # Close event
     def closeEvent(self, event) -> None:
         # Print message
-        self.printf(status="INFO", msg="Closing settings window")
+        self.printi(msg="Closing settings window")
 
         # Close window
         self.close()

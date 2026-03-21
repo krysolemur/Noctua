@@ -36,7 +36,7 @@ class UsersManager(Logging):
         # Check Users folder
         if not os.path.exists(self.users_dir):
             # Print warning
-            self.printf(status="WARNING", msg="Users directory doesen't exists! Creating new.")
+            self.printw(msg="Users directory doesen't exists! Creating new.")
 
             # Create
             os.makedirs(self.users_dir)
@@ -44,7 +44,7 @@ class UsersManager(Logging):
         # Check defautl user folder 
         if not os.path.exists(self.default_dir):
             # Print warning
-            self.printf(status="WARNING", msg="Default user doesen't exists! Creating new.")
+            self.printw(msg="Default user doesen't exists! Creating new.")
 
             # Create
             os.makedirs(self.default_dir)
@@ -114,8 +114,9 @@ class UsersManager(Logging):
 
         # Using loop browse all users in /Users folder
         for user in os.listdir(self.users_dir):
-            # Append to usersView
-            self.model.appendRow(QStandardItem(user))
+            if os.path.isdir(f"{self.users_dir}/{user}") and not user == "__pycache__":
+                # Append to usersView
+                self.model.appendRow(QStandardItem(user))
 
         # Load settings when users is changet in list view
         self.usersDialog.usersView.selectionModel().currentChanged.connect(lambda current, prev: self._loadSettings(user=self.model.data(current)))
@@ -127,6 +128,10 @@ class UsersManager(Logging):
         # Exec setupDialog
         self.usersDialog.exec()
 
+    # Login function
+    def login(self, username) -> bool:
+        ...
+
     # Function that create user folder
     def addUser(self, name) -> None:
         # Try except block
@@ -135,9 +140,9 @@ class UsersManager(Logging):
             os.makedirs(self.default_dir)
 
             # Print info
-            self.printf(status="OK", msg=f"Added user {name}")
+            self.printo(msg=f"Added user {name}")
         except Exception as e:
             # Print info
-            self.printf(status="OK", msg=f"Error while adding user {name}", exception=e)
+            self.printe(msg=f"Error while adding user {name}", exception=e, function=__name__)
 
 

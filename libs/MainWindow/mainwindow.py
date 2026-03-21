@@ -14,8 +14,11 @@ from libs.Logging.logging import Logging
 from libs.SettingsWindow.settingswindow import SettingsWindow
 
 # Main class window for managing window and loading GUI
-class Window(QMainWindow, Logging):
+class MainWindow(QMainWindow, Logging):
     def __init__(self, app) -> None:
+        '''
+        Init parents and save app object as a variable.
+        '''
         # Init QMainWindow
         super().__init__()
 
@@ -78,7 +81,6 @@ class Window(QMainWindow, Logging):
     '''
 
     # Center function
-    # No logging
     def _center(self, window) -> None:
         # Get screen size
         screen = QApplication.primaryScreen()
@@ -142,7 +144,7 @@ class Window(QMainWindow, Logging):
 
         # Set actions 
         self.restartDialog.cancelButton.clicked.connect(self.restartDialog.close)
-        self.restartDialog.sumbitButton.clicked.connect(lambda: (self.printf(status="INFO", msg="Restarting application"), os.execv(sys.executable, [sys.executable] + sys.argv)))
+        self.restartDialog.sumbitButton.clicked.connect(lambda: (self.printi(msg="Restarting application"), os.execv(sys.executable, [sys.executable] + sys.argv)))
 
         # Show dialog
         self.restartDialog.exec()
@@ -195,7 +197,7 @@ class Window(QMainWindow, Logging):
 
         # Set actions 
         self.closeDialog.cancelButton.clicked.connect(self.closeDialog.close)
-        self.closeDialog.sumbitButton.clicked.connect(lambda: (self.printf(status="INFO", msg="Quiting application"), QApplication.quit()))
+        self.closeDialog.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
 
         # Show dialog
         self.closeDialog.exec()
