@@ -31,7 +31,7 @@ class SettingsWindow(Logging, QDialog):
         '''
 
         # Load Ui file
-        ui_file = QtCore.QFile("QtGuiFiles/SettingsDialog.ui")
+        ui_file = QtCore.QFile("libs/QtGuiFiles/SettingsDialog.ui")
 
         # Read Ui file
         ui_file.open(QtCore.QFile.ReadOnly)

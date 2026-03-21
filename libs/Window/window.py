@@ -27,7 +27,7 @@ class Window(QMainWindow, Logging):
         '''
 
         # Load QtUi file 
-        ui_file = QFile("QtGuiFiles/MainWindow.ui")
+        ui_file = QFile("libs/QtGuiFiles/MainWindow.ui")
 
         # Open for reading
         ui_file.open(QFile.ReadOnly)
@@ -105,7 +105,7 @@ class Window(QMainWindow, Logging):
         '''
 
         # Load QtUi file for close dialog
-        ui_file = QFile("QtGuiFiles/CustomDialog.ui")
+        ui_file = QFile("libs/QtGuiFiles/CustomDialog.ui")
 
         # Open for reading
         ui_file.open(QFile.ReadOnly)
@@ -155,7 +155,7 @@ class Window(QMainWindow, Logging):
         '''
 
         # Load QtUi file for close dialog
-        ui_file = QFile("QtGuiFiles/CustomDialog.ui")
+        ui_file = QFile("libs/QtGuiFiles/CustomDialog.ui")
 
         # Open for reading
         ui_file.open(QFile.ReadOnly)

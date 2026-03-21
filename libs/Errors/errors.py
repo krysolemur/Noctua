@@ -10,12 +10,9 @@ from libs.Logging.logging import Logging
 
 # Main class Errors 
 class Error(Logging):
-    def __init__(self, parent):
+    def __init__(self):
         # Init parents
         super().__init__()
-
-        # Save parent
-        self.app = parent
 
     # User error definition
     def userError(self):
@@ -34,8 +31,8 @@ class Error(Logging):
         # Close Ui file
         ui_file.close()
 
-        # Dialog properties like title, size and more
-        self.errorWindow.setWindowTitle(f"WebScope | {self.version}")
+        # # Dialog properties like title, size and more
+        # self.errorWindow.setWindowTitle(f"WebScope | {self.version}")
 
         # Set size
         self.errorWindow.setFixedSize(600, 75)

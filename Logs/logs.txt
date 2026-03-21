@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/home/krysak/Documents/WebScope/main.py", line 41, in <module>
-    from Application.application import Applicationfd
-ImportError: cannot import name 'Applicationfd' from 'Application.application' (/home/krysak/Documents/WebScope/Application/application.py). Did you mean: 'Application'?
-[ [31mERROR[0m ] Cannot import module name Application.application!

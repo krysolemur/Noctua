@@ -1,10 +1,12 @@
 # application.py
 
 # Importing
-import requests
+import requests # type: ignore
 import sys
 import os
 import math
+import json
+
 
 from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui # type: ignore
 from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMessageBox # type: ignore
@@ -16,6 +18,7 @@ from libs.Window.window import Window
 from libs.ConfigManager.configmanager import Config
 from libs.Logging.logging import Logging
 from libs.Errors.errors import Error
+from libs.Users.users import Users
 
 # Class for managing whole application
 class Application(Logging, QApplication):
@@ -36,13 +39,6 @@ class Application(Logging, QApplication):
         Setting all applications variables.
         '''
 
-        # List of all proccesses with their labels
-        self.all_proccess = [
-            (self._checkNetworkConnection, "Checking internet connection..."),
-            (self._checkForUpdates, "Checking for updates..."),
-            (self._checkConfigDir, "Checkfing config directory...")
-        ]
-
         # Application version
         self.version = "0.1.0"
 
@@ -53,14 +49,17 @@ class Application(Logging, QApplication):
         Inicializing all neccessary modules.
         '''
 
-        # Window module
-        self.window = Window(app=self)
+        # Users module
+        self.users = Users()
 
         # Config module
         self.config = Config()
 
         # Error module
-        self.error = Error(parent=self)
+        self.error = Error()
+
+        # Window module
+        self.window = Window(app=self)
 
         '''
         Running program.
@@ -86,7 +85,7 @@ class Application(Logging, QApplication):
         '''
 
         # Load Ui file
-        ui_file = QtCore.QFile("QtGuiFiles/SetupDialog.ui")
+        ui_file = QtCore.QFile("libs/QtGuiFiles/SetupDialog.ui")
 
         # Read Ui file
         ui_file.open(QtCore.QFile.ReadOnly)
@@ -124,13 +123,20 @@ class Application(Logging, QApplication):
         self.timer.start(500)
 
     # Run next proccess function
-    # No logging
     def _run_next_process(self) -> None:
+        # List of all proccesses with their labels
+        all_proccess = [
+            (self._checkNetworkConnection, "Checking internet connection..."),
+            (self._checkForUpdates, "Checking for updates..."),
+            (self._checkUserDir, "Checking user directory"),
+            (self._checkConfigDir, "Checking config directory...")
+        ]
+
         '''
         Close dialog, open main window and stop timer when loop ends.
         '''
         # Check if all process was runned
-        if self.process_index == len(self.all_proccess):
+        if self.process_index == len(all_proccess):
             # Stop timer
             self.timer.stop()
 
@@ -154,7 +160,7 @@ class Application(Logging, QApplication):
         '''
 
         # Get one process
-        process = self.all_proccess[self.process_index]
+        process = all_proccess[self.process_index]
 
         # Try-except for catching errors
         try:    
@@ -177,7 +183,7 @@ class Application(Logging, QApplication):
             self.setupDialog.statusLabel.setText("OK")
 
             # Set progressBar value
-            self.setupDialog.loadingBar.setValue(self.setupDialog.loadingBar.value() + (100 // len(self.all_proccess)))
+            self.setupDialog.loadingBar.setValue(self.setupDialog.loadingBar.value() + (100 // len(all_proccess)))
 
             # OK message
             self.printf(status="OK", msg="", function=process[0].__name__)
@@ -209,10 +215,43 @@ class Application(Logging, QApplication):
     def _checkForUpdates(self) -> None:
         None
 
+    # Check user directory
+    def _checkUserDir(self) -> None:
+        # Check Users folder
+        if not os.path.exists(self.users.users_dir):
+            # Print warning
+            self.printf(status="WARNING", msg="Users directory doesen't exists! Creating new.")
+
+            # Create
+            os.makedirs(self.users.users_dir)
+
+        # Check defautl user folder 
+        if not os.path.exists(self.users.default_dir):
+            # Print warning
+            self.printf(status="WARNING", msg="Default user doesen't exists! Creating new.")
+
+            # Create
+            os.makedirs(self.users.default_dir)
+
     # Checking config files
     def _checkConfigDir(self) -> None:
-        None
-    
+        # Check if config folder exists
+        if not os.path.exists(self.config.config_dir):
+            # Print warning
+            self.printf(status="WARNING", msg="Config directory doesen't exists! Creating new.")
+
+            # Create
+            os.makedirs(self.config_dir)
+
+        # Check if config file exists
+        if not os.path.exists(self.config.config_file):
+            # Print warning
+            self.printf(status="WARNING", msg="Config file doesen't exists! Creating new.")
+
+            # Creating
+            with open(self.config_file, "w") as config:
+                json.dump(self.config.defautl_config, config, indent=4)
+
     '''
     Public functions.
     '''
