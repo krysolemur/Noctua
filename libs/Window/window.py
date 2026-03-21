@@ -48,8 +48,13 @@ class Window(QMainWindow, Logging):
         Set actions for all menu in tool bar like settings, help and more...
         '''
 
+        # Settings action
         self.ui.actionSettings.triggered.connect(self._openSettings)
+
+        # Close action
         self.ui.actionQuit.triggered.connect(self.close)
+
+        # Restart action
         self.ui.actionRestart.triggered.connect(self._restart)
 
         '''
@@ -57,7 +62,7 @@ class Window(QMainWindow, Logging):
         '''
 
         # Title
-        self.setWindowTitle(f"WebScope | {self.app.version}")  
+        self.setWindowTitle(f"WebScope | {self.app.version} | {self.app.user}")  
 
         # Size
         self.resize(800, 600) 
@@ -86,7 +91,7 @@ class Window(QMainWindow, Logging):
         window.move(x, y)
 
     # Settings function
-    def _openSettings(self):
+    def _openSettings(self) -> None:
         # Create settings window object
         self.settingsWindow = SettingsWindow(app=self.app)
 
@@ -106,7 +111,7 @@ class Window(QMainWindow, Logging):
         ui_file.open(QFile.ReadOnly)
 
         # Load Ui
-        self.restartDialog = QUiLoader().load(ui_file, parent=self)
+        self.restartDialog = QUiLoader().load(ui_file, self)
 
         # Close file
         ui_file.close()
@@ -120,9 +125,6 @@ class Window(QMainWindow, Logging):
 
         # Adjust dialog
         self.restartDialog.adjustSize()
-        
-        # Center dialog
-        self._center(self.restartDialog)
 
         '''
         Set parametres for buttons and others childs.
@@ -159,7 +161,7 @@ class Window(QMainWindow, Logging):
         ui_file.open(QFile.ReadOnly)
 
         # Load Ui
-        self.closeDialog = QUiLoader().load(ui_file)
+        self.closeDialog = QUiLoader().load(ui_file, self)
 
         # Close file
         ui_file.close()
@@ -173,9 +175,9 @@ class Window(QMainWindow, Logging):
 
         # Adjust dialog
         self.closeDialog.adjustSize()
-        
-        # Center dialog
-        self._center(self.closeDialog)
+
+        # Set dialog modal
+        self.closeDialog.setModal(True)
 
         '''
         Set parametres for buttons and others childs.

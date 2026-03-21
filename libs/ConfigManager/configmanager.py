@@ -20,10 +20,10 @@ class Config(Logging):
         }
 
         # Config folder path
-        self.config_dir = "Config"
+        self.config_dir = "Users/Default/Config"
 
         # Condif file path
-        self.config_file = "Config/config.json" 
+        self.config_file = "Users/Default/Config/config.json" 
 
         # Check if config folder exists
         if not os.path.exists(self.config_dir):

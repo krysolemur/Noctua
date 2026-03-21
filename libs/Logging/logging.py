@@ -16,9 +16,7 @@ class Logging:
         self.accept_types_terminal = []
 
         # Accept types file
-        self.accept_types_file = {
-            
-        }
+        self.accept_types_file = []
 
         # Logging variable
         self.logging = True
@@ -26,6 +24,7 @@ class Logging:
     # Printf method do print
     def printf(self, status, msg=None, exception=None, function=None, endch=".\n"):
         # Check type
+        # if status in self.accept_types_terminal or self.accept_types_terminal:
         if status in self.accept_types_terminal or not self.accept_types_terminal:
             if status == "ERROR":
                 # Get info from error

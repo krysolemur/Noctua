@@ -14,6 +14,9 @@ from libs.Logging.logging import Logging
 # Class settings window
 class SettingsWindow(Logging, QDialog):
     def __init__(self, app) -> None:
+        '''
+        Init parents, save app and print info message.
+        '''
         # Init parents
         super().__init__()
 
@@ -28,7 +31,7 @@ class SettingsWindow(Logging, QDialog):
         '''
 
         # Load Ui file
-        ui_file = QtCore.QFile("QtGuiFiles/SettingsWindow.ui")
+        ui_file = QtCore.QFile("QtGuiFiles/SettingsDialog.ui")
 
         # Read Ui file
         ui_file.open(QtCore.QFile.ReadOnly)
@@ -50,7 +53,7 @@ class SettingsWindow(Logging, QDialog):
         self.setWindowTitle(f"WebScope | {self.app.version} | Settings")
 
         # Set size
-        self.setFixedSize(400, 300)
+        self.setFixedSize(800, 600)
 
         # Set window icon
         self.setWindowIcon(QtGui.QIcon("Application/assets/icons/icon.png"))

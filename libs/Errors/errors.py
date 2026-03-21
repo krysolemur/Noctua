@@ -13,9 +13,6 @@ class Error(Logging):
     def __init__(self, parent):
         # Init parents
         super().__init__()
-        
-        # Info message
-        self.printf(msg="Inicializing Error module", status="INFO")
 
         # Save parent
         self.app = parent
