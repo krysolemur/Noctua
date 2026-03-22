@@ -3,13 +3,7 @@
 # Importing system files
 import sys
 import signal
-import os
 import traceback
-
-
-from PySide6.QtWidgets import QApplication # type: ignore
-from PySide6.QtCore import QTimer # type: ignore
-
 
 # Importing program files
 from libs.Logging.logging import Logging

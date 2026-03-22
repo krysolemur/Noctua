@@ -54,9 +54,6 @@ class MainWindow(QMainWindow, Logging):
         # Settings action
         self.ui.actionSettings.triggered.connect(self._openSettings)
 
-        # Manage users action
-        self.ui.actionManageUsers.triggered.connect(self.app.users.usersSettings)
-
         # Close action
         self.ui.actionQuit.triggered.connect(self.close)
 
@@ -68,7 +65,7 @@ class MainWindow(QMainWindow, Logging):
         '''
 
         # Title
-        self.setWindowTitle(f"WebScope | {self.app.version} | {self.app.user}")  
+        self.setWindowTitle(f"WebScope | {self.app.version}")  
 
         # Size
         self.resize(800, 600) 

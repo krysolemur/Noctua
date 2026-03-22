@@ -29,7 +29,6 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
-    <addaction name="actionManageUsers"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionDocumentation"/>
