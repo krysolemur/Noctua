@@ -77,5 +77,8 @@ class ConfigManager(Logging):
             json.dump(self.default_config, nwconfig, indent=4)
 
     # Remove profile function
-    def removeProfile(self) -> None:
-        None
+    def removeProfile(self, name) -> None:
+        # Check if profile name is not config
+        if name != "config":
+            # Try remove profile
+            os.remove(f"{self.config_dir}/{name}")

@@ -84,6 +84,9 @@ class SettingsWindow(QDialog, Logging):
         # Add profile action
         self.ui.addProfileButton.clicked.connect(self._addProfile)
 
+        # Remove profile action
+        self.ui.removeProfileButton.clicked.connect(self._removeProfile)
+
     # Load profiles
     def _loadProfiles(self) -> None:
         # Add all items to combobox
@@ -146,6 +149,20 @@ class SettingsWindow(QDialog, Logging):
 
         # Add profile
         self.config.addProfile(name)
+
+        # Close dialog
+        self.profileName.close()
+
+        # Actualize profiles list
+        self._loadProfiles()
+
+    # Remove profile
+    def _removeProfile(self) -> None:
+        # Get name
+        name = self.ui.profilesComboBox.currentText()
+
+        # Call config function
+        self.config.removeProfile(name)
 
     '''
     Public functions.
