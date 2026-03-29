@@ -5,11 +5,11 @@ import json
 import os
 import sys
 
-from PySide6.QtWidgets import QLabel, QApplication, QHBoxLayout, QPushButton, QComboBox, QLineEdit, QDialog
-from PySide6.QtCore import QTimer
-from PySide6.QtCore import QFile
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QLabel, QApplication, QHBoxLayout, QPushButton, QComboBox, QLineEdit, QDialog # type: ignore
+from PySide6.QtCore import QTimer # type: ignore
+from PySide6.QtCore import QFile # type: ignore
+from PySide6.QtUiTools import QUiLoader # type: ignore
+from PySide6.QtGui import QIcon # type: ignore
 
 # Importing program files
 from libs.MainWindow.mainwindow import MainWindow
@@ -114,9 +114,6 @@ class Application(Logging, QApplication):
             # Get proccess 
             process = all_process[self.process_index]
 
-            # Set label text
-            self.ui.loadingLabel.setText(process.__name__)
-
             # Run process
             process()
 
@@ -163,15 +160,18 @@ class Application(Logging, QApplication):
 
     # Checking internet connection
     def _checkNetworkConnection(self) -> None:
-        None
+        # Set label text
+        self.ui.loadingLabel.setText("Checking for internet connection")
 
     # Function that check for updates
     def _checkForUpdates(self) -> None:
-        None
+        # Set label text
+        self.ui.loadingLabel.setText("Checking for updates")
 
     # Checking config files
     def _checkConfigDir(self) -> None:
-        None
+        # Set label text
+        self.ui.loadingLabel.setText("Checking config directory")
 
     '''
     Public functions.

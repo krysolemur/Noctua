@@ -6,10 +6,10 @@
 import re
 import os
 
-from PySide6.QtWidgets import QDialog, QVBoxLayout
-from PySide6.QtCore import QFile 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QIcon 
+from PySide6.QtWidgets import QDialog, QVBoxLayout # type: ignore
+from PySide6.QtCore import QFile # type: ignore
+from PySide6.QtUiTools import QUiLoader # type: ignore
+from PySide6.QtGui import QIcon # type: ignore
 
 # Importing program files
 from libs.Logging.logging import Logging

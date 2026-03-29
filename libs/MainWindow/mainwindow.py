@@ -5,11 +5,11 @@ import requests
 import sys
 import os
 
-from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui 
-from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMainWindow, QMessageBox 
-from PySide6.QtCore import QTimer, QFile 
-from PySide6.QtUiTools import QUiLoader 
-from PySide6.QtGui import QIcon 
+from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui # type: ignore
+from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMainWindow, QMessageBox # type: ignore
+from PySide6.QtCore import QTimer, QFile # type: ignore
+from PySide6.QtUiTools import QUiLoader # type: ignore
+from PySide6.QtGui import QIcon # type: ignore
 
 # Imporing program files
 from libs.Logging.logging import Logging
