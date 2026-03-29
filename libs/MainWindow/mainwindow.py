@@ -15,6 +15,9 @@ from PySide6.QtGui import QIcon
 from libs.Logging.logging import Logging
 from libs.SettingsWindow.settingswindow import SettingsWindow
 
+from libs.QtGuiFiles.PyFiles.MainWindow import Ui_MainWindow
+from libs.QtGuiFiles.PyFiles.CustomDialog import Ui_customDialog
+
 # Main class window for managing window and loading GUI
 class MainWindow(QMainWindow, Logging):
     def __init__(self, app) -> None:
@@ -28,23 +31,14 @@ class MainWindow(QMainWindow, Logging):
         self.app = app
 
         '''
-        Load user interface 
+        Load UI for MainWindow.
         '''
 
-        # Load QtUi file 
-        ui_file = QFile("libs/QtGuiFiles/MainWindow.ui")
-
-        # Open for reading
-        ui_file.open(QFile.ReadOnly)
-
         # Load Ui
-        self.ui = QUiLoader().load(ui_file)
+        self.ui = Ui_MainWindow()
 
-        # Set central widget
-        self.setCentralWidget(self.ui)
-
-        # Close file
-        ui_file.close()
+        # Set Ui
+        self.ui.setupUi(self)
 
         '''
         Set actions for all menu in tool bar like settings, help and more...
@@ -104,52 +98,6 @@ class MainWindow(QMainWindow, Logging):
 
         # Exec settings window
         self.settingsWindow.exec()
-
-    # Restart function
-    def _restart(self, event) -> None:
-        '''
-        Load ui for custom restart dialog.
-        '''
-
-        # Load QtUi file for close dialog
-        ui_file = QFile("libs/QtGuiFiles/CustomDialog.ui")
-
-        # Open for reading
-        ui_file.open(QFile.ReadOnly)
-
-        # Load Ui
-        self.restartDialog = QUiLoader().load(ui_file, self)
-
-        # Close file
-        ui_file.close()
-
-        '''
-        Set properties for custom dialog like title, size and center it.
-        '''
-
-        # Set title
-        self.restartDialog.setWindowTitle(f"WebScope | {self.app.version} | Restart")
-
-        # Adjust dialog
-        self.restartDialog.adjustSize()
-
-        '''
-        Set parametres for buttons and others childs.
-        '''
-
-        # Set label text
-        self.restartDialog.textLabel.setText("Do you really want to restart application?")
-
-        # Set button texts
-        self.restartDialog.cancelButton.setText("No")
-        self.restartDialog.sumbitButton.setText("Yes")
-
-        # Set actions 
-        self.restartDialog.cancelButton.clicked.connect(self.restartDialog.close)
-        self.restartDialog.sumbitButton.clicked.connect(lambda: (self.printi(msg="Restarting application"), os.execv(sys.executable, [sys.executable] + sys.argv)))
-
-        # Show dialog
-        self.restartDialog.exec()
         
     # Set target function
     def _setTarget(self) -> None:
@@ -209,6 +157,53 @@ class MainWindow(QMainWindow, Logging):
         else:
             # Close dialog
             self.targetDialog.close()
+
+    # Restart function
+    def _restart(self, event) -> None:
+        '''
+        Load ui for custom restart dialog.
+        '''
+
+        # Load Ui
+        self.restartDialog = QDialog()
+
+        self.restartDialogUi = Ui_customDialog()
+
+        # Setup ui 
+        self.restartDialogUi.setupUi(self.restartDialog)
+
+        '''
+        Set properties for custom dialog like title, size and center it.
+        '''
+
+        # Set title
+        self.restartDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | Restart")
+
+        # Adjust dialog
+        self.restartDialog.adjustSize()
+
+        '''
+        Set parametres for buttons and others childs.
+        '''
+
+        # Set label text
+        self.restartDialogUi.textLabel.setText("Do you really want to restart application?")
+
+        # Set cancel button text
+        self.restartDialogUi.cancelButton.setText("No")
+
+        # Set sumbit button text
+        self.restartDialogUi.sumbitButton.setText("Yes")
+
+        # Set cancel button action
+        self.restartDialogUi.cancelButton.clicked.connect(self.restartDialog.close)
+
+        # Set sumbit button action
+        self.restartDialogUi.sumbitButton.clicked.connect(lambda: (self.printi(msg="Restarting application"), os.execv(sys.executable, [sys.executable] + sys.argv)))
+
+        # Show dialog
+        self.restartDialog.exec()
+
     '''
     Public functions.
     '''
@@ -219,24 +214,19 @@ class MainWindow(QMainWindow, Logging):
         Load ui for custom close dialog.
         '''
 
-        # Load QtUi file for close dialog
-        ui_file = QFile("libs/QtGuiFiles/CustomDialog.ui")
-
-        # Open for reading
-        ui_file.open(QFile.ReadOnly)
-
         # Load Ui
-        self.closeDialog = QUiLoader().load(ui_file, self)
+        self.closeDialog = QDialog()
 
-        # Close file
-        ui_file.close()
+        self.closeDialogUi = Ui_customDialog()
 
+        # Setup ui 
+        self.closeDialogUi.setupUi(self.closeDialog)
         '''
-        Set properties for custom dialog like title, size and center it.
+        Set properties for custom dialog, title, size and center it.
         '''
 
         # Set title
-        self.closeDialog.setWindowTitle(f"WebScope | {self.app.version} | Close")
+        self.closeDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | Close")
 
         # Adjust dialog
         self.closeDialog.adjustSize()
@@ -245,19 +235,23 @@ class MainWindow(QMainWindow, Logging):
         self.closeDialog.setModal(True)
 
         '''
-        Set parametres for buttons and others childs.
+        Set parametres for buttons and actions.
         '''
 
         # Set label text
-        self.closeDialog.textLabel.setText("Do you really want to quit application?")
+        self.closeDialogUi.textLabel.setText("Do you really want to quit application?")
 
-        # Set button texts
-        self.closeDialog.cancelButton.setText("No")
-        self.closeDialog.sumbitButton.setText("Yes")
+        # Set cancel button text
+        self.closeDialogUi.cancelButton.setText("No")
 
-        # Set actions 
-        self.closeDialog.cancelButton.clicked.connect(self.closeDialog.close)
-        self.closeDialog.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
+        # Set sumbit button text
+        self.closeDialogUi.sumbitButton.setText("Yes")
+
+        # Set cancel action
+        self.closeDialogUi.cancelButton.clicked.connect(self.closeDialog.close)
+
+        # Set sumbit action
+        self.closeDialogUi.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
 
         # Show dialog
         self.closeDialog.exec()

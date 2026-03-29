@@ -6,7 +6,7 @@ import json
 import os
 import sys
 
-from PySide6.QtWidgets import QLabel, QApplication, QHBoxLayout, QPushButton, QComboBox, QLineEdit 
+from PySide6.QtWidgets import QLabel, QApplication, QHBoxLayout, QPushButton, QComboBox, QLineEdit, QDialog
 from PySide6.QtCore import QTimer
 from PySide6.QtCore import QFile
 from PySide6.QtUiTools import QUiLoader
@@ -18,6 +18,8 @@ from libs.Logging.logging import Logging
 from libs.Errors.errors import Error
 from libs.Errors.exceptions import *
 
+from libs.QtGuiFiles.PyFiles.SetupDialog import Ui_setupDialog
+
 # Class for managing whole application
 class Application(Logging, QApplication):
     def __init__(self) -> None:
@@ -27,9 +29,6 @@ class Application(Logging, QApplication):
         # Init parents
         super().__init__(sys.argv)
 
-        # Info message
-        self.printi(msg="Creating application")
-
         '''
         Setting all applications variables.
         '''
@@ -38,46 +37,20 @@ class Application(Logging, QApplication):
         self.version = "0.1.0"
 
         # Application name
-        self.name = "WebScope"
+        self.name = "XyraEngine"
 
-        '''
-        Inicializing all neccessary modules.
-        '''
-
-        # Error module
-        self.error = Error()
-
-        # Window module
-        self.window = MainWindow(app=self)
-
-        '''
-        Running program.
-        '''
-
-        # Setup application
-        self._setup()
-
-    '''
-    Private functions.
-    '''
-
-    # Setup function
-    def _setup(self) -> None:
         '''
         Load ui for custom restart dialog.
         '''
+        
+        # Create dialog
+        self.setupDialog = QDialog()
 
         # Load Ui file
-        ui_file = QFile("libs/QtGuiFiles/SetupDialog.ui")
+        self.ui = Ui_setupDialog()
 
-        # Read Ui file
-        ui_file.open(QFile.ReadOnly)
-
-        # Load to setupDialog
-        self.setupDialog = QUiLoader().load(ui_file)
-
-        # Close Ui file
-        ui_file.close()
+        # Setup ui 
+        self.ui.setupUi(self.setupDialog)
 
         '''
         Set window properties, title, size and more.
@@ -85,9 +58,6 @@ class Application(Logging, QApplication):
 
         # Dialog properties like title, size and more
         self.setupDialog.setWindowTitle(f"{self.name} | {self.version} | Inicializing")
-
-        # Window icon
-        self.setupDialog.setWindowIcon(QIcon("icon.svg"))
 
         # Set size
         self.setupDialog.resize(600, 75)
@@ -105,8 +75,11 @@ class Application(Logging, QApplication):
         # Run all setup processes 
         self._run_next_process()
 
+        # Window module
+        self.window = MainWindow(app=self)
+
     '''
-    Setup dialog methods.
+    Private functions.
     '''
 
     # Run next proccess function
@@ -139,7 +112,7 @@ class Application(Logging, QApplication):
             process = all_process[self.process_index]
 
             # Set label text
-            self.setupDialog.loadingLabel.setText(process.__name__)
+            self.ui.loadingLabel.setText(process.__name__)
 
             # Run process
             process()
@@ -152,13 +125,13 @@ class Application(Logging, QApplication):
             '''
 
             # Set OK Color
-            self.setupDialog.statusLabel.setStyleSheet("color: #00ff00")
+            self.ui.statusLabel.setStyleSheet("color: #00ff00")
 
             # Set OK status of function
-            self.setupDialog.statusLabel.setText("OK")
+            self.ui.statusLabel.setText("OK")
 
             # Set progressBar value
-            self.setupDialog.loadingBar.setValue(self.setupDialog.loadingBar.value() + (100 // len(all_process)))
+            self.ui.loadingBar.setValue(self.ui.loadingBar.value() + (100 // len(all_process)))
 
             # OK message
             self.printo(msg="", function=process.__name__)
@@ -174,10 +147,10 @@ class Application(Logging, QApplication):
             self.printe(exception=e, msg="", function=self._run_next_process.__name__)
 
             # Set ERROR Color
-            self.setupDialog.statusLabel.setStyleSheet("color: #ff0000")
+            self.ui.statusLabel.setStyleSheet("color: #ff0000")
 
             # Set ERROR status of function
-            self.setupDialog.statusLabel.setText("ERROR")
+            self.ui.statusLabel.setText("ERROR")
 
         # Next index
         self.process_index += 1
@@ -196,7 +169,6 @@ class Application(Logging, QApplication):
     # Checking config files
     def _checkConfigDir(self) -> None:
         None
-
 
     '''
     Public functions.

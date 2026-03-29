@@ -15,6 +15,9 @@ from PySide6.QtGui import QIcon
 from libs.Logging.logging import Logging
 from Config.configmanager import ConfigManager
 
+from libs.QtGuiFiles.PyFiles.SettingsDialog import Ui_SettingsDialog
+from libs.QtGuiFiles.PyFiles.ProfileDialog import Ui_ProfileDialog
+
 # Class settings window
 class SettingsWindow(QDialog, Logging):
     def __init__(self, app) -> None:
@@ -31,39 +34,21 @@ class SettingsWindow(QDialog, Logging):
         self.printi(msg="Opening settings window")
 
         '''
-        Usefull variables.
+        All usefull variables.
         '''
 
         # Config module
         self.config = ConfigManager()
 
         '''
-        Load user interface file to settings window menu.
+        Load Ui file for settings window menu.
         '''
 
         # Load Ui file
-        ui_file = QFile("libs/QtGuiFiles/SettingsDialog.ui")
+        self.ui = Ui_SettingsDialog()
 
-        # Read Ui file
-        ui_file.open(QFile.ReadOnly)
-
-        # Load to settingsWindow
-        self.ui = QUiLoader().load(ui_file)
-
-        # Create layout
-        self.layout = QVBoxLayout()
-
-        # Load ui and add it to layout
-        self.layout.addWidget(self.ui)
-
-        # Delete edges from layout
-        self.layout.setContentsMargins(0, 0, 0, 0) 
-
-        # Set layout to settings dialog
-        self.setLayout(self.layout)
-
-        # Close Ui file
-        ui_file.close()
+        # Setup ui 
+        self.ui.setupUi(self)
 
         '''
         Title, size, other settings and actions.
@@ -76,7 +61,7 @@ class SettingsWindow(QDialog, Logging):
         self.setWindowIcon(QIcon("icon.svg"))
 
         # Set size
-        self.setFixedSize(632, 560)
+        self.resize(632, 560)
 
         # Add profiles into combobox
         self._loadProfiles()
@@ -87,6 +72,10 @@ class SettingsWindow(QDialog, Logging):
         # Remove profile action
         self.ui.removeProfileButton.clicked.connect(self._removeProfile)
 
+    '''
+    Private functions.
+    '''
+
     # Load profiles
     def _loadProfiles(self) -> None:
         # Add all items to combobox
@@ -94,75 +83,79 @@ class SettingsWindow(QDialog, Logging):
 
     # Add profile
     def _addProfile(self) -> None:
+        '''
+        Load dialog.
+        '''
+        # Create dialog
+        self.profileDialog = QDialog()
+
         # Load Ui file
-        ui_file = QFile("libs/QtGuiFiles/ProfileDialog.ui")
+        self.profileDialogUi = Ui_ProfileDialog()
 
-        # Read Ui file
-        ui_file.open(QFile.ReadOnly)
+        # Setup ui 
+        self.profileDialogUi.setupUi(self.profileDialog)
 
-        # Load to settingsWindow
-        self.profileName = QUiLoader().load(ui_file)
+        '''
+        Dialog properties, title and cations.
+        '''
 
         # Adjust size
-        self.profileName.adjustSize()
+        self.profileDialog.adjustSize()
 
         # Create button action
-        self.profileName.createButton.clicked.connect(self._checkProfile)
+        self.profileDialogUi.createButton.clicked.connect(self._checkProfile)
 
         # Cancel button action
-        self.profileName.cancelButton.clicked.connect(self.profileName.reject)
+        self.profileDialogUi.cancelButton.clicked.connect(self.profileDialog.reject)
 
         # Show dialog
-        self.profileName.exec()
+        self.profileDialog.exec()
 
     # Check profile function
     def _checkProfile(self) -> None:
         # Get name
-        name = self.profileName.profileNameLineEdit.text().strip()
+        name = self.profileDialogUi.profileNameLineEdit.text().strip()
 
         # Set error styles
-        self.profileName.statusLabel.setStyleSheet(
+        self.profileDialogUi.statusLabel.setStyleSheet(
             "color: #ff0000"
         )
 
         # Check if profile is not None
         if not name or not bool(re.fullmatch(r'^[a-zA-Z0-9_\- ]+$', name)):
             # Set error label
-            self.profileName.statusLabel.setText("Enter valid name!")
+            self.profileDialogUi.statusLabel.setText("Enter valid name!")
 
             return
 
         # Check if profile does not exists
         if os.path.exists(os.path.join(self.config.config_dir, f"{name}.json")):
             # Set error label
-            self.profileName.statusLabel.setText(f"Profile with name {name} already exists!")
+            self.profileDialogUi.statusLabel.setText(f"Profile with name {name} already exists!")
             
             return
         
         # Set success styles
-        self.profileName.statusLabel.setStyleSheet(
+        self.profileDialogUi.statusLabel.setStyleSheet(
             "color: #00ff00"
         )
 
         # Set succes label text
-        self.profileName.statusLabel.setText(f"Profile with name {name} created successfully.")
+        self.profileDialogUi.statusLabel.setText(f"Profile with name {name} created successfully.")
 
         # Add profile
         self.config.addProfile(name)
 
         # Close dialog
-        self.profileName.close()
+        self.profileDialog.close()
 
         # Actualize profiles list
         self._loadProfiles()
 
     # Remove profile
     def _removeProfile(self) -> None:
-        # Get name
-        name = self.ui.profilesComboBox.currentText()
-
         # Call config function
-        self.config.removeProfile(name)
+        self.config.removeProfile(self.ui.profilesComboBox.currentText())
 
     '''
     Public functions.

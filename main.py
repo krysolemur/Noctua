@@ -52,6 +52,11 @@ Main block that is running and inicializing main class. Used too for running jus
 if __name__ == "__main__":
     # Try block for cathcing exceptions
     try:
+        '''
+        Checking arguments and running commands.
+        '''
+
+
         if len(sys.argv) == 2:
             # Save sys.argv[1] as command
             command = sys.argv[1]
@@ -64,7 +69,7 @@ if __name__ == "__main__":
             
 
             # --run command for running application
-            elif command == "--run":
+            if command == "--run":
                 # Creating insatence of Main class
                 main = Main
 
@@ -87,7 +92,8 @@ if __name__ == "__main__":
             # Print help command for running
             print("Run \"python3 main.py --run\" to start application. Type --help for help menu.")
             
-
+    
+    # Catch exception
     except Exception as e:
         # Print exception
         traceback.print_exception(type(e), e, e.__traceback__)
