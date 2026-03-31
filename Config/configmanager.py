@@ -28,7 +28,7 @@ class ConfigManager(Logging):
         self.default_path = "Config/config.json"
 
         # All profiles
-        self.all_profiles = self._getProfiles()
+        self.all_profiles = self._getProfiles
 
         # Check default config file
         self.checkDefaultConfig()

@@ -17,6 +17,7 @@ from libs.SettingsWindow.settingsdialog import SettingsDialog
 
 from libs.QtGuiFiles.PyFiles.MainWindow import Ui_MainWindow
 from libs.QtGuiFiles.PyFiles.CustomDialog import Ui_customDialog
+from libs.QtGuiFiles.PyFiles.AboutDialog import Ui_aboutDialog
 
 # Main class window for managing window and loading GUI
 class MainWindow(QMainWindow, Logging):
@@ -52,6 +53,9 @@ class MainWindow(QMainWindow, Logging):
 
         # Restart action
         self.ui.actionRestart.triggered.connect(self._restart)
+
+        # About action
+        self.ui.actionAbout.triggered.connect(self._about)
 
         # Set target action
         self.ui.actionSetTarget.triggered.connect(self._setTarget)
@@ -94,10 +98,10 @@ class MainWindow(QMainWindow, Logging):
     # Settings function
     def _openSettings(self) -> None:
         # Create settings window object
-        self.settingsWindow = SettingsDialog(app=self.app)
+        self.settingsDialog = SettingsDialog(app=self.app)
 
         # Exec settings window
-        self.settingsWindow.exec()
+        self.settingsDialog.exec()
         
     # Set target function
     def _setTarget(self) -> None:
@@ -144,7 +148,7 @@ class MainWindow(QMainWindow, Logging):
             return False
 
     # Button action
-    def _onCheckURL(self):
+    def _onCheckURL(self) -> None:
         # Get URL
         url = self.targetDialog.setTargetLineEdit.text()
 
@@ -203,6 +207,36 @@ class MainWindow(QMainWindow, Logging):
 
         # Show dialog
         self.restartDialog.exec()
+
+    # About action
+    def _about(self) -> None:
+        '''
+        Load ui for about dialog.
+        '''
+        # Create dialog
+        self.aboutDialog = QDialog()
+
+        # Load Ui
+        self.aboutUi = Ui_aboutDialog()
+
+        # Set Ui
+        self.aboutUi.setupUi(self.aboutDialog)
+
+        '''
+        Dialog properties, size, title and other.
+        '''
+
+        # Set title
+        self.aboutDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | About")  
+
+        # Adjust size
+        self.aboutDialog.adjustSize()
+
+        # Set version text
+        self.aboutUi.versionLabel.setText(f"{self.aboutUi.versionLabel.text()} {self.app.version}")
+
+        # Show dialog
+        self.aboutDialog.show()
 
     '''
     Public functions.

@@ -8,7 +8,6 @@ import os
 
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QSizePolicy # type: ignore
 from PySide6.QtCore import QFile # type: ignore
-from PySide6.QtUiTools import QUiLoader # type: ignore
 from PySide6.QtGui import QIcon # type: ignore
 
 # Importing program files
@@ -72,14 +71,14 @@ class SettingsDialog(QDialog, Logging):
         # Pages actions
         self.ui.settingsView.currentRowChanged.connect(self.ui.settingsWidget.setCurrentIndex)
 
-        # Remove button enabled 
-        self.ui.removeProfileButton.setEnabled(False)
+        # Remove button enabled only if config profile is not selected
+        self.ui.profilesComboBox.currentTextChanged.connect((lambda text: self.ui.removeProfileButton.setEnabled(text != "config.json")))
 
-        # Set minimum size
-        self.setMinimumSize(self.sizeHint())
+        # Update it after window loads
+        self.ui.removeProfileButton.setEnabled(self.ui.profilesComboBox.currentText() != "config.json")
 
         # Resize
-        self.resize(800, 600)
+        self.resize(660, 528)
 
 
     '''
@@ -88,8 +87,11 @@ class SettingsDialog(QDialog, Logging):
 
     # Load profiles
     def _loadProfiles(self) -> None:
+        # Clear combo box
+        self.ui.profilesComboBox.clear()
+
         # Add all items to combobox
-        self.ui.profilesComboBox.addItems(self.config.all_profiles)
+        self.ui.profilesComboBox.addItems(self.config.all_profiles())
 
     # Add profile
     def _addProfile(self) -> None:
@@ -144,14 +146,6 @@ class SettingsDialog(QDialog, Logging):
             self.profileDialogUi.statusLabel.setText(f"Profile with name {name} already exists!")
             
             return
-        
-        # Set success styles
-        self.profileDialogUi.statusLabel.setStyleSheet(
-            "color: #00ff00"
-        )
-
-        # Set succes label text
-        self.profileDialogUi.statusLabel.setText(f"Profile with name {name} created successfully.")
 
         # Add profile
         self.config.addProfile(name)
@@ -167,6 +161,8 @@ class SettingsDialog(QDialog, Logging):
         # Call config function
         self.config.removeProfile(self.ui.profilesComboBox.currentText())
 
+        # Akutalize profiles
+        self._loadProfiles()
     '''
     Public functions.
     '''
