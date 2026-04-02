@@ -11,7 +11,7 @@ from libs.Logging.logging import Logging
 from libs.QtGuiFiles.PyFiles.ThemeDialog import Ui_ThemeDialog
 
 # Class Theme
-class Theme(QDialog, Logging):
+class Theme(Logging):
     def __init__(self) -> None:
         '''
         Init parents and set imoprtant variables.
@@ -23,44 +23,18 @@ class Theme(QDialog, Logging):
         # Theme directory
         self.theme_dir = "resources/Themes"
 
+        # Defautl themes
+        self.default_themes = {
+            "Default": None,
+            "Dark": None,
+            "Light": None
+        }
+
         # All themes
         self.themes = self._getThemes
 
         # Get themes
         self.themes()
-
-        '''
-        Create dialog, load ui and setup it.
-        '''
-
-        # Load ui
-        self.ui = Ui_ThemeDialog()
-
-        # Setup ui
-        self.ui.setupUi(self)
-
-        '''
-        Setup window like title, size and more.
-        '''
-
-        # Title
-        self.setWindowTitle("Add theme")
-
-        # Minimum size
-        self.setMinimumSize(self.sizeHint())
-
-        # Resize
-        self.resize(self.sizeHint())
-
-        '''
-        Button actions.
-        '''
-
-        # Browse button action
-        self.ui.browseButton.clicked.connect(self._browseThemes)
-
-        # Add theme button action
-        self.ui.addButton.clicked.connect(lambda: self._addTheme(self.ui.addLineEdit.text()))
 
     '''
     Private functions.
@@ -120,3 +94,44 @@ class Theme(QDialog, Logging):
 
         # Accept
         self.close()
+
+    '''
+    Public functions.
+    '''
+
+    # Add theme dialog
+    def themeDialog(self) -> None:
+        '''
+        Create dialog, load ui and setup it.
+        '''
+
+        ThemeDialog = QDialog()
+
+        # Load ui
+        ThemeDialogUi = Ui_ThemeDialog()
+
+        # Setup ui
+        ThemeDialogUi.setupUi(ThemeDialog = QDialog())
+
+        '''
+        Setup window like title, size and more.
+        '''
+
+        # Title
+        ThemeDialog.setWindowTitle("Add theme")
+
+        # Minimum size
+        ThemeDialog.setMinimumSize(ThemeDialog.sizeHint())
+
+        # Resize
+        ThemeDialog.resize(ThemeDialog.sizeHint())
+
+        '''
+        Button actions.
+        '''
+
+        # Browse button action
+        ThemeDialog.ui.browseButton.clicked.connect(self._browseThemes)
+
+        # Add theme button action
+        ThemeDialog.ui.addButton.clicked.connect(lambda: self._addTheme(ThemeDialogUi.addLineEdit.text()))

@@ -103,7 +103,7 @@ class SettingsDialog(QDialog, Logging):
         '''
 
         # Add theme button action
-        self.ui.themeAddButton.clicked.connect(self.theme.exec)
+        self.ui.themeAddButton.clicked.connect(self.theme.themeDialog)
 
         # Resize
         self.resize(660, 528)

@@ -13,6 +13,7 @@ from PySide6.QtGui import QFont # type: ignore
 from libs.MainWindow.mainwindow import MainWindow
 from Config.configmanager import ConfigManager
 from libs.Logging.logging import Logging
+from resources.Themes.theme import Theme
 
 from libs.QtGuiFiles.PyFiles.SetupDialog import Ui_setupDialog
 
@@ -27,6 +28,9 @@ class Application(Logging, QApplication):
 
         # Init config module
         self.config = ConfigManager()
+
+        # Init theme module
+        self.theme = Theme()
 
         '''
         Setting all applications variables.
@@ -184,7 +188,9 @@ class Application(Logging, QApplication):
 
     # Load theme function
     def _loadTheme(self, theme) -> None:
-        None
+        # Check theme
+        if theme in self.theme.default_themes.keys():
+            print(theme)
 
     '''
     Public functions.
