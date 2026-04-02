@@ -173,6 +173,7 @@ class Ui_SettingsDialog(object):
         self.fontComboBox.setObjectName(u"fontComboBox")
         sizePolicy3.setHeightForWidth(self.fontComboBox.sizePolicy().hasHeightForWidth())
         self.fontComboBox.setSizePolicy(sizePolicy3)
+        self.fontComboBox.setEditable(False)
 
         self.fontLayout.addWidget(self.fontComboBox)
 

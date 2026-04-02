@@ -6,7 +6,7 @@
 import re
 import os
 
-from PySide6.QtWidgets import QDialog, QSlider, QComboBox, QWidget # type: ignore
+from PySide6.QtWidgets import QDialog, QSlider, QComboBox, QWidget, QCheckBox # type: ignore
 from PySide6.QtCore import QSignalBlocker # type: ignore
 from PySide6.QtGui import QIcon # type: ignore
 
@@ -40,7 +40,10 @@ class SettingsDialog(QDialog, Logging):
         self.config = ConfigManager()
 
         # Saved variable
-        self.saved = True
+        self.isSaved = True
+
+        # Title
+        self.title = f"{self.app.name} | {self.app.version} | Settings"
 
         '''
         Load Ui file for settings window menu.
@@ -57,10 +60,13 @@ class SettingsDialog(QDialog, Logging):
         '''
 
         # Dialog properties like title, size and more
-        self.setWindowTitle(f"{self.app.name} | {self.app.version} | Settings")
+        self.setWindowTitle(self.title)
 
         # Set window icon
         self.setWindowIcon(QIcon("icon.svg"))
+
+        # Connect track changes for all childs
+        self._changeTracking()
 
         # Load settings
         self._loadSettings()
@@ -70,6 +76,9 @@ class SettingsDialog(QDialog, Logging):
 
         # Save settings action
         self.ui.applyButton.clicked.connect(self._saveSettings)
+
+        # Save settings button enabled
+        self.ui.applyButton.setEnabled(not self.isSaved)
 
         # Reset settings action
         self.ui.resetButton.clicked.connect(self._resetSettings)
@@ -104,6 +113,15 @@ class SettingsDialog(QDialog, Logging):
 
         # Acutalize window
         self._loadSettings()
+
+        # Change to saved
+        self.isSaved = True
+
+        # Enable button
+        self.ui.applyButton.setEnabled(not self.isSaved)
+
+        # Get back window title
+        self.setWindowTitle(self.title)
 
     # Load settings
     def _loadSettings(self) -> None:
@@ -140,6 +158,36 @@ class SettingsDialog(QDialog, Logging):
         # Aktualize settings dialog
         self._loadSettings()
 
+    # Changing value for setting childs
+    def _changeTracking(self):
+        # Find all comboboxes
+        for combo in self.findChildren(QComboBox):
+            # Connect function
+            combo.currentIndexChanged.connect(self._markAsDirty)
+            
+        # Find all sliders
+        for slider in self.findChildren(QSlider):
+            # Connect function
+            slider.valueChanged.connect(self._markAsDirty)
+            
+        # Find all checkboxes
+        for checkbox in self.findChildren(QCheckBox):
+            # Connect function
+            checkbox.stateChanged.connect(self._markAsDirty)
+    
+    # Mark as not saved
+    def _markAsDirty(self) -> None:
+        # Check if not saved
+        if self.isSaved:
+            # Change saved status
+            self.isSaved = False
+
+            # Change window title
+            self.setWindowTitle(self.title + " *")
+
+            # Enable button
+            self.ui.applyButton.setEnabled(not self.isSaved)
+
     '''
     Public functions.
     '''
@@ -147,7 +195,7 @@ class SettingsDialog(QDialog, Logging):
     # Close event
     def closeEvent(self, event) -> None:
         # Check if saved
-        if not self.saved:
+        if not self.isSaved:
             # Create dialog
             closeDialog = QDialog()
 

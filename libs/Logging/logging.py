@@ -66,7 +66,3 @@ class Logging:
     def printd(self, msg, endch=".\n") -> None:
         # Print debug
         print(f"[  \033[95mDEBUGS\033[0m  ] {msg}", end=endch)
-
-    # Print login error
-    def printl(self, msg, endch=".\n") -> None:
-        print(f"[  \033[31mERROR\033[0m   ] {msg}", end=endch)
