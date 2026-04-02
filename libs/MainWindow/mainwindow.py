@@ -6,8 +6,6 @@ import sys
 import os
 
 from PySide6.QtWidgets import QDialog, QApplication, QMainWindow # type: ignore
-from PySide6.QtCore import QFile # type: ignore
-from PySide6.QtUiTools import QUiLoader # type: ignore
 from PySide6.QtGui import QIcon # type: ignore
 
 # Imporing program files
@@ -71,7 +69,7 @@ class MainWindow(QMainWindow, Logging):
         self.setWindowTitle(f"{self.app.name} | {self.app.version}")  
 
         # Window icon
-        self.setWindowIcon(self.app.iconPath)
+        self.setWindowIcon(QIcon(self.app.iconPath))
 
         # Default size
         self.resize(800, 600) 
@@ -202,7 +200,7 @@ class MainWindow(QMainWindow, Logging):
     # Close event overwritten.
     def closeEvent(self, event) -> None:
         # Quit application wihtout asking if it is set like that.
-        if self.config.config["askOnCloseComboBox"] == "No":
+        if self.config.configuration["askOnCloseComboBox"] == "No":
             # Quit without asking
             QApplication.quit()
 

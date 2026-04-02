@@ -67,7 +67,7 @@ class SettingsDialog(QDialog, Logging):
         self.setWindowTitle(self.title)
 
         # Set window icon
-        self.setWindowIcon(self.app.iconPath)
+        self.setWindowIcon(QIcon(self.app.iconPath))
 
         # Set minimum size
         self.setMinimumSize(self.sizeHint())
