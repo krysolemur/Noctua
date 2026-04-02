@@ -21,10 +21,11 @@ class ConfigManager(Logging):
         # Default app config
         self.default_config = {
             "askOnCloseComboBox": "Yes",
-            "themeComboBox": "",
-            "fontComboBox": "Ubuntu",
-            "fontSizeSlider": 0,
-            "checkUpdatesComboBox": "Yes"
+            "themeComboBox": "Default",
+            "stylesheetComboBox": "",
+            "fontComboBox": "Sans Serif",
+            "fontSizeSlider": 10,
+            "checkUpdatesComboBox": "No"
         }
 
         # General config 
@@ -42,14 +43,8 @@ class ConfigManager(Logging):
         # Check default config file
         self.checkDefaultConfig()
 
-        # Check general config file
-        self.checkGeneralConfig()
-
         # Configuration variable
-        self.config = self._loadSettings
-
-        # Load settings 
-        self.config()
+        self.config = self._loadSettings()
 
     '''
     Private functions.
@@ -94,21 +89,6 @@ class ConfigManager(Logging):
             with open(self.default_path, "w") as config:
                 # Write default settings
                 json.dump(self.default_config, config, indent=4)
-
-                # Close file
-                config.close()
-
-    # Check general config file
-    def checkGeneralConfig(self) -> None:
-        # Check Config/general.json in config directory
-        if not os.path.exists(self.general_path):
-            # Print warning
-            self.printw(msg=f"General config doesen't exists! Creating new.")
-
-            # Create general.json
-            with open(self.general_path, "w") as config:
-                # Write default settings
-                json.dump(self.general_config, config, indent=4)
 
                 # Close file
                 config.close()

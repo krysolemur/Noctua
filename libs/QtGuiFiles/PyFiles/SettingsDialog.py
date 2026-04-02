@@ -16,10 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QDialog,
-    QFontComboBox, QFrame, QHBoxLayout, QLabel,
-    QLayout, QListWidget, QListWidgetItem, QPushButton,
-    QScrollArea, QSizePolicy, QSlider, QSpacerItem,
-    QStackedWidget, QVBoxLayout, QWidget)
+    QFontComboBox, QFrame, QHBoxLayout, QHeaderView,
+    QLabel, QLayout, QListWidget, QListWidgetItem,
+    QPushButton, QScrollArea, QSizePolicy, QSlider,
+    QSpacerItem, QStackedWidget, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_SettingsDialog(object):
     def setupUi(self, SettingsDialog):
@@ -72,10 +73,10 @@ class Ui_SettingsDialog(object):
         self.generalPage.setSizePolicy(sizePolicy2)
         self.generalPage.setMinimumSize(QSize(0, 0))
         self.generalPage.setMaximumSize(QSize(16777215, 16777215))
-        self.generalPageLayout = QHBoxLayout(self.generalPage)
-        self.generalPageLayout.setSpacing(0)
-        self.generalPageLayout.setObjectName(u"generalPageLayout")
-        self.generalPageLayout.setContentsMargins(0, 0, 0, 0)
+        self.generalLayout = QHBoxLayout(self.generalPage)
+        self.generalLayout.setSpacing(0)
+        self.generalLayout.setObjectName(u"generalLayout")
+        self.generalLayout.setContentsMargins(0, 0, 0, 0)
         self.generalScrollArea = QScrollArea(self.generalPage)
         self.generalScrollArea.setObjectName(u"generalScrollArea")
         sizePolicy2.setHeightForWidth(self.generalScrollArea.sizePolicy().hasHeightForWidth())
@@ -94,10 +95,10 @@ class Ui_SettingsDialog(object):
         self.generalScrollAreaContents.setSizePolicy(sizePolicy2)
         self.generalScrollAreaContents.setMinimumSize(QSize(0, 0))
         self.generalScrollAreaContents.setMaximumSize(QSize(16777215, 16777215))
-        self.generalScrollAreaLayout = QVBoxLayout(self.generalScrollAreaContents)
-        self.generalScrollAreaLayout.setSpacing(6)
-        self.generalScrollAreaLayout.setObjectName(u"generalScrollAreaLayout")
-        self.generalScrollAreaLayout.setContentsMargins(0, 0, 0, 0)
+        self.generalScrollLayout = QVBoxLayout(self.generalScrollAreaContents)
+        self.generalScrollLayout.setSpacing(6)
+        self.generalScrollLayout.setObjectName(u"generalScrollLayout")
+        self.generalScrollLayout.setContentsMargins(0, 0, 0, 0)
         self.askOnCloseLayout = QHBoxLayout()
         self.askOnCloseLayout.setObjectName(u"askOnCloseLayout")
         self.askOnCloseLayout.setSizeConstraint(QLayout.SetMaximumSize)
@@ -126,7 +127,7 @@ class Ui_SettingsDialog(object):
 
         self.askOnCloseLayout.setStretch(1, 1)
 
-        self.generalScrollAreaLayout.addLayout(self.askOnCloseLayout)
+        self.generalScrollLayout.addLayout(self.askOnCloseLayout)
 
         self.themeLayout = QHBoxLayout()
         self.themeLayout.setObjectName(u"themeLayout")
@@ -139,6 +140,9 @@ class Ui_SettingsDialog(object):
         self.themeLayout.addWidget(self.themeLabel)
 
         self.themeComboBox = QComboBox(self.generalScrollAreaContents)
+        self.themeComboBox.addItem("")
+        self.themeComboBox.addItem("")
+        self.themeComboBox.addItem("")
         self.themeComboBox.setObjectName(u"themeComboBox")
         sizePolicy3.setHeightForWidth(self.themeComboBox.sizePolicy().hasHeightForWidth())
         self.themeComboBox.setSizePolicy(sizePolicy3)
@@ -147,7 +151,7 @@ class Ui_SettingsDialog(object):
 
         self.themeAddButton = QPushButton(self.generalScrollAreaContents)
         self.themeAddButton.setObjectName(u"themeAddButton")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.themeAddButton.sizePolicy().hasHeightForWidth())
@@ -157,7 +161,35 @@ class Ui_SettingsDialog(object):
 
         self.themeLayout.setStretch(1, 1)
 
-        self.generalScrollAreaLayout.addLayout(self.themeLayout)
+        self.generalScrollLayout.addLayout(self.themeLayout)
+
+        self.stylesheetLayout = QHBoxLayout()
+        self.stylesheetLayout.setObjectName(u"stylesheetLayout")
+        self.stylesheetLayout.setContentsMargins(6, 6, 6, 6)
+        self.stylesheetLabel = QLabel(self.generalScrollAreaContents)
+        self.stylesheetLabel.setObjectName(u"stylesheetLabel")
+        sizePolicy3.setHeightForWidth(self.stylesheetLabel.sizePolicy().hasHeightForWidth())
+        self.stylesheetLabel.setSizePolicy(sizePolicy3)
+
+        self.stylesheetLayout.addWidget(self.stylesheetLabel)
+
+        self.stylesheetComboBox = QComboBox(self.generalScrollAreaContents)
+        self.stylesheetComboBox.setObjectName(u"stylesheetComboBox")
+        sizePolicy3.setHeightForWidth(self.stylesheetComboBox.sizePolicy().hasHeightForWidth())
+        self.stylesheetComboBox.setSizePolicy(sizePolicy3)
+
+        self.stylesheetLayout.addWidget(self.stylesheetComboBox)
+
+        self.stylesheetButton = QPushButton(self.generalScrollAreaContents)
+        self.stylesheetButton.setObjectName(u"stylesheetButton")
+        sizePolicy4.setHeightForWidth(self.stylesheetButton.sizePolicy().hasHeightForWidth())
+        self.stylesheetButton.setSizePolicy(sizePolicy4)
+
+        self.stylesheetLayout.addWidget(self.stylesheetButton)
+
+        self.stylesheetLayout.setStretch(1, 1)
+
+        self.generalScrollLayout.addLayout(self.stylesheetLayout)
 
         self.fontLayout = QHBoxLayout()
         self.fontLayout.setObjectName(u"fontLayout")
@@ -174,6 +206,7 @@ class Ui_SettingsDialog(object):
         sizePolicy3.setHeightForWidth(self.fontComboBox.sizePolicy().hasHeightForWidth())
         self.fontComboBox.setSizePolicy(sizePolicy3)
         self.fontComboBox.setEditable(False)
+        self.fontComboBox.setFrame(True)
 
         self.fontLayout.addWidget(self.fontComboBox)
 
@@ -186,7 +219,7 @@ class Ui_SettingsDialog(object):
 
         self.fontLayout.setStretch(1, 1)
 
-        self.generalScrollAreaLayout.addLayout(self.fontLayout)
+        self.generalScrollLayout.addLayout(self.fontLayout)
 
         self.fontSizeLayout = QHBoxLayout()
         self.fontSizeLayout.setObjectName(u"fontSizeLayout")
@@ -202,13 +235,15 @@ class Ui_SettingsDialog(object):
         self.fontSizeSlider.setObjectName(u"fontSizeSlider")
         sizePolicy3.setHeightForWidth(self.fontSizeSlider.sizePolicy().hasHeightForWidth())
         self.fontSizeSlider.setSizePolicy(sizePolicy3)
+        self.fontSizeSlider.setMinimum(10)
+        self.fontSizeSlider.setMaximum(13)
         self.fontSizeSlider.setOrientation(Qt.Horizontal)
 
         self.fontSizeLayout.addWidget(self.fontSizeSlider)
 
         self.fontSizeLayout.setStretch(1, 1)
 
-        self.generalScrollAreaLayout.addLayout(self.fontSizeLayout)
+        self.generalScrollLayout.addLayout(self.fontSizeLayout)
 
         self.checkUpdatesLayout = QHBoxLayout()
         self.checkUpdatesLayout.setObjectName(u"checkUpdatesLayout")
@@ -231,16 +266,16 @@ class Ui_SettingsDialog(object):
 
         self.checkUpdatesLayout.setStretch(1, 1)
 
-        self.generalScrollAreaLayout.addLayout(self.checkUpdatesLayout)
+        self.generalScrollLayout.addLayout(self.checkUpdatesLayout)
 
         self.generalLayoutSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.generalScrollAreaLayout.addItem(self.generalLayoutSpacer)
+        self.generalScrollLayout.addItem(self.generalLayoutSpacer)
 
-        self.generalScrollAreaLayout.setStretch(5, 1)
+        self.generalScrollLayout.setStretch(6, 1)
         self.generalScrollArea.setWidget(self.generalScrollAreaContents)
 
-        self.generalPageLayout.addWidget(self.generalScrollArea)
+        self.generalLayout.addWidget(self.generalScrollArea)
 
         self.settingsWidget.addWidget(self.generalPage)
         self.page = QWidget()
@@ -248,6 +283,52 @@ class Ui_SettingsDialog(object):
         self.settingsWidget.addWidget(self.page)
         self.shortcustPage = QWidget()
         self.shortcustPage.setObjectName(u"shortcustPage")
+        self.shortcutsLayout = QVBoxLayout(self.shortcustPage)
+        self.shortcutsLayout.setObjectName(u"shortcutsLayout")
+        self.shortcutsLayout.setContentsMargins(0, 0, 0, 0)
+        self.shortcutsTableWidget = QTableWidget(self.shortcustPage)
+        if (self.shortcutsTableWidget.columnCount() < 3):
+            self.shortcutsTableWidget.setColumnCount(3)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.shortcutsTableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.shortcutsTableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.shortcutsTableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        if (self.shortcutsTableWidget.rowCount() < 1):
+            self.shortcutsTableWidget.setRowCount(1)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.shortcutsTableWidget.setItem(0, 0, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        self.shortcutsTableWidget.setItem(0, 1, __qtablewidgetitem4)
+        __qtablewidgetitem5 = QTableWidgetItem()
+        self.shortcutsTableWidget.setItem(0, 2, __qtablewidgetitem5)
+        self.shortcutsTableWidget.setObjectName(u"shortcutsTableWidget")
+        self.shortcutsTableWidget.setFrameShape(QFrame.NoFrame)
+        self.shortcutsTableWidget.setFrameShadow(QFrame.Plain)
+        self.shortcutsTableWidget.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.shortcutsTableWidget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.shortcutsTableWidget.setAlternatingRowColors(True)
+        self.shortcutsTableWidget.setRowCount(1)
+        self.shortcutsTableWidget.horizontalHeader().setVisible(True)
+        self.shortcutsTableWidget.horizontalHeader().setCascadingSectionResizes(False)
+        self.shortcutsTableWidget.horizontalHeader().setMinimumSectionSize(21)
+        self.shortcutsTableWidget.horizontalHeader().setDefaultSectionSize(100)
+        self.shortcutsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", False)
+        self.shortcutsTableWidget.horizontalHeader().setStretchLastSection(False)
+        self.shortcutsTableWidget.verticalHeader().setVisible(True)
+        self.shortcutsTableWidget.verticalHeader().setCascadingSectionResizes(False)
+        self.shortcutsTableWidget.verticalHeader().setMinimumSectionSize(18)
+        self.shortcutsTableWidget.verticalHeader().setHighlightSections(True)
+        self.shortcutsTableWidget.verticalHeader().setProperty(u"showSortIndicator", False)
+        self.shortcutsTableWidget.verticalHeader().setStretchLastSection(False)
+
+        self.shortcutsLayout.addWidget(self.shortcutsTableWidget)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.shortcutsLayout.addItem(self.verticalSpacer)
+
         self.settingsWidget.addWidget(self.shortcustPage)
 
         self.settingsLayout.addWidget(self.settingsWidget)
@@ -294,6 +375,9 @@ class Ui_SettingsDialog(object):
 
         self.retranslateUi(SettingsDialog)
 
+        self.settingsWidget.setCurrentIndex(0)
+
+
         QMetaObject.connectSlotsByName(SettingsDialog)
     # setupUi
 
@@ -313,13 +397,36 @@ class Ui_SettingsDialog(object):
         self.askOnCloseComboBox.setItemText(1, QCoreApplication.translate("SettingsDialog", u"No", None))
 
         self.themeLabel.setText(QCoreApplication.translate("SettingsDialog", u"Theme: ", None))
+        self.themeComboBox.setItemText(0, QCoreApplication.translate("SettingsDialog", u"Default", None))
+        self.themeComboBox.setItemText(1, QCoreApplication.translate("SettingsDialog", u"Dark", None))
+        self.themeComboBox.setItemText(2, QCoreApplication.translate("SettingsDialog", u"Light", None))
+
         self.themeAddButton.setText(QCoreApplication.translate("SettingsDialog", u"Add Theme", None))
+        self.stylesheetLabel.setText(QCoreApplication.translate("SettingsDialog", u"Stylesheet: ", None))
+        self.stylesheetButton.setText(QCoreApplication.translate("SettingsDialog", u"Add stylesheet", None))
         self.fontLabel.setText(QCoreApplication.translate("SettingsDialog", u"Font: ", None))
         self.fontAddButton.setText(QCoreApplication.translate("SettingsDialog", u"Add font", None))
         self.fontSizeLabel.setText(QCoreApplication.translate("SettingsDialog", u"Font size: ", None))
         self.checkUpdatesLabel.setText(QCoreApplication.translate("SettingsDialog", u"Checking updates automaticly:", None))
         self.checkUpdatesComboBox.setItemText(0, QCoreApplication.translate("SettingsDialog", u"Yes", None))
         self.checkUpdatesComboBox.setItemText(1, QCoreApplication.translate("SettingsDialog", u"No", None))
+
+        ___qtablewidgetitem = self.shortcutsTableWidget.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("SettingsDialog", u"Name", None))
+        ___qtablewidgetitem1 = self.shortcutsTableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("SettingsDialog", u"Shortcut", None))
+        ___qtablewidgetitem2 = self.shortcutsTableWidget.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("SettingsDialog", u"Action", None))
+
+        __sortingEnabled1 = self.shortcutsTableWidget.isSortingEnabled()
+        self.shortcutsTableWidget.setSortingEnabled(False)
+        ___qtablewidgetitem3 = self.shortcutsTableWidget.item(0, 0)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("SettingsDialog", u"fdasf", None))
+        ___qtablewidgetitem4 = self.shortcutsTableWidget.item(0, 1)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("SettingsDialog", u"fdasfsd", None))
+        ___qtablewidgetitem5 = self.shortcutsTableWidget.item(0, 2)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("SettingsDialog", u"fdasfdas", None))
+        self.shortcutsTableWidget.setSortingEnabled(__sortingEnabled1)
 
         self.cancelButton.setText(QCoreApplication.translate("SettingsDialog", u"Close", None))
         self.resetButton.setText(QCoreApplication.translate("SettingsDialog", u"Reset", None))

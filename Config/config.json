@@ -1,7 +1,8 @@
 {
     "askOnCloseComboBox": "Yes",
-    "themeComboBox": "",
-    "fontComboBox": "Ubuntu",
-    "fontSizeSlider": 0,
-    "checkUpdatesComboBox": "Yes"
+    "themeComboBox": "Default",
+    "stylesheetComboBox": "",
+    "fontComboBox": "Sans Serif",
+    "fontSizeSlider": 10,
+    "checkUpdatesComboBox": "No"
 }

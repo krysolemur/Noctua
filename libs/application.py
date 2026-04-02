@@ -7,13 +7,12 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QDialog # type: ignore
 from PySide6.QtCore import QTimer # type: ignore
+from PySide6.QtGui import QFont # type: ignore
 
 # Importing program files
 from libs.MainWindow.mainwindow import MainWindow
 from Config.configmanager import ConfigManager
 from libs.Logging.logging import Logging
-from libs.Errors.errors import Error
-from libs.Errors.exceptions import *
 
 from libs.QtGuiFiles.PyFiles.SetupDialog import Ui_setupDialog
 
@@ -59,14 +58,27 @@ class Application(Logging, QApplication):
         # Dialog properties like title, size and more
         self.setupDialog.setWindowTitle(f"{self.name} | {self.version} | Inicializing")
 
+        # Set minimum size
+        self.setupDialog.setMinimumSize(self.setupDialog.sizeHint())
+
         # Set size
         self.setupDialog.resize(600, 75)
 
         # Exec setupDialog
         self.setupDialog.show()
 
+        ''' 
+        Load general settings.
         '''
-        Set timer for loading bar.
+
+        # Set font and font size
+        self.setFont(QFont(str(self.config.config["fontComboBox"]), int(self.config.config["fontSizeSlider"])))
+
+        # Load theme
+        self._loadTheme(self.config.config["themeComboBox"])
+
+        '''
+        Setup setup window.
         '''
         
         # Process index
@@ -87,7 +99,7 @@ class Application(Logging, QApplication):
         # List of all proccesses with their labels
         all_process = [
             self._checkNetworkConnection,
-            self._checkForUpdates,
+            *( [self._checkForUpdates] if self.config.config["checkUpdatesComboBox"] == "Yes" else [] ),
             self._checkConfigDir,
         ]
 
@@ -111,30 +123,26 @@ class Application(Logging, QApplication):
             # Get proccess 
             process = all_process[self.process_index]
 
-            # Run process
-            process()
+            # Check if process is callable
+            if process:
+                # Run process
+                process()
 
-            # Process events
-            self.processEvents()
+                # OK message
+                self.printo(msg="", function=process.__name__)
 
-            '''
-            Set label properties and loading bar actions.
-            '''
+                '''
+                Set label properties and loading bar actions.
+                '''
 
-            # Set OK Color
-            self.ui.statusLabel.setStyleSheet("color: #00ff00")
+                # Set OK Color
+                self.ui.statusLabel.setStyleSheet("color: #00ff00")
 
-            # Set OK status of function
-            self.ui.statusLabel.setText("OK")
+                # Set OK status of function
+                self.ui.statusLabel.setText("OK")
 
-            # Set progressBar value
-            self.ui.loadingBar.setValue(self.ui.loadingBar.value() + (100 // len(all_process)))
-
-            # OK message
-            self.printo(msg="", function=process.__name__)
-
-            # Process events
-            self.processEvents()
+                # Set progressBar value
+                self.ui.loadingBar.setValue(self.ui.loadingBar.value() + (100 // len(all_process)))
         except Exception as e:
             '''
             Set error look.
@@ -162,13 +170,21 @@ class Application(Logging, QApplication):
 
     # Function that check for updates
     def _checkForUpdates(self) -> None:
-        # Set label text
-        self.ui.loadingLabel.setText("Checking for updates")
+        # If checking updates 
+        if self.config.config["checkUpdatesComboBox"] == "Yes":
+            # Set label text
+            self.ui.loadingLabel.setText("Checking for updates")
+        else:
+            return
 
     # Checking config files
     def _checkConfigDir(self) -> None:
         # Set label text
         self.ui.loadingLabel.setText("Checking config directory")
+
+    # Load theme function
+    def _loadTheme(self, theme) -> None:
+        None
 
     '''
     Public functions.

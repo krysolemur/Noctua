@@ -10,7 +10,6 @@ import traceback
 # Importing program files
 from libs.Logging.logging import Logging
 from libs.application import Application
-from libs.Errors.exceptions import *
 from libs.Commands.commands import Commands
 
 
@@ -64,8 +63,11 @@ if __name__ == "__main__":
 
             # Check if command exists
             if command not in Commands().commands:
-                # Raise unknown command exception
-                raise UnknownCommandError()
+                # Unknown command error
+                print("Unknown command! Try --help for help menu.")
+
+                # Exit
+                sys.exit(1)
             
 
             # --run command for running application
@@ -84,8 +86,11 @@ if __name__ == "__main__":
 
         # Check parametres
         elif len(sys.argv) > 2:
-            # Raise too many arguments exception
-            raise TooManyArgumentsError()
+            # Print too many arguments error
+            print("Too many arguments used! Try --help for help menu.")
+
+            # Exit
+            sys.exit(1)
         
 
         else:

@@ -5,9 +5,8 @@ import requests
 import sys
 import os
 
-from PySide6 import QtWidgets, QtCore, QtUiTools, QtGui # type: ignore
-from PySide6.QtWidgets import QDialog, QLabel, QVBoxLayout, QApplication, QMainWindow, QMessageBox # type: ignore
-from PySide6.QtCore import QTimer, QFile # type: ignore
+from PySide6.QtWidgets import QDialog, QApplication, QMainWindow # type: ignore
+from PySide6.QtCore import QFile # type: ignore
 from PySide6.QtUiTools import QUiLoader # type: ignore
 from PySide6.QtGui import QIcon # type: ignore
 
@@ -255,10 +254,10 @@ class MainWindow(QMainWindow, Logging):
         # Load Ui
         closeDialog = QDialog()
 
-        closeDialogUi = Ui_customDialog()
+        ui = Ui_customDialog()
 
         # Setup ui 
-        closeDialogUi.setupUi(closeDialog)
+        ui.setupUi(closeDialog)
         '''
         Set properties for custom dialog, title, size and center it.
         '''
@@ -277,19 +276,19 @@ class MainWindow(QMainWindow, Logging):
         '''
 
         # Set label text
-        closeDialogUi.textLabel.setText("Do you really want to quit application?")
+        ui.textLabel.setText("Do you really want to quit application?")
 
         # Set cancel button text
-        closeDialogUi.cancelButton.setText("No")
+        ui.cancelButton.setText("No")
 
         # Set sumbit button text
-        closeDialogUi.sumbitButton.setText("Yes")
+        ui.sumbitButton.setText("Yes")
 
         # Set cancel action
-        closeDialogUi.cancelButton.clicked.connect(closeDialog.close)
+        ui.cancelButton.clicked.connect(closeDialog.close)
 
         # Set sumbit action
-        closeDialogUi.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
+        ui.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
 
         # Show dialog
         closeDialog.exec()

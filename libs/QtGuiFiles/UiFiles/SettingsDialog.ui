@@ -101,6 +101,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
        <widget class="QWidget" name="generalPage">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -120,7 +123,7 @@
           <height>16777215</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="generalPageLayout">
+        <layout class="QHBoxLayout" name="generalLayout">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -195,7 +198,7 @@
               <height>16777215</height>
              </size>
             </property>
-            <layout class="QVBoxLayout" name="generalScrollAreaLayout" stretch="0,0,0,0,0,1">
+            <layout class="QVBoxLayout" name="generalScrollLayout" stretch="0,0,0,0,0,0,1">
              <property name="spacing">
               <number>6</number>
              </property>
@@ -307,18 +310,85 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <item>
+                  <property name="text">
+                   <string>Default</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Dark</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Light</string>
+                  </property>
+                 </item>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="themeAddButton">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="text">
                   <string>Add Theme</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="stylesheetLayout" stretch="0,1,0">
+               <property name="leftMargin">
+                <number>6</number>
+               </property>
+               <property name="topMargin">
+                <number>6</number>
+               </property>
+               <property name="rightMargin">
+                <number>6</number>
+               </property>
+               <property name="bottomMargin">
+                <number>6</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="stylesheetLabel">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Stylesheet: </string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="stylesheetComboBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="stylesheetButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Add stylesheet</string>
                  </property>
                 </widget>
                </item>
@@ -362,12 +432,15 @@
                  <property name="editable">
                   <bool>false</bool>
                  </property>
+                 <property name="frame">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="fontAddButton">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -413,6 +486,12 @@
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="minimum">
+                  <number>10</number>
+                 </property>
+                 <property name="maximum">
+                  <number>13</number>
                  </property>
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -490,7 +569,124 @@
         </layout>
        </widget>
        <widget class="QWidget" name="page"/>
-       <widget class="QWidget" name="shortcustPage"/>
+       <widget class="QWidget" name="shortcustPage">
+        <layout class="QVBoxLayout" name="shortcutsLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QTableWidget" name="shortcutsTableWidget">
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="rowCount">
+            <number>1</number>
+           </property>
+           <attribute name="horizontalHeaderVisible">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>21</number>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>100</number>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderMinimumSectionSize">
+            <number>18</number>
+           </attribute>
+           <attribute name="verticalHeaderHighlightSections">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderStretchLastSection">
+            <bool>false</bool>
+           </attribute>
+           <row/>
+           <column>
+            <property name="text">
+             <string>Name</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Shortcut</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Action</string>
+            </property>
+           </column>
+           <item row="0" column="0">
+            <property name="text">
+             <string>fdasf</string>
+            </property>
+           </item>
+           <item row="0" column="1">
+            <property name="text">
+             <string>fdasfsd</string>
+            </property>
+           </item>
+           <item row="0" column="2">
+            <property name="text">
+             <string>fdasfdas</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>

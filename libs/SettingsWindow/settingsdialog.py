@@ -12,7 +12,7 @@ from PySide6.QtGui import QIcon # type: ignore
 
 # Importing program files
 from libs.Logging.logging import Logging
-from Config.configmanager import ConfigManager
+from resources.Themes.theme import Theme
 
 from libs.QtGuiFiles.PyFiles.SettingsDialog import Ui_SettingsDialog
 from libs.QtGuiFiles.PyFiles.ProfileDialog import Ui_ProfileDialog
@@ -26,6 +26,9 @@ class SettingsDialog(QDialog, Logging):
         # Init parents
         super().__init__()
 
+        # Init themes
+        self.theme = Theme()
+
         # Save application
         self.app = app
 
@@ -37,7 +40,7 @@ class SettingsDialog(QDialog, Logging):
         '''
 
         # Config module
-        self.config = ConfigManager()
+        self.config = self.app.config
 
         # Saved variable
         self.isSaved = True
@@ -65,6 +68,12 @@ class SettingsDialog(QDialog, Logging):
         # Set window icon
         self.setWindowIcon(QIcon("icon.svg"))
 
+        # Set minimum size
+        self.setMinimumSize(self.sizeHint())
+
+        # Resize
+        self.resize(self.sizeHint())
+
         # Connect track changes for all childs
         self._changeTracking()
 
@@ -86,6 +95,16 @@ class SettingsDialog(QDialog, Logging):
         # Cancel button action
         self.ui.cancelButton.clicked.connect(self.close)
 
+        # Add all themes to theme combobox
+        self.ui.themeComboBox.addItems(self.theme.themes())
+
+        '''
+        General buttons actions.
+        '''
+
+        # Add theme button action
+        self.ui.themeAddButton.clicked.connect(self.theme.exec)
+
         # Resize
         self.resize(660, 528)
 
@@ -103,6 +122,7 @@ class SettingsDialog(QDialog, Logging):
         settings = {
             "askOnCloseComboBox": self.ui.askOnCloseComboBox.currentText(),
             "themeComboBox": self.ui.themeComboBox.currentText(),
+            "stylesheetComboBox": self.ui.stylesheetComboBox.currentText(),
             "fontComboBox": self.ui.fontComboBox.currentText(),
             "fontSizeSlider": self.ui.fontSizeSlider.value(),
             "checkUpdatesComboBox": self.ui.checkUpdatesComboBox.currentText()
@@ -194,57 +214,69 @@ class SettingsDialog(QDialog, Logging):
 
     # Close event
     def closeEvent(self, event) -> None:
-        # Check if saved
-        if not self.isSaved:
-            # Create dialog
-            closeDialog = QDialog()
+            # If it is saved
+            if self.isSaved:
+                # Show message
+                self.printi(msg="Closing settings window")
 
+                # Close
+                event.accept()
+
+                # End function
+                return
+
+            # If not create dialog
+            closeDialog = QDialog(self) 
+            
             # Load ui
-            closeDialogUi = Ui_customDialog()
+            ui = Ui_customDialog()
 
             # Setup ui
-            closeDialogUi.setupUi(closeDialog)
+            ui.setupUi(closeDialog)
 
-            '''
-            Set properties for custom dialog, title, size and center it.
-            '''
-
-            # Set title
+            # Set dialog title
             closeDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | Close settings")
 
-            # Adjust dialog
-            closeDialog.adjustSize()
-
-            # Set dialog modal
-            closeDialog.setModal(True)
-
-            '''
-            Set parametres for buttons and actions.
-            '''
-
             # Set label text
-            closeDialogUi.textLabel.setText("Settings not saved! Do you want to abort it?")
+            ui.textLabel.setText("Settings not saved! Do you want to abort it?")
 
             # Set cancel button text
-            closeDialogUi.cancelButton.setText("Close")
+            ui.cancelButton.setText("Close without saving")
 
-            # Set sumbit button text
-            closeDialogUi.sumbitButton.setText("Save & close")
+            # Set sumbit buttin text
+            ui.sumbitButton.setText("Save & Close")
+            
+            # Set modal
+            closeDialog.setModal(True)
 
-            # Set cancel action
-            closeDialogUi.cancelButton.clicked.connect(self.close())
+            # Adjust size
+            closeDialog.adjustSize()
 
-            # Set sumbit action
-            closeDialogUi.sumbitButton.clicked.connect(lambda: (self.printi(msg="Quiting application"), QApplication.quit()))
+            # Cancel button connect
+            ui.cancelButton.clicked.connect(closeDialog.reject)
+            
+            # Sumbit button connect
+            ui.sumbitButton.clicked.connect(closeDialog.accept)
 
-            # Show dialog
-            closeDialog.exec()
+            # Run dialog with resutl fallback
+            result = closeDialog.exec()
 
-            # Ignore event
-            event.ignore()
-        else:
-            # Print message
-            self.printi(msg="Closing settings window")
+            # Check result
+            if result == QDialog.Accepted:
+                # Show message save and quit
+                self.printi(msg="Saving and quitting...")
 
-            # Close window
-            event.accept()
+                # Save settings
+                self._saveSettings() 
+
+                # Accept event
+                event.accept() 
+            elif result == QDialog.Rejected:
+                # Close dialog and settings window msg
+                self.printi(msg="Quitting without saving")
+
+                # Accept event
+                event.accept()
+            else:
+                # Ignore event if user just click close cross button
+                event.ignore()
