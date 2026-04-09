@@ -1,15 +1,52 @@
 {
     "GeneralPage": {
-        "askOnCloseComboBox": "Yes",
-        "themeComboBox": "Light",
+        "askOnCloseComboBox": "No",
+        "themeComboBox": "Default",
         "stylesheetComboBox": "",
-        "fontComboBox": "Sans Serif",
+        "fontComboBox": "Noto Sans",
         "fontSizeSlider": 10,
         "checkUpdatesComboBox": "No"
     },
     "SourcePage": {
-        "htmlElementsCheckBox": true,
-        "htmlAtributsCheckBox": true,
-        "atributsValuesCheckBox": true
+        "elementsButton": {
+            "color": "none",
+            "background-color": "none",
+            "font-weight": "none",
+            "font-style": "none",
+            "text-decoration": "none",
+            "transform": "lowercase"
+        },
+        "atributsButton": {
+            "color": "none",
+            "background-color": "none",
+            "font-weight": "bold",
+            "font-style": "italic",
+            "text-decoration": "underline",
+            "transform": "lowercase"
+        },
+        "attrValuesButton": {
+            "color": "none",
+            "background-color": "none",
+            "font-weight": "none",
+            "font-style": "none",
+            "text-decoration": "none",
+            "transform": "lowercase"
+        },
+        "stringButton": {
+            "color": "none",
+            "background-color": "none",
+            "font-weight": "none",
+            "font-style": "none",
+            "text-decoration": "none",
+            "transform": "lowercase"
+        },
+        "commentsButton": {
+            "color": "none",
+            "background-color": "none",
+            "font-weight": "none",
+            "font-style": "none",
+            "text-decoration": "none",
+            "transform": "lowercase"
+        }
     }
 }

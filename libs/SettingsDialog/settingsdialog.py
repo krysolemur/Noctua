@@ -87,9 +87,6 @@ class SettingsDialog(QDialog, Logging):
         # Icon
         self.setWindowIcon(QIcon(self.app.iconPath))
 
-        # Default size
-        self.resize(self.sizeHint())
-
         '''
         Settings buttons actions, page actions.
         '''
@@ -125,15 +122,14 @@ class SettingsDialog(QDialog, Logging):
 
             # Insert it to stacked widget
             self.ui.settingsWidget.insertWidget(pageIndex, newPage)
-
-            # Resize dialog
-            self.resize(self.sizeHint())
         
             # Load settings
             newPage.loadSettings(self.settings.get(type(newPage).__name__, self.config.defaultConfig))
 
         # Show page
         self.ui.settingsWidget.setCurrentIndex(pageIndex)
+
+        self.adjustSize()
 
     # Collects values from all UI widgets, saves them to a dictionary, and updates the configuration file.
     def _saveSettingsAction(self) -> None:

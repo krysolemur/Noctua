@@ -65,6 +65,9 @@ class GeneralPage(QWidget):
 
     # Load settings function
     def loadSettings(self, settings) -> None:
+        # Save settings
+        self.settings = settings
+        
         # Browse all keys and their values
         for key, value in settings.items():
             # Get widget by name
