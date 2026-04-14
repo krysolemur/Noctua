@@ -13,11 +13,15 @@ class ConfigManager:
     # Default app configuration
     defaultConfig = {
         "GeneralPage": {
-            "themeComboBox": "Dark",
-            "stylesheetComboBox": "Default",
-            "fontComboBox": "Noto Sans",
-            "fontSizeComboBox": "Medium (recommended)",
-            "checkUpdatesComboBox": "Yes"
+            "cb_gen_theme": "Light",
+            "fcb_gen_font": "Noto Sans",
+            "cb_gen_font_size": "Small",
+            "sb_adv_autosave_interval": 5,
+            "chk_adv_gpu": True,
+            "cb_adv_startup": "Show Dashboard",
+            "chk_sys_updates": True,
+            "chk_sys_telemetry": False,
+            "cb_sys_lang": "English"
         },
         "LoggingPage": {
             "cb_console_time": "Yes",
@@ -26,7 +30,7 @@ class ConfigManager:
             "btn_console_warning": True,
             "btn_console_success": True,
             "btn_console_error": True,
-            "btn_console_debug": False,
+            "btn_console_debug": True,
             "cb_file_enabled": "Yes",
             "btn_file_info": True,
             "btn_file_warning": True,
@@ -35,7 +39,7 @@ class ConfigManager:
             "btn_file_debug": True,
             "sb_file_rotation": 10,
             "sb_file_retention": 7,
-            "le_file_path": "./logs",
+            "le_file_path": "./Logs",
             "cb_file_compression": "zip"
         },
         "SourcePage": {

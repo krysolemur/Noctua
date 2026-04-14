@@ -160,10 +160,18 @@ class SettingsDialog(QDialog):
         # Trigger the configuration handler to overwrite the current JSON with default values.
         self.ConfigManager.resetSettings()
 
+        # Reload application config
+        self.app.reloadConfiguration()
+
         # Browse active pages
         for page in self.activePages:
-            # Reload Ui
-            page.loadSettings(self.config.get(type(page).__name__))
+            # Run only for real objects
+            if page and not isinstance(page, bool):
+                page.loadSettings(self.config.get(type(page).__name__, {}))
+
+        # Loguru acitalization
+        if hasattr(self, 'Logger'):
+            self.app.Logger.updateConfig(self.config.get("LoggingPage", {}))
             
     '''
     Public functions.

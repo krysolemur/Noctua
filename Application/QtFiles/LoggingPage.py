@@ -42,6 +42,9 @@ class Ui_LoggingPage(object):
         self.lyt_console_section.setObjectName(u"lyt_console_section")
         self.lbl_console_header = QLabel(self.sa_content)
         self.lbl_console_header.setObjectName(u"lbl_console_header")
+        font = QFont()
+        font.setBold(True)
+        self.lbl_console_header.setFont(font)
         self.lbl_console_header.setMargin(0)
 
         self.lyt_console_section.addWidget(self.lbl_console_header)
@@ -127,6 +130,7 @@ class Ui_LoggingPage(object):
 
         self.lbl_file_header = QLabel(self.sa_content)
         self.lbl_file_header.setObjectName(u"lbl_file_header")
+        self.lbl_file_header.setFont(font)
 
         self.lyt_scroll.addWidget(self.lbl_file_header)
 

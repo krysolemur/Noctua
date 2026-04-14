@@ -17,12 +17,23 @@ class Logger:
         # Service name
         self.serviceName = serviceName
         
-        # Format for console
+
+        # Console format
         console_format = ""
+
+        # Time if is allowed
         if config.get("cb_console_time") == "Yes":
-            console_format += "<green>{time:HH:mm:ss}</green> | "
-        
-        console_format += f"<level>{{level: <8}}</level> | <magenta>{serviceName}</magenta> - <level>{{message}}</level>"
+            console_format += "<yellow>{time:YYYY-MM-DD}</yellow> <white>{time:HH:mm:ss.SSS}</white> "
+
+        # Changing level color
+        console_format += "<level><b>{level: ^8}</b></level> "
+
+        # Service name
+        console_format += f"<cyan>[{serviceName: ^12}]</cyan> "
+
+        # Single messgae
+        console_format += "<level> <normal>{message}</normal></level>"
+        # Format for console
 
         # Filtring levels
         console_levels = set()
@@ -75,3 +86,17 @@ class Logger:
 
         # First logger message
         logger.info(f"Logger initialized for {serviceName}")
+    
+    # Update settings
+    def updateConfig(self, newConfig) -> None:
+        # Import loguru again
+        from loguru import logger # type: ignore
+
+        # Remove configuration
+        logger.remove() 
+        
+        # Run constructor again with new config
+        self.__init__(newConfig, self.serviceName)
+
+        # Log successfully update
+        logger.success("Logger configuration updated successfully.")

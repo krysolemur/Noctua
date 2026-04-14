@@ -1,7 +1,7 @@
 # LoggingPage.py
 
 # Importing system files
-from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget, QSpinBox, QLineEdit # type: ignore
+from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget, QSpinBox, QLineEdit, QFileDialog # type: ignore
 
 # Importing program files
 from Application.QtFiles.LoggingPage import Ui_LoggingPage
@@ -27,6 +27,23 @@ class LoggingPage(QWidget):
         # Connect tracking changes for all widgets
         self._connectChangesTracking()
 
+        # Browse button action
+        self.ui.btn_file_browse.clicked.connect(self._browse_log_folder)
+
+    # Browse log folder
+    def _browse_log_folder(self) -> None:
+        # Open dialog
+        selected_directory = QFileDialog.getExistingDirectory(
+            self, 
+            "Select Folder for Logs",
+            self.ui.le_file_path.text() or "." 
+        )
+
+        # If was selected
+        if selected_directory:
+            # Set path to line edit
+            self.ui.le_file_path.setText(selected_directory)
+            
     '''
     Settings methods.
     '''

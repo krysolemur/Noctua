@@ -57,7 +57,7 @@ class Application(QApplication):
     # Setup function that loads general settings
     def _setupApplication(self) -> None:
         # Get configuration
-        config = self.ConfigManager.config["GeneralPage"]
+        config = self.config["GeneralPage"]
 
         # Font size dictonary
         fontSize = {
@@ -67,7 +67,7 @@ class Application(QApplication):
         }
 
         # Set font and font size for whole application
-        self.setFont(QFont(str(config["fontComboBox"]), int(fontSize[str(config["fontSizeComboBox"])])))
+        self.setFont(QFont(str(config["fcb_gen_font"]), int(fontSize[str(config["cb_gen_font_size"])])))
 
     '''
     Public functions.
@@ -76,7 +76,13 @@ class Application(QApplication):
     # Reload config
     def reloadConfiguration(self) -> None:
         # New config variable
-        self.config = self.ConfigManager.loadSettings()
+        newConfig = self.ConfigManager.loadSettings()
+
+        # Clear config
+        self.config.clear()
+
+        # Update
+        self.config.update(newConfig)
 
     # Restart application function
     def restartApplication(self) -> None:

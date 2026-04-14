@@ -1,10 +1,11 @@
 # generalpage.py
 
 # Import system files
-from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget # type: ignore
+from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget, QSpinBox, QFontComboBox # type: ignore
+from PySide6.QtGui import QFont # type: ignore
 
 # Import program files
-from Application.QtFiles.GeneralPage import Ui_generalPage
+from Application.QtFiles.GeneralPage import Ui_GeneralPage
 
 # Main class GeneralPage
 class GeneralPage(QWidget):
@@ -19,7 +20,7 @@ class GeneralPage(QWidget):
         self.config = parent.config
 
         # Load page Ui
-        self.ui = Ui_generalPage()
+        self.ui = Ui_GeneralPage()
 
         # Setup Ui to QDialog
         self.ui.setupUi(self)
@@ -56,15 +57,32 @@ class GeneralPage(QWidget):
 
             widget.blockSignals(True)
 
-            # Check instances
+            # Checkboxy
             if isinstance(widget, QCheckBox):
                 widget.setChecked(bool(value))
-            elif isinstance(widget, QComboBox):
+
+            # ComboBoxy
+            elif isinstance(widget, QComboBox) and not isinstance(widget, QFontComboBox):
                 index = widget.findText(str(value))
                 if index >= 0:
                     widget.setCurrentIndex(index)
+            
+            # Fonts
+            elif isinstance(widget, QFontComboBox):
+                widget.setCurrentFont(QFont(str(value)))
+
+            # 4. SpinBoxy 
+            elif isinstance(widget, QSpinBox):
+                try:
+                    widget.setValue(int(value))
+                except (ValueError, TypeError):
+                    pass
+
+            # 5. Slidery
             elif isinstance(widget, QSlider):
                 widget.setValue(int(value))
+
+            # 6. PushButtony
             elif isinstance(widget, QPushButton):
                 if widget.isCheckable():
                     widget.setChecked(bool(value))
@@ -73,13 +91,21 @@ class GeneralPage(QWidget):
 
     # Get settings from childs
     def getSettings(self) -> dict:
-        # Return settings
-        return {            
-            "themeComboBox": self.ui.themeComboBox.currentText(),
-            "stylesheetComboBox": self.ui.stylesheetComboBox.currentText(),
-            "fontComboBox": self.ui.fontComboBox.currentText(),
-            "fontSizeComboBox": self.ui.fontSizeComboBox.currentText(),
-            "checkUpdatesComboBox": self.ui.checkUpdatesComboBox.currentText()
+        return {
+            # Appearance
+            "cb_gen_theme": self.ui.cb_gen_theme.currentText(),
+            "fcb_gen_font": self.ui.fcb_gen_font.currentFont().family(),
+            "cb_gen_font_size": self.ui.cb_gen_font_size.currentText(),
+            
+            # Advanced
+            "sb_adv_autosave_interval": self.ui.sb_adv_autosave_interval.value(),
+            "chk_adv_gpu": self.ui.chk_adv_gpu.isChecked(),
+            "cb_adv_startup": self.ui.cb_adv_startup.currentText(),
+            
+            # System
+            "chk_sys_updates": self.ui.chk_sys_updates.isChecked(),
+            "chk_sys_telemetry": self.ui.chk_sys_telemetry.isChecked(),
+            "cb_sys_lang": self.ui.cb_sys_lang.currentText()
         }
     
     '''
@@ -88,7 +114,7 @@ class GeneralPage(QWidget):
 
     # Automatically discovers input widgets and connects their change signals to the dirty state tracker.
     def _connectChangesTracking(self) -> None:
-        container = self.ui.generalScrollContent
+        container = self.ui.sa_general
         # Locate all combo box widgets within the current window and its children.
         for combo in container.findChildren(QComboBox):
             # Trigger the dirty flag whenever a different item is selected in a combo box.

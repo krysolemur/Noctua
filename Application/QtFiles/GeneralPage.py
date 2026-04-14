@@ -15,203 +15,212 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFontComboBox, QHBoxLayout,
-    QLabel, QPushButton, QScrollArea, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFontComboBox,
+    QGridLayout, QHBoxLayout, QLabel, QScrollArea,
+    QSizePolicy, QSpacerItem, QSpinBox, QVBoxLayout,
+    QWidget)
 
-class Ui_generalPage(object):
-    def setupUi(self, generalPage):
-        if not generalPage.objectName():
-            generalPage.setObjectName(u"generalPage")
-        generalPage.resize(893, 820)
-        self.mainLayout = QVBoxLayout(generalPage)
-        self.mainLayout.setSpacing(3)
-        self.mainLayout.setObjectName(u"mainLayout")
-        self.mainLayout.setContentsMargins(3, 3, 3, 3)
-        self.generalScrollArea = QScrollArea(generalPage)
-        self.generalScrollArea.setObjectName(u"generalScrollArea")
-        self.generalScrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.generalScrollArea.setWidgetResizable(True)
-        self.generalScrollContent = QWidget()
-        self.generalScrollContent.setObjectName(u"generalScrollContent")
-        self.generalScrollContent.setGeometry(QRect(0, 0, 885, 812))
-        self.generalScrollLayout = QVBoxLayout(self.generalScrollContent)
-        self.generalScrollLayout.setObjectName(u"generalScrollLayout")
-        self.generalScrollLayout.setContentsMargins(0, 0, 0, 0)
-        self.fontSizeLayout = QHBoxLayout()
-        self.fontSizeLayout.setObjectName(u"fontSizeLayout")
-        self.fontSizeLayout.setContentsMargins(6, 6, 6, 6)
-        self.fontSizeLabel = QLabel(self.generalScrollContent)
-        self.fontSizeLabel.setObjectName(u"fontSizeLabel")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fontSizeLabel.sizePolicy().hasHeightForWidth())
-        self.fontSizeLabel.setSizePolicy(sizePolicy)
+class Ui_GeneralPage(object):
+    def setupUi(self, GeneralPage):
+        if not GeneralPage.objectName():
+            GeneralPage.setObjectName(u"GeneralPage")
+        GeneralPage.resize(900, 1000)
+        self.lyt_main = QVBoxLayout(GeneralPage)
+        self.lyt_main.setSpacing(3)
+        self.lyt_main.setObjectName(u"lyt_main")
+        self.lyt_main.setContentsMargins(3, 3, 3, 3)
+        self.sa_general = QScrollArea(GeneralPage)
+        self.sa_general.setObjectName(u"sa_general")
+        self.sa_general.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.sa_general.setWidgetResizable(True)
+        self.sa_content = QWidget()
+        self.sa_content.setObjectName(u"sa_content")
+        self.lyt_scroll = QVBoxLayout(self.sa_content)
+        self.lyt_scroll.setObjectName(u"lyt_scroll")
+        self.lbl_appearance_header = QLabel(self.sa_content)
+        self.lbl_appearance_header.setObjectName(u"lbl_appearance_header")
+        font = QFont()
+        font.setBold(True)
+        self.lbl_appearance_header.setFont(font)
 
-        self.fontSizeLayout.addWidget(self.fontSizeLabel)
+        self.lyt_scroll.addWidget(self.lbl_appearance_header)
 
-        self.fontSizeComboBox = QComboBox(self.generalScrollContent)
-        self.fontSizeComboBox.addItem("")
-        self.fontSizeComboBox.addItem("")
-        self.fontSizeComboBox.addItem("")
-        self.fontSizeComboBox.setObjectName(u"fontSizeComboBox")
+        self.lyt_appearance = QGridLayout()
+        self.lyt_appearance.setObjectName(u"lyt_appearance")
+        self.lbl_gen_theme = QLabel(self.sa_content)
+        self.lbl_gen_theme.setObjectName(u"lbl_gen_theme")
 
-        self.fontSizeLayout.addWidget(self.fontSizeComboBox)
+        self.lyt_appearance.addWidget(self.lbl_gen_theme, 0, 0, 1, 1)
 
-        self.fontSizeLayout.setStretch(1, 1)
+        self.cb_gen_theme = QComboBox(self.sa_content)
+        self.cb_gen_theme.addItem("")
+        self.cb_gen_theme.addItem("")
+        self.cb_gen_theme.addItem("")
+        self.cb_gen_theme.setObjectName(u"cb_gen_theme")
 
-        self.generalScrollLayout.addLayout(self.fontSizeLayout)
+        self.lyt_appearance.addWidget(self.cb_gen_theme, 0, 1, 1, 1)
 
-        self.fontLayout = QHBoxLayout()
-        self.fontLayout.setObjectName(u"fontLayout")
-        self.fontLayout.setContentsMargins(6, 6, 6, 6)
-        self.fontLabel = QLabel(self.generalScrollContent)
-        self.fontLabel.setObjectName(u"fontLabel")
-        sizePolicy.setHeightForWidth(self.fontLabel.sizePolicy().hasHeightForWidth())
-        self.fontLabel.setSizePolicy(sizePolicy)
+        self.lbl_gen_font = QLabel(self.sa_content)
+        self.lbl_gen_font.setObjectName(u"lbl_gen_font")
 
-        self.fontLayout.addWidget(self.fontLabel)
+        self.lyt_appearance.addWidget(self.lbl_gen_font, 1, 0, 1, 1)
 
-        self.fontComboBox = QFontComboBox(self.generalScrollContent)
-        self.fontComboBox.setObjectName(u"fontComboBox")
-        sizePolicy.setHeightForWidth(self.fontComboBox.sizePolicy().hasHeightForWidth())
-        self.fontComboBox.setSizePolicy(sizePolicy)
-        self.fontComboBox.setEditable(False)
-        self.fontComboBox.setFrame(True)
+        self.fcb_gen_font = QFontComboBox(self.sa_content)
+        self.fcb_gen_font.setObjectName(u"fcb_gen_font")
 
-        self.fontLayout.addWidget(self.fontComboBox)
+        self.lyt_appearance.addWidget(self.fcb_gen_font, 1, 1, 1, 1)
 
-        self.fontAddButton = QPushButton(self.generalScrollContent)
-        self.fontAddButton.setObjectName(u"fontAddButton")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.fontAddButton.sizePolicy().hasHeightForWidth())
-        self.fontAddButton.setSizePolicy(sizePolicy1)
+        self.lbl_gen_font_size = QLabel(self.sa_content)
+        self.lbl_gen_font_size.setObjectName(u"lbl_gen_font_size")
 
-        self.fontLayout.addWidget(self.fontAddButton)
+        self.lyt_appearance.addWidget(self.lbl_gen_font_size, 2, 0, 1, 1)
 
-        self.fontLayout.setStretch(1, 1)
+        self.cb_gen_font_size = QComboBox(self.sa_content)
+        self.cb_gen_font_size.addItem("")
+        self.cb_gen_font_size.addItem("")
+        self.cb_gen_font_size.addItem("")
+        self.cb_gen_font_size.setObjectName(u"cb_gen_font_size")
 
-        self.generalScrollLayout.addLayout(self.fontLayout)
-
-        self.stylesheetLayout = QHBoxLayout()
-        self.stylesheetLayout.setObjectName(u"stylesheetLayout")
-        self.stylesheetLayout.setContentsMargins(6, 6, 6, 6)
-        self.stylesheetLabel = QLabel(self.generalScrollContent)
-        self.stylesheetLabel.setObjectName(u"stylesheetLabel")
-        sizePolicy.setHeightForWidth(self.stylesheetLabel.sizePolicy().hasHeightForWidth())
-        self.stylesheetLabel.setSizePolicy(sizePolicy)
-
-        self.stylesheetLayout.addWidget(self.stylesheetLabel)
-
-        self.stylesheetComboBox = QComboBox(self.generalScrollContent)
-        self.stylesheetComboBox.setObjectName(u"stylesheetComboBox")
-        sizePolicy.setHeightForWidth(self.stylesheetComboBox.sizePolicy().hasHeightForWidth())
-        self.stylesheetComboBox.setSizePolicy(sizePolicy)
-
-        self.stylesheetLayout.addWidget(self.stylesheetComboBox)
-
-        self.stylesheetButton = QPushButton(self.generalScrollContent)
-        self.stylesheetButton.setObjectName(u"stylesheetButton")
-        sizePolicy1.setHeightForWidth(self.stylesheetButton.sizePolicy().hasHeightForWidth())
-        self.stylesheetButton.setSizePolicy(sizePolicy1)
-
-        self.stylesheetLayout.addWidget(self.stylesheetButton)
-
-        self.stylesheetLayout.setStretch(1, 1)
-
-        self.generalScrollLayout.addLayout(self.stylesheetLayout)
-
-        self.themeLayout = QHBoxLayout()
-        self.themeLayout.setObjectName(u"themeLayout")
-        self.themeLayout.setContentsMargins(6, 6, 6, 6)
-        self.themeLabel = QLabel(self.generalScrollContent)
-        self.themeLabel.setObjectName(u"themeLabel")
-        sizePolicy.setHeightForWidth(self.themeLabel.sizePolicy().hasHeightForWidth())
-        self.themeLabel.setSizePolicy(sizePolicy)
-
-        self.themeLayout.addWidget(self.themeLabel)
-
-        self.themeComboBox = QComboBox(self.generalScrollContent)
-        self.themeComboBox.addItem("")
-        self.themeComboBox.addItem("")
-        self.themeComboBox.addItem("")
-        self.themeComboBox.setObjectName(u"themeComboBox")
-        sizePolicy.setHeightForWidth(self.themeComboBox.sizePolicy().hasHeightForWidth())
-        self.themeComboBox.setSizePolicy(sizePolicy)
-
-        self.themeLayout.addWidget(self.themeComboBox)
-
-        self.themeAddButton = QPushButton(self.generalScrollContent)
-        self.themeAddButton.setObjectName(u"themeAddButton")
-        sizePolicy1.setHeightForWidth(self.themeAddButton.sizePolicy().hasHeightForWidth())
-        self.themeAddButton.setSizePolicy(sizePolicy1)
-
-        self.themeLayout.addWidget(self.themeAddButton)
-
-        self.themeLayout.setStretch(1, 1)
-
-        self.generalScrollLayout.addLayout(self.themeLayout)
-
-        self.checkUpdatesLayout = QHBoxLayout()
-        self.checkUpdatesLayout.setObjectName(u"checkUpdatesLayout")
-        self.checkUpdatesLayout.setContentsMargins(6, 6, 6, 6)
-        self.checkUpdatesLabel = QLabel(self.generalScrollContent)
-        self.checkUpdatesLabel.setObjectName(u"checkUpdatesLabel")
-        sizePolicy.setHeightForWidth(self.checkUpdatesLabel.sizePolicy().hasHeightForWidth())
-        self.checkUpdatesLabel.setSizePolicy(sizePolicy)
-
-        self.checkUpdatesLayout.addWidget(self.checkUpdatesLabel)
-
-        self.checkUpdatesComboBox = QComboBox(self.generalScrollContent)
-        self.checkUpdatesComboBox.addItem("")
-        self.checkUpdatesComboBox.addItem("")
-        self.checkUpdatesComboBox.setObjectName(u"checkUpdatesComboBox")
-        self.checkUpdatesComboBox.setMaxVisibleItems(2)
-        self.checkUpdatesComboBox.setMaxCount(2)
-
-        self.checkUpdatesLayout.addWidget(self.checkUpdatesComboBox)
-
-        self.checkUpdatesLayout.setStretch(1, 1)
-
-        self.generalScrollLayout.addLayout(self.checkUpdatesLayout)
-
-        self.layoutSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.generalScrollLayout.addItem(self.layoutSpacer)
-
-        self.generalScrollArea.setWidget(self.generalScrollContent)
-
-        self.mainLayout.addWidget(self.generalScrollArea)
+        self.lyt_appearance.addWidget(self.cb_gen_font_size, 2, 1, 1, 1)
 
 
-        self.retranslateUi(generalPage)
+        self.lyt_scroll.addLayout(self.lyt_appearance)
 
-        QMetaObject.connectSlotsByName(generalPage)
+        self.lbl_advanced_header = QLabel(self.sa_content)
+        self.lbl_advanced_header.setObjectName(u"lbl_advanced_header")
+        self.lbl_advanced_header.setFont(font)
+
+        self.lyt_scroll.addWidget(self.lbl_advanced_header)
+
+        self.lyt_advanced_options = QVBoxLayout()
+        self.lyt_advanced_options.setObjectName(u"lyt_advanced_options")
+        self.lyt_adv_autosave = QHBoxLayout()
+        self.lyt_adv_autosave.setObjectName(u"lyt_adv_autosave")
+        self.lbl_adv_autosave = QLabel(self.sa_content)
+        self.lbl_adv_autosave.setObjectName(u"lbl_adv_autosave")
+
+        self.lyt_adv_autosave.addWidget(self.lbl_adv_autosave)
+
+        self.sb_adv_autosave_interval = QSpinBox(self.sa_content)
+        self.sb_adv_autosave_interval.setObjectName(u"sb_adv_autosave_interval")
+        self.sb_adv_autosave_interval.setMinimum(1)
+        self.sb_adv_autosave_interval.setMaximum(60)
+        self.sb_adv_autosave_interval.setValue(5)
+
+        self.lyt_adv_autosave.addWidget(self.sb_adv_autosave_interval)
+
+
+        self.lyt_advanced_options.addLayout(self.lyt_adv_autosave)
+
+        self.chk_adv_gpu = QCheckBox(self.sa_content)
+        self.chk_adv_gpu.setObjectName(u"chk_adv_gpu")
+        self.chk_adv_gpu.setChecked(True)
+
+        self.lyt_advanced_options.addWidget(self.chk_adv_gpu)
+
+        self.lyt_adv_startup = QHBoxLayout()
+        self.lyt_adv_startup.setObjectName(u"lyt_adv_startup")
+        self.lbl_adv_startup = QLabel(self.sa_content)
+        self.lbl_adv_startup.setObjectName(u"lbl_adv_startup")
+
+        self.lyt_adv_startup.addWidget(self.lbl_adv_startup)
+
+        self.cb_adv_startup = QComboBox(self.sa_content)
+        self.cb_adv_startup.addItem("")
+        self.cb_adv_startup.addItem("")
+        self.cb_adv_startup.addItem("")
+        self.cb_adv_startup.setObjectName(u"cb_adv_startup")
+
+        self.lyt_adv_startup.addWidget(self.cb_adv_startup)
+
+
+        self.lyt_advanced_options.addLayout(self.lyt_adv_startup)
+
+
+        self.lyt_scroll.addLayout(self.lyt_advanced_options)
+
+        self.lbl_system_header = QLabel(self.sa_content)
+        self.lbl_system_header.setObjectName(u"lbl_system_header")
+        self.lbl_system_header.setFont(font)
+
+        self.lyt_scroll.addWidget(self.lbl_system_header)
+
+        self.lyt_system = QVBoxLayout()
+        self.lyt_system.setObjectName(u"lyt_system")
+        self.chk_sys_updates = QCheckBox(self.sa_content)
+        self.chk_sys_updates.setObjectName(u"chk_sys_updates")
+        self.chk_sys_updates.setChecked(True)
+
+        self.lyt_system.addWidget(self.chk_sys_updates)
+
+        self.chk_sys_telemetry = QCheckBox(self.sa_content)
+        self.chk_sys_telemetry.setObjectName(u"chk_sys_telemetry")
+
+        self.lyt_system.addWidget(self.chk_sys_telemetry)
+
+        self.lyt_sys_lang = QHBoxLayout()
+        self.lyt_sys_lang.setObjectName(u"lyt_sys_lang")
+        self.lbl_sys_lang = QLabel(self.sa_content)
+        self.lbl_sys_lang.setObjectName(u"lbl_sys_lang")
+
+        self.lyt_sys_lang.addWidget(self.lbl_sys_lang)
+
+        self.cb_sys_lang = QComboBox(self.sa_content)
+        self.cb_sys_lang.addItem("")
+        self.cb_sys_lang.addItem("")
+        self.cb_sys_lang.setObjectName(u"cb_sys_lang")
+
+        self.lyt_sys_lang.addWidget(self.cb_sys_lang)
+
+
+        self.lyt_system.addLayout(self.lyt_sys_lang)
+
+
+        self.lyt_scroll.addLayout(self.lyt_system)
+
+        self.spc_bottom = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.lyt_scroll.addItem(self.spc_bottom)
+
+        self.sa_general.setWidget(self.sa_content)
+
+        self.lyt_main.addWidget(self.sa_general)
+
+
+        self.retranslateUi(GeneralPage)
+
+        QMetaObject.connectSlotsByName(GeneralPage)
     # setupUi
 
-    def retranslateUi(self, generalPage):
-        generalPage.setWindowTitle(QCoreApplication.translate("generalPage", u"Form", None))
-        self.fontSizeLabel.setText(QCoreApplication.translate("generalPage", u"Font size: ", None))
-        self.fontSizeComboBox.setItemText(0, QCoreApplication.translate("generalPage", u"Large", None))
-        self.fontSizeComboBox.setItemText(1, QCoreApplication.translate("generalPage", u"Medium (recommended)", None))
-        self.fontSizeComboBox.setItemText(2, QCoreApplication.translate("generalPage", u"Small", None))
+    def retranslateUi(self, GeneralPage):
+        GeneralPage.setWindowTitle(QCoreApplication.translate("GeneralPage", u"XyraEngine - General Settings", None))
+        self.lbl_appearance_header.setText(QCoreApplication.translate("GeneralPage", u"Appearance & Interface", None))
+        self.lbl_gen_theme.setText(QCoreApplication.translate("GeneralPage", u"Application Theme:", None))
+        self.cb_gen_theme.setItemText(0, QCoreApplication.translate("GeneralPage", u"Default", None))
+        self.cb_gen_theme.setItemText(1, QCoreApplication.translate("GeneralPage", u"Dark", None))
+        self.cb_gen_theme.setItemText(2, QCoreApplication.translate("GeneralPage", u"Light", None))
 
-        self.fontLabel.setText(QCoreApplication.translate("generalPage", u"Font: ", None))
-        self.fontAddButton.setText(QCoreApplication.translate("generalPage", u"Add font", None))
-        self.stylesheetLabel.setText(QCoreApplication.translate("generalPage", u"Stylesheet: ", None))
-        self.stylesheetButton.setText(QCoreApplication.translate("generalPage", u"Add stylesheet", None))
-        self.themeLabel.setText(QCoreApplication.translate("generalPage", u"Theme: ", None))
-        self.themeComboBox.setItemText(0, QCoreApplication.translate("generalPage", u"Default", None))
-        self.themeComboBox.setItemText(1, QCoreApplication.translate("generalPage", u"Dark", None))
-        self.themeComboBox.setItemText(2, QCoreApplication.translate("generalPage", u"Light", None))
+        self.lbl_gen_font.setText(QCoreApplication.translate("GeneralPage", u"Global Font:", None))
+        self.lbl_gen_font_size.setText(QCoreApplication.translate("GeneralPage", u"Font Size:", None))
+        self.cb_gen_font_size.setItemText(0, QCoreApplication.translate("GeneralPage", u"Small", None))
+        self.cb_gen_font_size.setItemText(1, QCoreApplication.translate("GeneralPage", u"Medium (recommended)", None))
+        self.cb_gen_font_size.setItemText(2, QCoreApplication.translate("GeneralPage", u"Large", None))
 
-        self.themeAddButton.setText(QCoreApplication.translate("generalPage", u"Add Theme", None))
-        self.checkUpdatesLabel.setText(QCoreApplication.translate("generalPage", u"Checking updates automaticly:", None))
-        self.checkUpdatesComboBox.setItemText(0, QCoreApplication.translate("generalPage", u"Yes", None))
-        self.checkUpdatesComboBox.setItemText(1, QCoreApplication.translate("generalPage", u"No", None))
+        self.lbl_advanced_header.setText(QCoreApplication.translate("GeneralPage", u"Advanced Application Settings", None))
+        self.lbl_adv_autosave.setText(QCoreApplication.translate("GeneralPage", u"Auto-save interval:", None))
+        self.sb_adv_autosave_interval.setSuffix(QCoreApplication.translate("GeneralPage", u" minutes", None))
+        self.chk_adv_gpu.setText(QCoreApplication.translate("GeneralPage", u"Enable Hardware Acceleration (GPU)", None))
+        self.lbl_adv_startup.setText(QCoreApplication.translate("GeneralPage", u"On Startup:", None))
+        self.cb_adv_startup.setItemText(0, QCoreApplication.translate("GeneralPage", u"Show Dashboard", None))
+        self.cb_adv_startup.setItemText(1, QCoreApplication.translate("GeneralPage", u"Load Last Project", None))
+        self.cb_adv_startup.setItemText(2, QCoreApplication.translate("GeneralPage", u"Open Empty Project", None))
+
+        self.lbl_system_header.setText(QCoreApplication.translate("GeneralPage", u"System & Privacy", None))
+        self.chk_sys_updates.setText(QCoreApplication.translate("GeneralPage", u"Check for updates automatically", None))
+        self.chk_sys_telemetry.setText(QCoreApplication.translate("GeneralPage", u"Send anonymous crash reports to help improve XyraEngine", None))
+        self.lbl_sys_lang.setText(QCoreApplication.translate("GeneralPage", u"Application Language:", None))
+        self.cb_sys_lang.setItemText(0, QCoreApplication.translate("GeneralPage", u"English", None))
+        self.cb_sys_lang.setItemText(1, QCoreApplication.translate("GeneralPage", u"Czech", None))
 
     # retranslateUi
 

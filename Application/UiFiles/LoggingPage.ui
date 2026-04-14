@@ -51,6 +51,11 @@
         <layout class="QVBoxLayout" name="lyt_console_section">
          <item>
           <widget class="QLabel" name="lbl_console_header">
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string>Console Output Settings</string>
            </property>
@@ -179,6 +184,11 @@
        </item>
        <item>
         <widget class="QLabel" name="lbl_file_header">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>File Logging Settings</string>
          </property>
