@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFontComboBox,
-    QGridLayout, QHBoxLayout, QLabel, QScrollArea,
-    QSizePolicy, QSpacerItem, QSpinBox, QVBoxLayout,
-    QWidget)
+    QGridLayout, QHBoxLayout, QLabel, QPushButton,
+    QScrollArea, QSizePolicy, QSpacerItem, QSpinBox,
+    QVBoxLayout, QWidget)
 
 class Ui_GeneralPage(object):
     def setupUi(self, GeneralPage):
@@ -35,6 +35,7 @@ class Ui_GeneralPage(object):
         self.sa_general.setWidgetResizable(True)
         self.sa_content = QWidget()
         self.sa_content.setObjectName(u"sa_content")
+        self.sa_content.setGeometry(QRect(0, 0, 892, 992))
         self.lyt_scroll = QVBoxLayout(self.sa_content)
         self.lyt_scroll.setObjectName(u"lyt_scroll")
         self.lbl_appearance_header = QLabel(self.sa_content)
@@ -47,11 +48,6 @@ class Ui_GeneralPage(object):
 
         self.lyt_appearance = QGridLayout()
         self.lyt_appearance.setObjectName(u"lyt_appearance")
-        self.lbl_gen_theme = QLabel(self.sa_content)
-        self.lbl_gen_theme.setObjectName(u"lbl_gen_theme")
-
-        self.lyt_appearance.addWidget(self.lbl_gen_theme, 0, 0, 1, 1)
-
         self.cb_gen_theme = QComboBox(self.sa_content)
         self.cb_gen_theme.addItem("")
         self.cb_gen_theme.addItem("")
@@ -65,23 +61,49 @@ class Ui_GeneralPage(object):
 
         self.lyt_appearance.addWidget(self.lbl_gen_font, 1, 0, 1, 1)
 
-        self.fcb_gen_font = QFontComboBox(self.sa_content)
-        self.fcb_gen_font.setObjectName(u"fcb_gen_font")
-
-        self.lyt_appearance.addWidget(self.fcb_gen_font, 1, 1, 1, 1)
-
-        self.lbl_gen_font_size = QLabel(self.sa_content)
-        self.lbl_gen_font_size.setObjectName(u"lbl_gen_font_size")
-
-        self.lyt_appearance.addWidget(self.lbl_gen_font_size, 2, 0, 1, 1)
-
         self.cb_gen_font_size = QComboBox(self.sa_content)
         self.cb_gen_font_size.addItem("")
         self.cb_gen_font_size.addItem("")
         self.cb_gen_font_size.addItem("")
         self.cb_gen_font_size.setObjectName(u"cb_gen_font_size")
 
-        self.lyt_appearance.addWidget(self.cb_gen_font_size, 2, 1, 1, 1)
+        self.lyt_appearance.addWidget(self.cb_gen_font_size, 2, 1, 1, 2)
+
+        self.btn_gen_theme = QPushButton(self.sa_content)
+        self.btn_gen_theme.setObjectName(u"btn_gen_theme")
+
+        self.lyt_appearance.addWidget(self.btn_gen_theme, 0, 2, 1, 1)
+
+        self.lbl_gen_font_size = QLabel(self.sa_content)
+        self.lbl_gen_font_size.setObjectName(u"lbl_gen_font_size")
+
+        self.lyt_appearance.addWidget(self.lbl_gen_font_size, 2, 0, 1, 1)
+
+        self.lbl_gen_theme = QLabel(self.sa_content)
+        self.lbl_gen_theme.setObjectName(u"lbl_gen_theme")
+
+        self.lyt_appearance.addWidget(self.lbl_gen_theme, 0, 0, 1, 1)
+
+        self.fcb_gen_font = QFontComboBox(self.sa_content)
+        self.fcb_gen_font.setObjectName(u"fcb_gen_font")
+
+        self.lyt_appearance.addWidget(self.fcb_gen_font, 1, 1, 1, 1)
+
+        self.lbl_gen_stylesheet = QLabel(self.sa_content)
+        self.lbl_gen_stylesheet.setObjectName(u"lbl_gen_stylesheet")
+
+        self.lyt_appearance.addWidget(self.lbl_gen_stylesheet, 3, 0, 1, 1)
+
+        self.btn_gen_stylesheet = QPushButton(self.sa_content)
+        self.btn_gen_stylesheet.setObjectName(u"btn_gen_stylesheet")
+
+        self.lyt_appearance.addWidget(self.btn_gen_stylesheet, 3, 2, 1, 1)
+
+        self.cb_gen_stylesheet = QComboBox(self.sa_content)
+        self.cb_gen_stylesheet.addItem("")
+        self.cb_gen_stylesheet.setObjectName(u"cb_gen_stylesheet")
+
+        self.lyt_appearance.addWidget(self.cb_gen_stylesheet, 3, 1, 1, 1)
 
 
         self.lyt_scroll.addLayout(self.lyt_appearance)
@@ -195,16 +217,21 @@ class Ui_GeneralPage(object):
     def retranslateUi(self, GeneralPage):
         GeneralPage.setWindowTitle(QCoreApplication.translate("GeneralPage", u"XyraEngine - General Settings", None))
         self.lbl_appearance_header.setText(QCoreApplication.translate("GeneralPage", u"Appearance & Interface", None))
-        self.lbl_gen_theme.setText(QCoreApplication.translate("GeneralPage", u"Application Theme:", None))
         self.cb_gen_theme.setItemText(0, QCoreApplication.translate("GeneralPage", u"Default", None))
         self.cb_gen_theme.setItemText(1, QCoreApplication.translate("GeneralPage", u"Dark", None))
         self.cb_gen_theme.setItemText(2, QCoreApplication.translate("GeneralPage", u"Light", None))
 
         self.lbl_gen_font.setText(QCoreApplication.translate("GeneralPage", u"Global Font:", None))
-        self.lbl_gen_font_size.setText(QCoreApplication.translate("GeneralPage", u"Font Size:", None))
         self.cb_gen_font_size.setItemText(0, QCoreApplication.translate("GeneralPage", u"Small", None))
         self.cb_gen_font_size.setItemText(1, QCoreApplication.translate("GeneralPage", u"Medium (recommended)", None))
         self.cb_gen_font_size.setItemText(2, QCoreApplication.translate("GeneralPage", u"Large", None))
+
+        self.btn_gen_theme.setText(QCoreApplication.translate("GeneralPage", u"Add theme", None))
+        self.lbl_gen_font_size.setText(QCoreApplication.translate("GeneralPage", u"Font Size:", None))
+        self.lbl_gen_theme.setText(QCoreApplication.translate("GeneralPage", u"Application Theme:", None))
+        self.lbl_gen_stylesheet.setText(QCoreApplication.translate("GeneralPage", u"Stylesheet:", None))
+        self.btn_gen_stylesheet.setText(QCoreApplication.translate("GeneralPage", u"Add stylesheet", None))
+        self.cb_gen_stylesheet.setItemText(0, QCoreApplication.translate("GeneralPage", u"Default", None))
 
         self.lbl_advanced_header.setText(QCoreApplication.translate("GeneralPage", u"Advanced Application Settings", None))
         self.lbl_adv_autosave.setText(QCoreApplication.translate("GeneralPage", u"Auto-save interval:", None))

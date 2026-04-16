@@ -10,21 +10,15 @@ from PySide6.QtGui import QIcon # type: ignore
 # Imporing program files
 from Application.SettingsDialog.SettingsDialog import SettingsDialog
 
-from resources.Themes.ThemeCreator import ThemeCreator
-
 from Application.QtFiles.MainWindow import Ui_MainWindow
 from Application.QtFiles.AboutDialog import Ui_aboutDialog
 from Application.QtFiles.TargetDialog import Ui_TargetDialog
 
-# Main class window for managing window and loading GUI
+# MainWindow class
 class MainWindow(QMainWindow):
 
-    # Initiator
+    # Constructor
     def __init__(self, app) -> None:
-
-        '''
-        Init parents and save instances.
-        '''
 
         # Init parents
         super().__init__()
@@ -32,22 +26,17 @@ class MainWindow(QMainWindow):
         # App variable
         self.app = app
 
+        # ThemesManager
+        self.ThemesManager = app.ThemesManager
+
         # ConfigManager
         self.ConfigManager = app.ConfigManager
-
-        '''
-        Load Ui for MainWindow.
-        '''
 
         # Load Ui
         self.ui = Ui_MainWindow()
 
         # Setup Ui
         self.ui.setupUi(self)
-
-        '''
-        Add all actions for tool bar buttons.
-        '''
 
         # Quit application
         self.ui.actionQuit.triggered.connect(self.app.quitApplication)
@@ -65,11 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.actionSetTarget.triggered.connect(self._setTargetAction)
 
         # Theme creator
-        self.ui.actionThemeCreator.triggered.connect(ThemeCreator)
-
-        '''
-        Set window preferences.
-        '''
+        self.ui.actionThemeCreator.triggered.connect(self._themeCreatorAction)
 
         # Set window title
         self.setWindowTitle(f"{self.app.name} | {self.app.version}")  
@@ -83,11 +68,7 @@ class MainWindow(QMainWindow):
         # Center main window
         self._centerWindow(self)
 
-    '''
-    Private functions.
-    '''
-
-    # Center function that center specific window which is given as a argument.
+    # Center window/dialog
     def _centerWindow(self, window) -> None:
         # Get screen size
         screen = QApplication.primaryScreen()
@@ -102,10 +83,6 @@ class MainWindow(QMainWindow):
         # Move to center
         window.move(x, y)
 
-    '''
-    Mainwindow toolbar actions.
-    '''
-
     # Open settings dialog
     def _openSettingsAction(self) -> None:
         # Create settings dialog object
@@ -114,7 +91,7 @@ class MainWindow(QMainWindow):
         # Exec settings dialog
         self.SettingsDialog.exec()
 
-    # Function that set target url and save it to variable.
+    # TODO: Set target 
     def _setTargetAction(self) -> None:
         # Create dialog
         self.targetDialog = QDialog(self)
@@ -132,54 +109,14 @@ class MainWindow(QMainWindow):
         self.targetDialog.show()
 
         # Connect _onCheckUrl to target button
-        self.targetDialogUi.setTargetButton.clicked.connect(lambda: self._onCheckURL(self.targetDialogUi.setTargetLineEdit.text()))
+        # self.targetDialogUi.setTargetButton.clicked.connect(lambda: self._onCheckURL(self.targetDialogUi.setTargetLineEdit.text()))
 
-    # Check if is target reachable, show message if not.
-    def _checkURL(self, url) -> bool:
-        # Try reach url
-        try:
-            # Get response using request module and head function, better variantion for all purposes with 5ms timeout
-            r = requests.head(url, timeout=5, allow_redirects=True)
+    # Open theme creator
+    def _themeCreatorAction(self) -> None:
+        self.ThemesManager.createTheme()
 
-            # Check status code first if the server does not using head
-            if r.status_code == 405:
-                # Get new request with get and again 5ms timeout
-                r = requests.get(url, timeout=5)
-
-            # Return status code if is good
-            return 200 <= r.status_code < 400
-        except requests.RequestException as e:
-            # Print error message 
-            self.printe(exception=e, function=self._checkURL.__name__)
-
-            return False
-
-    # Function that is calling _checkURL with url parametr, is called from _setTargetAction.
-    def _onCheckURL(self, url) -> None:
-        # Check if URL is enetered or if is reachable
-        if not self._checkURL(url): 
-            # Set wrong url stylesheet for line edit (red border)
-            self.targetDialogUi.setTargetLineEdit.setStyleSheet(
-                "border: 2px solid red;"
-            )
-        else:
-            # Close dialog if url is ok
-            self.targetDialog.close()
-
-            # Set url
-            self.url = url
-
-            # Change title
-            self.setWindowTitle(f"{self.app.name} | {self.app.version} {f"| {self.url}" if self.url else ""}")  
-
-            # Load page like requests and source code and other
-            self._loadWebPage()
-
-    # About action for open about dialog which is used to show inforamtion about this application like version and more.
+    # Show software information
     def _aboutAction(self) -> None:
-        '''
-        Load Ui for about dialog.
-        '''
         # Create dialog
         aboutDialog = QDialog(self)
 
@@ -188,10 +125,6 @@ class MainWindow(QMainWindow):
 
         # Set Ui
         aboutDialogUi.setupUi(aboutDialog)
-
-        '''
-        Dialog properties, size, title and other.
-        '''
 
         # Set title 
         aboutDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | About")  
@@ -205,13 +138,6 @@ class MainWindow(QMainWindow):
         # Show dialog
         aboutDialog.show()
 
-    # Load page function that runs _getSource and other function for inspecting page.
-    def _loadWebPage(self) -> None:
-        # Get source code first and load it to text edit
-        self.ui.sourceTextEdit.setPlainText(self._getSourceCode())
-
-    # Download source from url which is get from set target menu and function.
-    def _getSourceCode(self) -> str:
         # Setn GET request
         source = requests.get(self.url)
         
@@ -232,10 +158,6 @@ class MainWindow(QMainWindow):
         
         # Return formated source code for better reading
         return formatted_code
-
-    '''
-    Public functions.
-    '''
     
     # Close event overwritten.
     def closeEvent(self, event) -> None:

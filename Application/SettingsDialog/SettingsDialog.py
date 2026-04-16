@@ -37,6 +37,9 @@ class SettingsDialog(QDialog):
         # Config manager
         self.ConfigManager = app.ConfigManager
 
+        # ThemeManager
+        self.ThemesManager = app.ThemesManager
+
         # Config from config manager
         self.config = app.config
 

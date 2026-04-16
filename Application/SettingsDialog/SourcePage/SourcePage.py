@@ -15,20 +15,10 @@ from Application.QtFiles.SourcePage import Ui_sourcePage
 class SourcePage(QWidget):
 
     # Initiator
-    def __init__(self, parent) -> None:
-        '''
-        Init parenst and save app
-        '''
+    def __init__(self, app) -> None:
 
-        # Init parent
-        super().__init__(parent)
-
-        # Get app
-        self.app = parent.app
-
-        '''
-        Load Ui for page and setup page.
-        '''
+        # Init app
+        super().__init__(app)
 
         # Load page
         self.ui = Ui_sourcePage()
@@ -36,17 +26,8 @@ class SourcePage(QWidget):
         # Setup ui
         self.ui.setupUi(self)
 
-        '''
-        Variables.
-        '''
-
         # Saved
         self.isSaved = True
-
-        
-        '''
-        Connect actions and run setup functions.
-        '''
 
         # Set tracking
         self._connectChangesTracking()

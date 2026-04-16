@@ -7,7 +7,6 @@ import os
 from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # type: ignore
 from PySide6 import QtCore, QtGui # type: ignore
 
-# Importing program files
 from Application.QtFiles.ThemeCreator import Ui_ThemeCreator
 from Application.QtFiles.ThemePreview import Ui_ThemePreview
 
@@ -63,15 +62,9 @@ class ThemeCreator(QDialog):
         self.ui.btn_import.clicked.connect(self._resetRole)
         self.ui.btn_export.clicked.connect(self._saveTheme)
 
-        # Exec dialog
-        self.exec()
-
     # Make icon function
     def _makeIcon(self, color: QtGui.QColor) -> QtGui.QIcon:
-        # Create pixmap
         pixmap = QtGui.QPixmap(24, 14)
-
-        # Fill with color
         pixmap.fill(color)
 
         # Return pixmap as icon
@@ -79,29 +72,19 @@ class ThemeCreator(QDialog):
 
     # Pick color function
     def _colorPicker(self) -> None:
-        # Get selected item
         selectedItem = self.ui.tw_palette_roles.selectedItems()
 
         # Checkk selected
         if not selectedItem:
             return
         
-        # Get item
         item = selectedItem[0]
-
-        # Get role name
         roleName = item.text(0)
+        currentState = self.ui.cb_state.currentText().split(" ")[0]
 
-        # And current state
-        currentState = self.ui.cb_state.currentText().split(" ")[0] # Získá 'Active', 'Inactive' nebo 'Disabled'
-
-        # Default color dialog color
         currentHex = item.text(1)
-
-        # And initial color
         initialColor = QtGui.QColor(currentHex) if currentHex else QtGui.QColor(QtCore.Qt.GlobalColor.white)
 
-        # Open QColorDialog
         color = QColorDialog.getColor(initialColor, self, f"Pick Color for {roleName} ({currentState})")
 
         # Check if color is valid
@@ -109,13 +92,10 @@ class ThemeCreator(QDialog):
             # Get new color
             newHex = color.name().upper()
             
-            # Dave to dict structure
             self.customPalette[currentState][roleName] = color
             
             # Actualize Ui of table
-            item.setText(1, newHex) #
-            
-            # Setin pixmap as a color for item
+            item.setText(1, newHex) 
             item.setIcon(2, self._makeIcon(color))
 
             # Apply to preview
@@ -232,7 +212,7 @@ class ThemeCreator(QDialog):
         return palette
     
     # Show preview function
-    def _showPreview(self) -> None:        
+    def _showPreview(self) -> None:
         # Check if window exists
         if not hasattr(self, 'previewWindow') or self.previewWindow is None:
             try:
@@ -267,19 +247,16 @@ class ThemeCreator(QDialog):
             self.previewWindow.raise_()
             self.previewWindow.activateWindow()
 
-    # Export 
-    def _decode(self, palette, type) -> str:
-        print(f"decoded as {type}")
-
-    # Save theme method
+    # TODO: Save theme method
     def _saveTheme(self) -> None:
+        # Get decode type
         decodeType = self.ui.cb_format.currentText()
 
         # Open file dialog and return path
         filePath, _ = QFileDialog.getSaveFileName(
             self,
             "Save Theme",
-            "theme.json", 
+            "theme", 
             str(decodeType)
         )
 
@@ -288,8 +265,15 @@ class ThemeCreator(QDialog):
             return
 
         try:
-            # Open file
-            with open(filePath, "w") as theme:
-                None
+            # Check if its is json, python or qss
+            if decodeType == "JSON File (*.json)":
+                # Open file
+                with open(filePath, "w") as theme:
+                    # Write it into json
+                    json.dump(self.customPalette, theme, indent=4)
+            elif decodeType == "Qt Stylesheet (*.qss)":
+                print("qss")
+            elif decodeType == "Python Dict (*.py)":
+                print("py")
         except Exception as e:
             None

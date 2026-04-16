@@ -1,29 +1,31 @@
 # generalpage.py
 
 # Import system files
-from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget, QSpinBox, QFontComboBox # type: ignore
+from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidget, QSpinBox, QFontComboBox, QFileDialog # type: ignore
 from PySide6.QtGui import QFont # type: ignore
 
 # Import program files
 from Application.QtFiles.GeneralPage import Ui_GeneralPage
 
+from resources.Stylesheets.StyleManager import StyleManager
+
 # Main class GeneralPage
 class GeneralPage(QWidget):
 
     # Initiator
-    def __init__(self, parent) -> None:
+    def __init__(self, app) -> None:
 
-        # Init parents
-        super().__init__(parent)
-
-        # Config variable
-        self.config = parent.config
+        # Init apps
+        super().__init__(app)
 
         # Load page Ui
         self.ui = Ui_GeneralPage()
 
-        # Setup Ui to QDialog
+        # Setup Ui 
         self.ui.setupUi(self)
+
+        # ThemeManager
+        self.ThemeManager = app.ThemesManager
 
         # Saved variable
         self.isSaved = True
@@ -31,15 +33,50 @@ class GeneralPage(QWidget):
         # Connect tracking changes for all widgets
         self._connectChangesTracking()
                 
-        # Add all themes to theme combobox
+        # TODO: Add all themes to theme combobox
         # self.ui.themeComboBox.addItems(self.theme.themes())
 
-        # Add theme button action
-        # self.ui.themeAddButton.clicked.connect(self.theme.getTheme)
+        # Add theme 
+        self.ui.btn_gen_theme.clicked.connect(self._addTheme)
 
-    '''
-    Settings methods.
-    '''
+        # Add stylesheet
+        self.ui.btn_gen_stylesheet.clicked.connect(self._addStylesheet)
+
+    # TODO: Add theme function
+    def _addTheme(self) -> None:
+        # Get path
+        filePath, _ = QFileDialog.getOpenFileName(
+            self,
+            "Add theme",  
+            "",          
+            "Python Files (*.py);;JSON Files (*.json);;Qt Style Sheets (*.qss);;All Files (*)"
+        )
+
+        # Check path 
+        if not filePath:
+            return
+        
+        # Add path
+        if not self.ThemeManager.addTheme(path=filePath):
+            print("error")
+
+    # TODO: Add stylesheet
+    def _addStylesheet(self) -> None:
+        # Get path
+        filePath, _ = QFileDialog.getOpenFileName(
+            self,
+            "Add stylesheet",  
+            "",          
+            "Qt Style Sheets (*.qss);;All Files (*)"
+        )
+
+        # Check path 
+        if not filePath:
+            return
+        
+        # Add path
+        if not StyleManager.addStyle(path=filePath):
+            print("error")
 
     # Load settings function
     def loadSettings(self, settings) -> None:
@@ -107,10 +144,6 @@ class GeneralPage(QWidget):
             "chk_sys_telemetry": self.ui.chk_sys_telemetry.isChecked(),
             "cb_sys_lang": self.ui.cb_sys_lang.currentText()
         }
-    
-    '''
-    Marking as not saved.
-    '''
 
     # Automatically discovers input widgets and connects their change signals to the dirty state tracker.
     def _connectChangesTracking(self) -> None:

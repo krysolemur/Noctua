@@ -44,7 +44,7 @@ class Application(QApplication):
         self.Logger = Logger(self.config["LoggingPage"], self.name)
 
         # ThemeManager
-        self.ThemeManager = ThemesManager()
+        self.ThemesManager = ThemesManager()
 
         # Setup application
         self._setupApplication()

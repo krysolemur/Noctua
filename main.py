@@ -10,61 +10,60 @@ from Application.Application import Application
 
 from Application.Commands.Commands import Commands
 
-# Set the signal handler for Interrupt (Ctrl+C) to the default behavior
+# Ctrl+C signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-# Createing Main class as program starter
+# Main class
 class Main:
 
-    # Constructor for the Main class
     def __init__(self) -> None:
 
-        # Application object
+        # Creating app
         self.Application = Application()
 
-        # Exit program with return code
+        # Running app
         sys.exit(self.Application.exec())
 
-# Run script only as interpreter, not as module
+# Main block
 if __name__ == "__main__":
 
-    # Init command class
+    # Creating commands
     commands = Commands()
 
     # Try block for catching errors
     try:
 
-        # Check if exactly one command-line argument was provided
+        # Check num of args
         if len(sys.argv) > 1:
 
-            # Store the first argument (index 1) into a command variable
+            # Store the first argument as a command
             command = sys.argv[1]
 
-            # Store others arguments from index 2
+            # Store others arguments
             arguments = sys.argv[2::]
 
-            # Verify if the provided command exists in the defined commands dictionary
+            # Check command
             if command not in commands.commands.keys():
 
-                # Inform the user about the invalid command
+                # Unknown commnad
                 print("Unknown command! Try --help for help menu.")
 
                 # Exit the script with an error status code
                 sys.exit(1)
         
-            # Check if the specific command is the trigger to run the GUI
+            # Run command for run application
             if command == "--run":
 
-                # Assign the Main class to a variable for instantiation
+                # Assign main class
                 main = Main
                 
-                # Create the Main instance, starting the application
+                # Run main class
                 main()
 
-            # Handle all other valid commands defined in the commands module
+            # Others variantions
             else:
 
-                # Try block for cathing too many argument error
+                # Args errors
                 try:
 
                     # Run command
@@ -78,14 +77,13 @@ if __name__ == "__main__":
                     # Print help command
                     print(f"Try --help {command[2::] + " " if command != "--help" else ""}for more information.")
 
-        # Handle the case where no arguments were provided at all
         else:
-
-            # Provide the user with instructions on how to start the application
+            
+            # Print help message
             print("Run \"python3 main.py --run\" to start application. Type \"--help\" for help menu.")
             
-    # Generic catch-all for any exceptions that occur during runtime
+    # Catching errors
     except Exception as e:
 
-        # Print a full traceback of the exception for debugging purposes
+        # Print defailed error
         traceback.print_exception(type(e), e, e.__traceback__)

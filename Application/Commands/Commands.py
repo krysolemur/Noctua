@@ -5,13 +5,21 @@ import sys
 
 # Importing program files
 from Config.ConfigManager import ConfigManager
+
 from Application.Application import Application as app
+
+from resources.Themes.ThemeCreator import ThemeCreator
+
+from Logs.Logger import Logger
 
 # Stored all commands 
 
 # Class commands 
 class Commands:
+    
+    # Initiator
     def __init__(self):
+
         # Command name
         self.commandName = "./main"
 
@@ -24,7 +32,9 @@ class Commands:
             "--help": self._help,
             "--reset-settings": self._resetSettings,
             "--create-settings": self._createSettings,
-            "--version": self._version
+            "--version": self._version,
+            "--create-theme": self._createTheme,
+            "--clear-logs": self._clearLogs
         }
         
         # List of all commands and their description
@@ -33,7 +43,9 @@ class Commands:
             "--help": "Display help message.",
             "--reset-settings": "Reset program configuration.",
             "--create-settings": "Create new settings if previous was deleted or renamed.",
-            "--version": "Show actual version of application."
+            "--version": "Show actual version of application.",
+            "--create-theme": "Show dialog for creating own theme.",
+            "--clear-logs": "Clear all logs."
         }
 
         # List of all arguments assigned to each function
@@ -41,7 +53,10 @@ class Commands:
             "--run": None,
             "--help": "<command>",
             "--reset-settings": None,
-            "--create-settings": None
+            "--version": None,
+            "--create-settings": None,
+            "--create-theme": None,
+            "--clear-logs": None
         }
 
     '''
@@ -86,4 +101,12 @@ class Commands:
         # Create settings file
         ConfigManager()._checkConfigFile()
 
+    # TODO: Create theme
+    def _createTheme(self, *args) -> None:
+        # Init theme creator
+        ThemeCreator().exec()
 
+    # Clear logs
+    def _clearLogs(self) -> None:
+        # Clear
+        Logger.clearLogs()

@@ -8,6 +8,9 @@ import os
 # Main class Logger
 class Logger:
 
+    # Logs dir
+    logsDir = "Logs"
+
     # Initiator
     def __init__(self, config, serviceName) -> None:
         
@@ -100,3 +103,7 @@ class Logger:
 
         # Log successfully update
         logger.success("Logger configuration updated successfully.")
+
+    # Clearing logs
+    def clearLogs(self) -> None:
+        None
