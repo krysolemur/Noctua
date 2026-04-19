@@ -38,37 +38,36 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # Quit application
-        self.ui.actionQuit.triggered.connect(self.app.quitApplication)
+        self.ui.actionQuit.triggered.connect(self.app.quit_application)
 
         # Restart application
-        self.ui.actionRestart.triggered.connect(self.app.restartApplication)
+        self.ui.actionRestart.triggered.connect(self.app.restart_application)
 
         # Open settings dialog
-        self.ui.actionSettings.triggered.connect(self._openSettingsAction)
+        self.ui.actionSettings.triggered.connect(self._open_settings)
 
         # Open about dialog
-        self.ui.actionAbout.triggered.connect(self._aboutAction)
+        self.ui.actionAbout.triggered.connect(self._about_dialog)
 
         # Open target dialog
         self.ui.actionSetTarget.triggered.connect(self._setTargetAction)
 
         # Theme creator
-        self.ui.actionThemeCreator.triggered.connect(self._themeCreatorAction)
+        self.ui.actionThemeCreator.triggered.connect(self._open_theme_creator)
 
         # Set window title
         self.setWindowTitle(f"{self.app.name} | {self.app.version}")  
 
         # Set window icon
-        self.setWindowIcon(QIcon(self.app.iconPath))
 
         # Resize to default size
         self.resize(800, 600) 
 
         # Center main window
-        self._centerWindow(self)
+        self._center_window(self)
 
     # Center window/dialog
-    def _centerWindow(self, window) -> None:
+    def _center_window(self, window) -> None:
         # Get screen size
         screen = QApplication.primaryScreen()
 
@@ -83,7 +82,7 @@ class MainWindow(QMainWindow):
         window.move(x, y)
 
     # Open settings dialog
-    def _openSettingsAction(self) -> None:
+    def _open_settings(self) -> None:
         # Create settings dialog object
         self.SettingsDialog = SettingsDialog(self.app)
 
@@ -95,12 +94,12 @@ class MainWindow(QMainWindow):
         None
 
     # Open theme creator
-    def _themeCreatorAction(self) -> None:
+    def _open_theme_creator(self) -> None:
         # Open dialog
         self.ThemesManager.createTheme()
 
     # Show software information
-    def _aboutAction(self) -> None:
+    def _about_dialog(self) -> None:
         # Create dialog
         aboutDialog = QDialog(self)
 

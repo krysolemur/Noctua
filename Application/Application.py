@@ -26,7 +26,7 @@ class Application(QApplication):
     name = "XyraEngine"
     
     # Icon path
-    iconPath = ""
+    icon_path = ""
 
     # Initiator
     def __init__(self) -> None:
@@ -47,54 +47,46 @@ class Application(QApplication):
         self.ThemesManager = ThemesManager()
 
         # Setup application
-        self._setupApplication()
+        self._setup_application()
 
         # Init MainWindow
         self.MainWindow = MainWindow(self)
 
         # Show main window
         self.MainWindow.show()
-        
-    '''
-    Private functions.
-    '''
 
     # Setup function that loads general settings
-    def _setupApplication(self) -> None:
+    def _setup_application(self) -> None:
         # Get configuration
         config = self.config["GeneralPage"]
 
         # Font size dictonary
-        fontSize = {
+        font_size = {
             "Large": 12,
             "Medium (recommended)": 10,
             "Small": 8
         }
 
         # Set font and font size for whole application
-        self.setFont(QFont(str(config["fcb_gen_font"]), int(fontSize[str(config["cb_gen_font_size"])])))
-
-    '''
-    Public functions.
-    '''
+        self.setFont(QFont(str(config["fcb_gen_font"]), int(font_size[str(config["cb_gen_font_size"])])))
 
     # Reload config
-    def reloadConfiguration(self) -> None:
+    def reload_config(self) -> None:
         # New config variable
-        newConfig = self.ConfigManager.loadSettings()
+        new_config = self.ConfigManager.loadSettings()
 
         # Clear config
         self.config.clear()
 
         # Update
-        self.config.update(newConfig)
+        self.config.update(new_config)
 
     # Restart application function
-    def restartApplication(self) -> None:
+    def restart_application(self) -> None:
         # Restart command
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
     # Quit application
-    def quitApplication(self) -> None:
+    def quit_application(self) -> None:
         # Quit
         QApplication.quit()

@@ -1,12 +1,15 @@
 # ThemeCreator.py
 
 # Importing system files
+from pathlib import Path
+import importlib.util
 import re
 import json
 import os
 
 from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # type: ignore
-from PySide6 import QtCore, QtGui # type: ignore
+from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap # type: ignore
+from PySide6.QtCore import Qt # type: ignore
 
 from Application.QtFiles.ThemeCreator import Ui_ThemeCreator
 from Application.QtFiles.ThemePreview import Ui_ThemePreview
@@ -22,30 +25,34 @@ class ThemeCreator(QDialog):
 
         # Color Role mapping
         self.roleMapping = {
-            "Window": QtGui.QPalette.ColorRole.Window,
-            "WindowText": QtGui.QPalette.ColorRole.WindowText,
-            "Base": QtGui.QPalette.ColorRole.Base,
-            "AlternateBase": QtGui.QPalette.ColorRole.AlternateBase,
-            "Text": QtGui.QPalette.ColorRole.Text,
-            "Button": QtGui.QPalette.ColorRole.Button,
-            "ButtonText": QtGui.QPalette.ColorRole.ButtonText,
-            "BrightText": QtGui.QPalette.ColorRole.BrightText,
-            "Light": QtGui.QPalette.ColorRole.Light,
-            "Midlight": QtGui.QPalette.ColorRole.Midlight,
-            "Dark": QtGui.QPalette.ColorRole.Dark,
-            "Mid": QtGui.QPalette.ColorRole.Mid,
-            "Shadow": QtGui.QPalette.ColorRole.Shadow,
-            "Highlight": QtGui.QPalette.ColorRole.Highlight,
-            "HighlightedText": QtGui.QPalette.ColorRole.HighlightedText,
-            "Link": QtGui.QPalette.ColorRole.Link,
-            "LinkVisited": QtGui.QPalette.ColorRole.LinkVisited,
-            "PlaceholderText": QtGui.QPalette.ColorRole.PlaceholderText,
-            "ToolTipBase": QtGui.QPalette.ColorRole.ToolTipBase,
-            "ToolTipText": QtGui.QPalette.ColorRole.ToolTipText
+            "Window": QPalette.ColorRole.Window,
+            "WindowText": QPalette.ColorRole.WindowText,
+            "Base": QPalette.ColorRole.Base,
+            "AlternateBase": QPalette.ColorRole.AlternateBase,
+            "Text": QPalette.ColorRole.Text,
+            "Button": QPalette.ColorRole.Button,
+            "ButtonText": QPalette.ColorRole.ButtonText,
+            "BrightText": QPalette.ColorRole.BrightText,
+            "Light": QPalette.ColorRole.Light,
+            "Midlight": QPalette.ColorRole.Midlight,
+            "Dark": QPalette.ColorRole.Dark,
+            "Mid": QPalette.ColorRole.Mid,
+            "Shadow": QPalette.ColorRole.Shadow,
+            "Highlight": QPalette.ColorRole.Highlight,
+            "HighlightedText": QPalette.ColorRole.HighlightedText,
+            "Link": QPalette.ColorRole.Link,
+            "LinkVisited": QPalette.ColorRole.LinkVisited,
+            "PlaceholderText": QPalette.ColorRole.PlaceholderText,
+            "ToolTipBase": QPalette.ColorRole.ToolTipBase,
+            "ToolTipText": QPalette.ColorRole.ToolTipText
         }
 
         # Create empty default palette
-        self.custom_theme = {state: {} for state in ["Active", "Inactive", "Disabled"]}
+        self.custom_theme = {
+            "Active": {}, 
+            "Inactive": {},
+            "Disabled": {}
+        }
 
         # Preview window
         self.previewWindow = None
@@ -57,23 +64,23 @@ class ThemeCreator(QDialog):
         self.ui.setupUi(self)
 
         # Actions
-        self.ui.btn_full_preview.clicked.connect(self._showPreview)
-        self.ui.btn_set_color.clicked.connect(self._colorPicker)
-        self.ui.cb_state.currentIndexChanged.connect(self._updateTableFromData)
-        self.ui.btn_import.clicked.connect(self._resetRole)
+        self.ui.btn_full_preview.clicked.connect(self._show_preview)
+        self.ui.btn_set_color.clicked.connect(self._color_picker)
+        self.ui.cb_state.currentIndexChanged.connect(self._update_table)
+        self.ui.btn_reset.clicked.connect(self._reset_role)
         self.ui.btn_export.clicked.connect(self._export_theme)
-        self.ui.btn_import.clicked.connect(self._importTheme)
+        self.ui.btn_import.clicked.connect(self._import_theme)
 
     # Make icon function
-    def _makeIcon(self, color: QtGui.QColor) -> QtGui.QIcon:
-        pixmap = QtGui.QPixmap(24, 14)
+    def _make_icon(self, color: QColor) -> QIcon:
+        pixmap = QPixmap(24, 14)
         pixmap.fill(color)
 
         # Return pixmap as icon
-        return QtGui.QIcon(pixmap)
+        return QIcon(pixmap)
 
     # Pick color function
-    def _colorPicker(self) -> None:
+    def _color_picker(self) -> None:
         # Get selected item
         selectedItem = self.ui.tw_palette_roles.selectedItems()
 
@@ -86,7 +93,7 @@ class ThemeCreator(QDialog):
         currentState = self.ui.cb_state.currentText().split(" ")[0]
 
         currentHex = item.text(1)
-        initialColor = QtGui.QColor(currentHex) if currentHex else QtGui.QColor(QtCore.Qt.GlobalColor.white)
+        initialColor = QColor(currentHex) if currentHex else QColor(Qt.GlobalColor.white)
 
         color = QColorDialog.getColor(initialColor, self, f"Pick Color for {roleName} ({currentState})")
 
@@ -99,13 +106,13 @@ class ThemeCreator(QDialog):
             
             # Actualize Ui of table
             item.setText(1, newHex) 
-            item.setIcon(2, self._makeIcon(color))
+            item.setIcon(2, self._make_icon(color))
 
             # Apply to preview
-            self._applyToPreview()
+            self._apply_to_preview()
             
     # Update table
-    def _updateTableFromData(self) -> None:
+    def _update_table(self) -> None:
         # Get current state
         currentState = self.ui.cb_state.currentText().split(" ")[0]
 
@@ -132,22 +139,22 @@ class ThemeCreator(QDialog):
                 item.setText(1, color.name().upper())
 
                 # Set icon
-                item.setIcon(2, self._makeIcon(color))
+                item.setIcon(2, self._make_icon(color))
             else:
                 # Set none text
                 item.setText(1, "")
 
                 # Set none icon
-                item.setIcon(2, QtGui.QIcon())
+                item.setIcon(2, QIcon())
 
         # Update preview
-        self._applyToPreview
+        self._apply_to_preview
 
         # Cancle block updating
         self.ui.tw_palette_roles.setUpdatesEnabled(True)
 
     # Reset role function
-    def _resetRole(self) -> None:
+    def _reset_role(self) -> None:
         # Get selected
         selectedItem = self.ui.tw_palette_roles.selectedItems()
 
@@ -174,28 +181,28 @@ class ThemeCreator(QDialog):
         item.setText(1, "")           
 
         # Icon
-        item.setIcon(2, QtGui.QIcon()) 
+        item.setIcon(2, QIcon()) 
         
         # Actualize preview
-        self._applyToPreview()
+        self._apply_to_preview()
 
     # Applying to preview
-    def _applyToPreview(self) -> None:
+    def _apply_to_preview(self) -> None:
         # Check if it has that atribute
         if hasattr(self, 'previewWindow') and self.previewWindow is not None:
             # Set palette
-            self.previewWindow.setPalette(self._buildPalette())
+            self.previewWindow.setPalette(self._build_palette())
 
     # Building palette
-    def _buildPalette(self) -> QtGui.QPalette:
+    def _build_palette(self) -> QPalette:
         # Create new palette
-        palette = QtGui.QPalette()
+        palette = QPalette()
         
         # Set state map
         stateMap = {
-            "Active": QtGui.QPalette.ColorGroup.Active,
-            "Inactive": QtGui.QPalette.ColorGroup.Inactive,
-            "Disabled": QtGui.QPalette.ColorGroup.Disabled
+            "Active": QPalette.ColorGroup.Active,
+            "Inactive": QPalette.ColorGroup.Inactive,
+            "Disabled": QPalette.ColorGroup.Disabled
         }
         
         # Browse all states names and roles
@@ -214,7 +221,7 @@ class ThemeCreator(QDialog):
         return palette
     
     # Show preview function
-    def _showPreview(self) -> None:
+    def _show_preview(self) -> None:
         # Check if window exists
         if not hasattr(self, 'previewWindow') or self.previewWindow is None:
             try:
@@ -232,7 +239,7 @@ class ThemeCreator(QDialog):
                 return
 
         # Create current palette
-        currentPalette = self._buildPalette()
+        currentPalette = self._build_palette()
 
         # Apply palette
         # Teď už voláme setPalette na QDialog, který tuto metodu má
@@ -249,35 +256,117 @@ class ThemeCreator(QDialog):
             self.previewWindow.raise_()
             self.previewWindow.activateWindow()
 
-    # TODO: Import 
-    def _importTheme(self) -> None:
+    # Import method
+    def _import_theme(self) -> None:
         # Open file dialog and return path
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Import theme",
-            "theme", 
+            "resources/Themes", 
             "JSON File (*.json);;Qt Stylesheet (*.qss);;Python Dict (*.py)"
         )
+
+        # Check file path
+        if not file_path:
+            return
 
         # Get type
         _, extension = os.path.splitext(file_path)
         type = extension.lower()
-        
-        # Open file
-        with open(file_path, "r") as theme:
-            # Get data
-            data = theme.readlines()
 
-            # Close file
-            theme.close()
+        try:
+            if "json" in type:
+                self._import_from_json(file_path)
+            elif "qss" in type:
+                self._import_from_qss(file_path)
+            elif "py" in type:
+                self._import_from_py(file_path)
+        except Exception as e:
+            print(e)
 
         # Reset table
-        self._updateTableFromData()
+        self._update_table()
 
         # Update preview
-        self._applyToPreview()
+        self._apply_to_preview()
 
-    # Export as json
+    # Import from *.json
+    def _import_from_json(self, file_path) -> None:
+        # Open file
+        with open(file_path, "r") as theme:
+            exported_data = json.load(theme)
+
+        # Groups
+        for group, roles in exported_data.items():
+            # Check existing group
+            if group in self.custom_theme:
+                for role, hex_color in roles.items():
+                    # Parse color back to QColor
+                    self.custom_theme[group][role] = QColor(hex_color)
+
+        # Build new palette
+        self._build_palette()
+
+    # Import from *.qss
+    def _import_from_qss(self, file_path) -> None:
+        # Open file
+        with open(file_path, "r") as theme:
+            exported_data = theme.read()
+
+        # Pattern
+        pattern = r'qproperty-(active|inactive|disabled)-([\w-]+):\s*(#[a-fA-F0-9]{6});'
+
+        # Find patterns
+        matches = re.findall(pattern, exported_data)
+
+        # Check matches
+        if not matches:
+            return
+
+        # Browse groups, roles and colors in matches
+        for group_raw, role, hex_color in matches:
+            # Get group
+            group = group_raw.capitalize()
+            
+            # Set it to custom theme
+            self.custom_theme[group][role] = QColor(hex_color)
+
+        # Build palette
+        self._build_palette()
+
+    # Import from *.py
+    def _import_from_py(self, file_path) -> None:
+        # Preparing dynamic imort
+        file_path = Path(file_path)
+
+        # Module name without type
+        module_name = file_path.stem 
+
+        # Create path for import
+        spec = importlib.util.spec_from_file_location(module_name, file_path)
+        theme_module = importlib.util.module_from_spec(spec)
+        
+        # Run module
+        spec.loader.exec_module(theme_module)
+
+        # Check if module has THEME_DATA
+        if hasattr(theme_module, "THEME_DATA"):
+            # Load data
+            data = theme_module.THEME_DATA
+            
+            # Load like from json
+            for group_name, roles in data.items():
+                # Normalize group 
+                group = group_name.capitalize()
+
+                # Role name and color
+                for role_name, hex_color in roles.items():
+                    self.custom_theme[group][role_name] = QColor(hex_color)
+
+            # 4. Aplikace
+            self._build_palette()
+
+    # Export as *.json
     def _export_as_json(self, file_path) -> None:
         # Parsed data
         export_data = {}
@@ -318,30 +407,7 @@ class ThemeCreator(QDialog):
                 # Save to new dict
                 export_data[group][role] = hex_color
 
-        file_content = f"""from PySide6.QtGui import QPalette, QColor
-
-THEME_DATA = {export_data}
-
-def get_palette():
-    palette = QPalette()
-    groups = {{
-        "Active": QPalette.ColorGroup.Active,
-        "Inactive": QPalette.ColorGroup.Inactive,
-        "Disabled": QPalette.ColorGroup.Disabled
-    }}
-    for group_name, roles in THEME_DATA.items():
-        qt_group = groups.get(group_name)
-        for role_name, hex_color in roles.items():
-            try:
-                qt_role = getattr(QPalette.ColorRole, role_name)
-                palette.setColor(qt_group, qt_role, QColor(hex_color))
-            except AttributeError:
-                continue
-    return palette
-
-def apply_theme(app):
-    app.setPalette(get_palette())
-        """
+        file_content = f"THEME_DATA = {export_data}"
 
         # Open file
         with open(file_path, "w") as theme:
@@ -360,7 +426,7 @@ def apply_theme(app):
             for role, color in roles.items():
                 hex_val = color.name().upper()
                 # Line with property
-                lines.append(f"    qproperty-{group_name}-{role.lower()}: {hex_val};")
+                lines.append(f"    qproperty-{group_name}-{role}: {hex_val};")
         
         lines.append("}")
 
