@@ -1,89 +1,56 @@
 # main.py
 
-# Importing system files
 import sys
-import signal
 import traceback
+import Application.Commands.Commands as actions
 
-# Importing program files
-from Application.Application import Application
-
-from Application.Commands.Commands import Commands
-
-# Ctrl+C signal
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-# Main class
-class Main:
-
-    def __init__(self) -> None:
-
-        # Creating app
-        self.Application = Application()
-
-        # Running app
-        sys.exit(self.Application.exec())
-
-# Main block
-if __name__ == "__main__":
-
-    # Creating commands
-    commands = Commands()
-
-    # Try block for catching errors
+def main() -> None:
     try:
-
-        # Check num of args
+        # Check for input
         if len(sys.argv) > 1:
+            cmd = sys.argv[1]
+            args = sys.argv[2:]
 
-            # Store the first argument as a command
-            command = sys.argv[1]
-
-            # Store others arguments
-            arguments = sys.argv[2::]
-
-            # Check command
-            if command not in commands.commands.keys():
-
-                # Unknown commnad
-                print("Unknown command! Try --help for help menu.")
-
-                # Exit the script with an error status code
+            # 1. Validate command
+            if cmd not in actions.commands:
+                print(f"Error: Unknown command '{cmd}'. Use --help for info.")
                 sys.exit(1)
-        
-            # Run command for run application
-            if command == "--run":
 
-                # Assign main class
-                main = Main
+            # 2. GUI Path
+            if cmd == "--run" or cmd in actions.GUI_COMMANDS:
+                from Application.Application import Application
+                app = Application()
                 
-                # Run main class
-                main()
+                # Execute command before starting the window
+                if cmd in actions.GUI_COMMANDS:
+                    actions.commands[cmd](*args)
+                
+                # Start app loop
+                sys.exit(app.exec())
 
-            # Others variantions
+            # 3. CLI Path
             else:
-
-                # Args errors
                 try:
-
-                    # Run command
-                    commands.commands[command](arguments)
-
-                except TypeError:
-
-                    # Print missing argument error
-                    print(f"{command}: Missing command operands")
-                
-                    # Print help command
-                    print(f"Try --help {command[2::] + " " if command != "--help" else ""}for more information.")
-
+                    actions.commands[cmd](*args)
+                except TypeError as e:
+                    # Handle argument errors
+                    if "arguments" in str(e) or "positional" in str(e):
+                        print(f"Error: Invalid arguments for '{cmd}'.")
+                    else:
+                        raise 
         else:
-            
-            # Print help message
-            print("Run \"python3 main.py --run\" to start application. Type \"--help\" for help menu.")
-            
-    # Catching errors
-    except Exception as e:
+            # Welcome message
+            print("WebScope: Use --run to start or --help for options.")
 
-        # Print defailed error
-        traceback.print_exception(type(e), e, e.__traceback__)
+    except KeyboardInterrupt:
+        # Clean exit on Ctrl+C
+        print("\nApplication stopped.")
+        sys.exit(0)
+        
+    except Exception:
+        # Log unexpected errors
+        traceback.print_exc()
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
