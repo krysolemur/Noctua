@@ -21,11 +21,15 @@ def main() -> None:
                 from Application.Application import Application
                 app = Application()
                 
-                # Execute command before starting the window
-                if cmd in actions.GUI_COMMANDS:
-                    actions.commands[cmd](*args)
+                if cmd == "--run":
+                    # Start main window
+                    app.run() 
+                else:
+                    # Start specific tool
+                    action_func = actions.commands.get(cmd)
+                    if action_func:
+                        action_func(*args)
                 
-                # Start app loop
                 sys.exit(app.exec())
 
             # 3. CLI Path

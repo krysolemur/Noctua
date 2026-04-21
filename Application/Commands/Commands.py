@@ -1,15 +1,8 @@
 # Commands.py
 
-import sys
-
-from Application.ConfigManager.ConfigManager import ConfigManager
-from Application.Application import Application as app
-from Application.ThemeManager.ThemeCreator import ThemeCreator
-from Application.Logger.Logger import Logger
-
 CLI_COMMANDS = ["--help", "--version", "--reset-settings", "--clear-logs"]
 GUI_COMMANDS = ["--run", "--theme-creator", "--style-creator"]
-ALL_COMMANDS = ["run", "help", "reset-settings", "create-settings", "version"]
+ALL_COMMANDS = ["run", "help", "reset-settings", "version", "--clear-logs", "--theme-creator", "--style-creator"]
 COMMANDS_DESCRIPTIONS = {
     "--run": "Run application.",
     "--help": "Display help message.",
@@ -67,6 +60,7 @@ def show_help(*args) -> None:
 # Version function
 def show_version(*args) -> None:
     # Import tools to check system
+    from Application.Application import Application as app
     import platform
     import PySide6 # type: ignore
     
@@ -78,31 +72,46 @@ def show_version(*args) -> None:
     print(f"PySide6 {PySide6.__version__}")
 
 # Reset settings function
-def resetSettings(*args) -> None:
-    # Reset settings
-    ConfigManager().resetSettings()
+def reset_settings(*args) -> None:
+    # 1. Import manager locally
+    from Application.ConfigManager.ConfigManager import ConfigManager 
+    
+    # 2. Perform reset
+    ConfigManager().reset_settings()
+    
+    # 3. Give feedback to user
+    print("Settings have been reset to default values.")
 
-# Create configuration
-def createSettings(*args) -> None:
-    # Create settings file
-    ConfigManager()._checkConfigFile()
+# Create theme
+def create_theme(*args) -> None:
+    # Import theme manager
+    from Application.ThemeManager.ThemesManager import ThemesManager
 
-# TODO: Create theme
-def createTheme(*args) -> None:
     # Init theme creator
-    ThemeCreator().exec()
+    ThemesManager.create_theme()
+
+# Create style
+def create_style(*args) -> None:
+    # Import style manager
+    from Application.StyleManager.StyleManager import StyleManager
+
+    # Init theme creator
+    StyleManager.create_sheet()
 
 # Clear logs
-def clearLogs()-> None:
+def clear_logs()-> None:
+    # Import 
+    from Application.Logger.Logger import Logger
+
     # Clear
-    Logger.clearLogs()
+    Logger.clear_logs()
 
 commands = {
-    "--run": None,
+    "--run": "",
     "--help": show_help,
-    "--reset-settings": resetSettings,
-    "--create-settings": createSettings,
+    "--reset-settings": reset_settings,
     "--version": show_version,
-    "--create-theme": createTheme,
-    "--clear-logs": clearLogs
+    "--theme-creator": create_theme,
+    "--style-creator": create_style,
+    "--clear-logs": clear_logs
 }

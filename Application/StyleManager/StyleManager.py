@@ -18,7 +18,8 @@ class StyleManager:
         None
     
     # Create sheet
-    def create_sheet(self) -> None:
+    @staticmethod
+    def create_sheet() -> None:
         # Create instance
         styleCreator = StyleCreator()
 

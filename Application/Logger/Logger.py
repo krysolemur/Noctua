@@ -9,7 +9,7 @@ import os
 class Logger:
 
     # Logs dir
-    logsDir = "Logs"
+    LOGS_DIR = "Logs"
 
     # Initiator
     def __init__(self, config, serviceName) -> None:
@@ -100,9 +100,10 @@ class Logger:
         # Log successfully update
         logger.success("Logger configuration updated successfully.")
 
-    # Clearing logs
+    # Clear logs
     @classmethod
     def clear_logs(cls) -> None:
-        # Open file
-        with open(f"{cls.logsDir}/app.log", "w") as log:
-            None
+        # Clear log file by opening it in write mode
+        with open(f"{cls.LOGS_DIR}/app.log", "w") as log:
+            pass 
+        print("Logs have been cleared.")

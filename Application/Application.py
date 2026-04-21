@@ -18,28 +18,25 @@ from Application.StyleManager.StyleManager import StyleManager
 class Application(QApplication):
 
     # Version 
-    version = "0.1.0"
+    VERSION = "0.1.0"
 
     # Application name
-    name = "XyraEngine"
+    NAME = "XyraEngine"
     
     # Icon path
-    icon_path = ""
+    ICON_PATH = ""
 
     # Initiator
     def __init__(self) -> None:
         
         # Init parents
-        super().__init__()
+        super().__init__(sys.argv)
 
         # Config object
         self.ConfigManager = ConfigManager()
 
         # Config variable
         self.config = self.ConfigManager.loadSettings()
-
-        # Logger object
-        self.Logger = Logger(self.config["LoggingPage"], self.name)
 
         # ThemeManager
         self.ThemesManager = ThemesManager()
@@ -50,6 +47,11 @@ class Application(QApplication):
         # Setup application
         self._setup_application()
 
+    # Run method
+    def run(self) -> None:
+        # Logger object
+        self.Logger = Logger(self.config["LoggingPage"], self.NAME)
+
         # Init MainWindow
         self.MainWindow = MainWindow(self)
 
@@ -58,6 +60,9 @@ class Application(QApplication):
 
     # Setup function that loads general settings
     def _setup_application(self) -> None:
+        # App name
+        self.setApplicationName(self.NAME)
+
         # Get configuration
         config = self.config["GeneralPage"]
 

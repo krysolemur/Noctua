@@ -139,7 +139,7 @@ class ConfigManager:
             json.dump(settings, nwconfig, indent=4)
         
     # Public function used in settings dialog for overwriting config file with default json config.
-    def resetSettings(self) -> None:
+    def reset_settings(self) -> None:
         # Open profile
         with open(self.configPath, "w") as nwconfig:
             # Write into profile new configuration

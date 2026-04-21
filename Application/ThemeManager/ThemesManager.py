@@ -42,7 +42,8 @@ class ThemesManager:
             return False
 
     # Theme creator
-    def create_theme(self) -> None:
+    @staticmethod
+    def create_theme() -> None:
         # Init main theme creator class
         themeCreator = ThemeCreator()
 

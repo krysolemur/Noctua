@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
         self.ui.actionStylesheetCreator.triggered.connect(self._open_style_creator)
 
         # Set window title
-        self.setWindowTitle(f"{self.app.name} | {self.app.version}")  
+        self.setWindowTitle(f"{self.app.NAME} | {self.app.VERSION}")  
 
         # Set window icon
 
@@ -120,13 +120,13 @@ class MainWindow(QMainWindow):
         aboutDialogUi.setupUi(aboutDialog)
 
         # Set title 
-        aboutDialog.setWindowTitle(f"{self.app.name} | {self.app.version} | About")  
+        aboutDialog.setWindowTitle(f"{self.app.NAME} | {self.app.VERSION} | About")  
 
         # Adjust size for dialog
         aboutDialog.resize(aboutDialog.sizeHint())
 
         # Set version text to label 
-        aboutDialogUi.versionLabel.setText(f"{aboutDialogUi.versionLabel.text()} {self.app.version}")
+        aboutDialogUi.versionLabel.setText(f"{aboutDialogUi.versionLabel.text()} {self.app.VERSION}")
 
         # Show dialog
         aboutDialog.show()
