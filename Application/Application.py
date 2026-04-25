@@ -1,20 +1,17 @@
 # Application.py
 
-# Import system files
 import os
 import sys
 
 from PySide6.QtWidgets import QApplication # type: ignore
 from PySide6.QtGui import QFont # type: ignore
 
-# Importing program files
 from Application.ConfigManager.ConfigManager import ConfigManager
 from Application.ThemeManager.ThemesManager import ThemesManager
 from Application.MainWindow.MainWindow import MainWindow
 from Application.Logger.Logger import Logger
 from Application.StyleManager.StyleManager import StyleManager
 
-# Class for managing whole application
 class Application(QApplication):
 
     # Version 
