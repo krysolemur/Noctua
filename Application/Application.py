@@ -31,16 +31,13 @@ class Application(QApplication):
         # Save app
         ctx.app = self
 
-        # Config variable
-        self.config = ctx.config
-
         # Setup application
         self._setup_application()
 
     # Run method
     def run(self) -> None:
         # Logger object
-        self.Logger = Logger(self.config["LoggingPage"], self.NAME)
+        self.Logger = Logger(ctx.config["LoggingPage"], self.NAME)
 
         # Init MainWindow
         self.MainWindow = MainWindow()
@@ -72,10 +69,10 @@ class Application(QApplication):
         new_config = ctx.ConfigManager.loadSettings()
 
         # Clear config
-        self.config.clear()
+        ctx.config.clear()
 
         # Update
-        self.config.update(new_config)
+        ctx.config.update(new_config)
 
     # Restart application function
     def restart_application(self) -> None:
