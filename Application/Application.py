@@ -23,7 +23,6 @@ class Application(QApplication):
     # Icon path
     ICON_PATH = ""
 
-    # Initiator
     def __init__(self) -> None:
         
         # Init parents
@@ -31,9 +30,6 @@ class Application(QApplication):
 
         # Save app
         ctx.app = self
-
-        # Config object
-        self.ConfigManager = ctx.ConfigManager
 
         # Config variable
         self.config = ctx.config
@@ -73,7 +69,7 @@ class Application(QApplication):
     # Reload config
     def reload_config(self) -> None:
         # New config variable
-        new_config = self.ConfigManager.loadSettings()
+        new_config = ctx.ConfigManager.loadSettings()
 
         # Clear config
         self.config.clear()

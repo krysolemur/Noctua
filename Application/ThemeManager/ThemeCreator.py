@@ -1,7 +1,7 @@
 # ThemeCreator.py
 
-# Importing system files
 from pathlib import Path
+from loguru import logger # type: ignore
 import importlib.util
 import re
 import json
@@ -11,16 +11,13 @@ from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # 
 from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap # type: ignore
 from PySide6.QtCore import Qt # type: ignore
 
-# Import program files
 from Application.ErrorDialog.ErrorDialog import ErrorDialog
 
 from Application.QtFiles.ThemeCreator import Ui_ThemeCreator
 from Application.QtFiles.ThemePreview import Ui_ThemePreview
 
-# Main class ThemeCreator
 class ThemeCreator(QDialog):
         
-    # Constructor
     def __init__(self) -> None:
         
         # Init parents
@@ -91,7 +88,6 @@ class ThemeCreator(QDialog):
 
     # Show color dialog
     def _color_picker(self, row=None, column=0) -> None:
-        print(f"Item: {row}, Column: {column}")
         if row:
             # Get item
             item = row
@@ -159,7 +155,7 @@ class ThemeCreator(QDialog):
                 item.setIcon(2, QIcon())
 
         # Update preview
-        self._apply_to_preview
+        self._apply_to_preview()
 
         # Cancle block updating
         self.ui.tw_palette_roles.setUpdatesEnabled(True)
@@ -167,7 +163,7 @@ class ThemeCreator(QDialog):
     # Reset role color
     def _reset_role(self) -> None:
         # Get selected
-        selected_item = self.ui.tw_palette_roles.selected_items()
+        selected_item = self.ui.tw_palette_roles.selectedItems()
 
         # Check selected
         if not selected_item:
@@ -285,7 +281,7 @@ class ThemeCreator(QDialog):
             elif "py" in type:
                 self._import_from_py(file_path)
         except Exception as e:
-            ErrorDialog(e)
+            ErrorDialog(exception=e, msg="Error")
             print(e)
 
         # Reset table
@@ -466,15 +462,31 @@ class ThemeCreator(QDialog):
         elif "(*.py)" in decode_type and not file_path.endswith(".py"):
             file_path += ".py"
 
+        # Try block for catching errors
         try:
-            # Check if its is json, python or qss
+            # Check export type
             if "json" in decode_type:
                 self._export_as_json(file_path)
             elif "qss" in decode_type:
                 self._export_as_qss(file_path)
             elif "py" in decode_type:
                 self._export_as_py(file_path)
+        # Show error in dialog and console
+        except PermissionError as e:
+            logger.error("")
+            self._display_error(exception=e, msg="")
+        except OSError as e:
+            logger.error("")
+            self._display_error(exception=e, msg="")
         except Exception as e:
-            # Show error dialog
-            ErrorDialog()
-            print(e) 
+            logger.error("")
+            self._display_error(exception=e, msg="")
+
+    # Display error
+    @staticmethod
+    def _display_error(exception:object, msg:str) -> None:
+        # Show error dialog and execute
+        errorDialog = ErrorDialog(exception=exception, msg=msg)
+        errorDialog.exec()
+
+        # TODO: Log error

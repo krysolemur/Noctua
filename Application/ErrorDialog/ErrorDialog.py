@@ -1,20 +1,16 @@
 # ErrorDialog.py
 
-# Importing system files
 from loguru import logger # type: ignore
 import traceback
 import sys
 
 from PySide6.QtWidgets import QDialog, QApplication # type: ignore
 
-# Import program files
 from Application.QtFiles.ErrorDialog import Ui_ErrorDialog
 
-# Main class ErrorDialog
 class ErrorDialog(QDialog):
 
-    # Constructor
-    def __init__(self, exception, log=True) -> None:
+    def __init__(self, exception, msg) -> None:
 
         # Init parents
         super().__init__()
@@ -43,15 +39,9 @@ class ErrorDialog(QDialog):
         # Show details
         self.ui.btn_details_toggle.toggled.connect(self._toggle_details)
 
-        # Resize
-        self.resize(self.sizeHint())
-
-        # Check log 
-        if log:
-            None
-
-        # Exec 
-        self.exec()
+        # Resize and set window title
+        self.resize(self.sizeHint())    
+        self.setWindowTitle(msg)
 
     # Get error details
     def _error_details(self, exception) -> dict:

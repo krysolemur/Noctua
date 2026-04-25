@@ -7,6 +7,7 @@ from Application.StyleManager.StyleManager import StyleManager
 class AppContext:
 
     def __init__(self) -> None:
+        
         # Config module
         self.ConfigManager = ConfigManager()
 
