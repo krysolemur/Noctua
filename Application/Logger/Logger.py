@@ -139,7 +139,7 @@ class Logger:
 
         # Write msg
         try:
-            self.log.write(msg+"\n")
+            self.log.write(msg + "\n")
             self.log.flush()
         except OSError as e:
             self.critical(e)
