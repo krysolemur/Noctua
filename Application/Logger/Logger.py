@@ -1,8 +1,11 @@
 # Logger.py
 
 from datetime import datetime
-import os
+import traceback
 import inspect
+import json
+import sys
+import os
 
 from Application.AppContext import ctx
 
@@ -98,22 +101,22 @@ class Logger:
         msg = f"{timestamp} {level:^10} {path}{" - " if path else ""}{msg}"
     
     # Info log
-    def info(self, *args) -> None:
-        self._cout("INFO", *args)
-        self._fout("INFO", *args)
+    def info(self, msg) -> None:
+        self._cout("INFO", msg)
+        self._fout("INFO", msg)
 
     # Warning log
-    def warn(self, *args) -> None:
-        self._cout("WARN", *args)
-        self._fout("WARN", *args)
+    def warn(self, msg) -> None:
+        self._cout("WARN", msg)
+        self._fout("WARN", msg)
 
     # Success log
-    def success(self, *args) -> None:
-        self._cout("SUCCESS", *args)
-        self._fout("SUCCESS", *args)
+    def success(self, msg) -> None:
+        self._cout("SUCCESS", msg)
+        self._fout("SUCCESS", msg)
 
     # Error log
-    def error(self, *args) -> None:
+    def error(self, msg) -> None:
         # Get info about where was func calling
 
         # Filename, row and func
@@ -124,38 +127,63 @@ class Logger:
         func = caller_frame.function
 
         # Output
-        self._cout("ERROR", *args, row=row, func=func, filename=filename)
-        self._fout("ERROR", *args, row=row, func=func, filename=filename)
+        self._cout("ERROR", msg, row=row, func=func, filename=filename)
+        self._fout("ERROR", msg, row=row, func=func, filename=filename)
 
     # Debug log
-    def debug(self, *args) -> None:
-        # Get info about where was func calling
-
-        # Filename, row and func
-        caller_frame = inspect.stack()[1]
-
-        filename = os.path.basename(caller_frame.filename)
-        row = caller_frame.lineno
-        func = caller_frame.function
-
-        # Output
-        self._cout("DEBUG", *args, row=row, func=func, filename=filename)
-        self._fout("DEBUG", *args, row=row, func=func, filename=filename)
+    def debug(self, msg) -> None:
+        self._cout("DEBUG", msg)
+        self._fout("DEBUG", msg)
 
     # Critical -> Not in settings
-    def critical(self, *args) -> None:
-        # Get info about where was func calling
-
-        # Filename, row and func
-        caller_frame = inspect.stack()[1]
-
-        filename = os.path.basename(caller_frame.filename)
-        row = caller_frame.lineno
-        func = caller_frame.function
+    def critical(self, exception) -> None:
+        # Get details from exception
+        msg = self._error_details(exception=exception)
 
         # Output
-        self._cout("CRITICAL", *args, row=row, func=func, filename=filename)
-        self._fout("CRITICAL", *args, row=row, func=func, filename=filename)
+        self._cout("CRITICAL", msg)
+        self._fout("CRITICAL", msg)
 
+    # Get error details
+    def _error_details(self, exception) -> dict:
+        # Full traceback of error
+        full_traceback = traceback.format_exc()
+        
+        # Error location
+        _, _, exc_tb = sys.exc_info()
+        tb_last = traceback.extract_tb(exc_tb)[-1] if exc_tb else None
+        
+        # Details dictonary
+        details = {
+            # Type and message
+            "type": type(exception).__name__,
+            "message": str(exception),
+            
+            # Localize error
+            "file": tb_last.filename if tb_last else "Unknown",
+            "line": tb_last.lineno if tb_last else "N/A",
+            "function": tb_last.name if tb_last else "N/A",
+            "code": tb_last.line if tb_last else "N/A",
+            
+            # Full trackeback
+            "full_traceback": "\n" + full_traceback,
+        }
+
+        # Specific errors data
+        if isinstance(exception, OSError):
+            details["extra_info"]["errno"] = exception.errno
+            details["extra_info"]["path"] = exception.filename
+
+        # Format details
+        json_string = json.dumps(details, indent=4, ensure_ascii=False)
+
+        ident = " " * 6
+
+        clean_json = json_string.replace('\\n', '\n' + ident)
+        clean_json = clean_json.replace('\\"', '"')
+
+        return clean_json
+
+# Init logger
 logger = Logger(ctx.config.get("LoggingPage", DEFAULT_CONFIG))
 
