@@ -46,61 +46,16 @@ class Logger:
     }
     
     def __init__(self, config:dict) -> None:
-
+        # Log file handling
         self.log = None
 
         # Create paths
         self.log_dir = config.get("le_file_path", DEFAULT_CONFIG.get("le_file_path", self.DEFAULT_LOG_DIR))
         self.log_path = os.path.join(self.log_dir, self.DEFAULT_LOG_FILE)
 
-        # Get c_levels and f_levels
-        self.c_levels = {
-            "INFO": config["btn_console_info"],
-            "WARN": config["btn_console_warning"],
-            "SUCCESS": config["btn_console_success"],
-            "ERROR": config["btn_console_error"],
-            "DEBUG": config["btn_console_debug"],
-            "CRITICAL": True
-        }
-
-        if config.get("cb_file_enabled") == "Yes":
-            # Set levels for file logging
-            self.f_levels = {
-                "INFO": config["btn_file_info"],
-                "WARN": config["btn_file_warning"],
-                "SUCCESS": config["btn_file_success"],
-                "ERROR": config["btn_file_error"],
-                "DEBUG": config["btn_file_debug"],
-                "CRITICAL": True
-            }
-
-            # File handling
-            try:
-                # Check logging directory
-                if self.log_dir:
-                    os.makedirs(self.log_dir, exist_ok=True)
-                self.log = open(self.log_path, "a", encoding="utf-8")
-            except OSError as e:
-                self.critical(e)
-                self.log = None
-
-        else:
-            self.f_levels = {
-                "INFO": False,
-                "WARN": False,
-                "SUCCESS": False,
-                "ERROR": False,
-                "DEBUG": False,
-                "CRITICAL": True
-            }
-
-        # Get time and colors
-        self.time = config.get("cb_console_time") == "Yes"
-        self.colored = config.get("cb_console_colors") == "Yes"
-
-        # Log init
-        self.info("Logger initialized")
-
+        # Start
+        self.update(config)
+        
     # Writing to console 
     def _cout(self, level, msg, func="", row="", filename="") -> None:
         # Check level
@@ -241,6 +196,65 @@ class Logger:
         clean_json = clean_json.replace('\\"', '"')
 
         return clean_json
+
+    # Update
+    def update(self, config:dict) -> None:
+        if self.log:
+            # Close log
+            try:
+                self.log.close()
+            except OSError:
+                pass
+                
+            self.log = None
+        
+        # Get c_levels and f_levels
+        self.c_levels = {
+            "INFO": config["btn_console_info"],
+            "WARN": config["btn_console_warning"],
+            "SUCCESS": config["btn_console_success"],
+            "ERROR": config["btn_console_error"],
+            "DEBUG": config["btn_console_debug"],
+            "CRITICAL": True
+        }
+
+        if config.get("cb_file_enabled") == "Yes":
+            # Set levels for file logging
+            self.f_levels = {
+                "INFO": config["btn_file_info"],
+                "WARN": config["btn_file_warning"],
+                "SUCCESS": config["btn_file_success"],
+                "ERROR": config["btn_file_error"],
+                "DEBUG": config["btn_file_debug"],
+                "CRITICAL": True
+            }
+
+            # File handling
+            try:
+                # Check logging directory
+                if self.log_dir:
+                    os.makedirs(self.log_dir, exist_ok=True)
+                self.log = open(self.log_path, "a", encoding="utf-8")
+            except OSError as e:
+                self.critical(e)
+                self.log = None
+
+        else:
+            self.f_levels = {
+                "INFO": False,
+                "WARN": False,
+                "SUCCESS": False,
+                "ERROR": False,
+                "DEBUG": False,
+                "CRITICAL": True
+            }
+
+        # Get time and colors
+        self.time = config.get("cb_console_time") == "Yes"
+        self.colored = config.get("cb_console_colors") == "Yes"
+
+        # Log init
+        self.info("Logger initialized")
 
 # Init logger
 logger = Logger(ctx.config.get("LoggingPage", DEFAULT_CONFIG))

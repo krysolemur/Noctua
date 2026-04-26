@@ -92,7 +92,11 @@ class SettingsDialog(QDialog):
             ctx.ConfigManager.save_settings(config)
             self.ui.statusLabel.setText(self.ui.statusLabel.text() + "SUCCESS")
             logger.success("Settings saved.")
+
+            # Update logger
+            self._update_logger()
         except Exception as e:
+            # Show error
             self.ui.statusLabel.setText(self.ui.statusLabel.text() + "ERROR")
             logger.error("Error while saving settings!")
 
@@ -106,13 +110,18 @@ class SettingsDialog(QDialog):
 
         # Browse active pages
         for page in self.activePages:
-            # Run only for real objects
             if page and not isinstance(page, bool):
                 page.load_settings(ctx.config.get(type(page).__name__, {}))
 
-        # Loguru acitalization
-        if hasattr(self, 'Logger'):
-            self.app.Logger.updateConfig(ctx.config.get("LoggingPage", {}))
+        # Update loger
+        self._update_logger()
+
+    # Update logger
+    @staticmethod
+    def _update_logger() -> None:
+        # Check logger
+        if logger:
+            logger.update(ctx.config.get("LoggingPage"))
 
     # Overrided close event 
     def closeEvent(self, event) -> None:

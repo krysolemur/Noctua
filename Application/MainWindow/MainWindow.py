@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
         # Open dialog
         self.StyleManager.create_sheet()
 
-    # Show software information
+    # Show app information
     def _about_dialog(self) -> None:
         # Create dialog
         aboutDialog = QDialog(self)
