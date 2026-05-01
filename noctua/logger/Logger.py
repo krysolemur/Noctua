@@ -9,7 +9,7 @@ import json
 import inspect
 import os
 
-from Application.AppContext import ctx
+from noctua.context import ctx
 
 # Default configuration
 DEFAULT_CONFIG = {
@@ -294,6 +294,5 @@ class Logger:
         # Return formated details
         return json.dumps(details, indent=4, ensure_ascii=False)
 
-# Init logger
-logger = Logger(ctx.config.get("LoggingPage", DEFAULT_CONFIG))
+
 

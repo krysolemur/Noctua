@@ -1,12 +1,11 @@
 # ErrorDialog.py
 
-from loguru import logger # type: ignore
 import traceback
 import sys
 
 from PySide6.QtWidgets import QDialog, QApplication # type: ignore
 
-from Application.QtFiles.ErrorDialog import Ui_ErrorDialog
+from noctua.ui_gen.ErrorDialog import Ui_ErrorDialog
 
 class ErrorDialog(QDialog):
 

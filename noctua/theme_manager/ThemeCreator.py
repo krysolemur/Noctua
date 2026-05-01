@@ -1,7 +1,6 @@
 # ThemeCreator.py
 
 from pathlib import Path
-from loguru import logger # type: ignore
 import importlib.util
 import re
 import json
@@ -11,10 +10,12 @@ from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # 
 from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap # type: ignore
 from PySide6.QtCore import Qt # type: ignore
 
-from Application.ErrorDialog.ErrorDialog import ErrorDialog
+from noctua.error_dialog.ErrorDialog import ErrorDialog
 
-from Application.QtFiles.ThemeCreator import Ui_ThemeCreator
-from Application.QtFiles.ThemePreview import Ui_ThemePreview
+from noctua.ui_gen.ThemeCreator import Ui_ThemeCreator
+from noctua.ui_gen.ThemePreview import Ui_ThemePreview
+
+from noctua.logger.Logger import logger
 
 class ThemeCreator(QDialog):
         

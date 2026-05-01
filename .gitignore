@@ -1,6 +1,26 @@
-venv/
+# Python
+.linux-env/
+.linux-env/
 __pycache__/
 *.pyc
-Logs/app.log
-Application/UiFiles
+*.pyo
+*.egg-info/
+dist/
+build/
 
+# Qt generated files
+noctua/ui_gen/
+noctua/ui/
+
+# Logs
+Logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

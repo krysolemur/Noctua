@@ -1,13 +1,13 @@
 # Globals.py
 
-from Application.ConfigManager.ConfigManager import ConfigManager
-from Application.ThemeManager.ThemesManager import ThemesManager
-from Application.StyleManager.StyleManager import StyleManager
+from noctua.config_manager.ConfigManager import ConfigManager
+from noctua.theme_manager.ThemesManager import ThemesManager
+from noctua.style_manager.StyleManager import StyleManager
 
 class AppContext:
 
     def __init__(self) -> None:
-        
+
         # Config module
         self.ConfigManager = ConfigManager()
 
