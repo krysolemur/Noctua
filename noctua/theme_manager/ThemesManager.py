@@ -1,12 +1,9 @@
 # theme.py
 
-# Importing system files
 import shutil
 
-# Import program files
-from Application.ThemeManager.ThemeCreator import ThemeCreator
+from noctua.theme_manager.ThemeCreator import ThemeCreator
 
-# Main class ThemeManager
 class ThemesManager:
 
     # Themes dir

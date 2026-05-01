@@ -3,17 +3,14 @@
 import sys
 import signal
 
-from Application.AppContext import ctx
-from Application.Logger.Logger import logger
+from noctua.context import ctx
+from noctua.logger.Logger import logger
 
-from Application.Application import Application
-from Application.ErrorDialog.ErrorDialog import ErrorDialog
+from noctua.app import Application
 
 def main() -> None:
     # Allow Ctrl+C to work properly with Qt
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-    app = None
 
     try:
         # Create and execute app

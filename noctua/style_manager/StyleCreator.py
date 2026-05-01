@@ -1,13 +1,10 @@
 # StyleCreator.py
 
-# Importing system files
 from PySide6.QtWidgets import QDialog, QTreeWidgetItem # type: ignore
 from PySide6.QtCore import Qt # type: ignore
 
-# Import program files
-from Application.QtFiles.StyleCreator import Ui_StyleCreator
+from noctua.ui_gen.StyleCreator import Ui_StyleCreator
 
-# Main class StyleCreator
 class StyleCreator(QDialog):
 
     # Constructor

@@ -3,7 +3,7 @@
 # Import system modules
 
 # Import program files
-from Application.StyleManager.StyleCreator import StyleCreator
+from noctua.style_manager.StyleCreator import StyleCreator
 
 # Class stylesheet
 class StyleManager:
