@@ -2,15 +2,12 @@
 
 from PySide6.QtWidgets import QDialog # type: ignore
 
-from Application.SettingsDialog.SourcePage.SourcePage import SourcePage
-from Application.SettingsDialog.GeneralPage.GeneralPage import GeneralPage
-from Application.SettingsDialog.LoggingPage.LoggingPage import LoggingPage
-
-from Application.QtFiles.SettingsDialog import Ui_SettingsDialog
-
-from Application.AppContext import ctx
-
-from Application.Logger.Logger import logger
+from noctua.settings_dialog.source_page.source_page import SourcePage
+from noctua.settings_dialog.general_page.general_page import GeneralPage
+from noctua.settings_dialog.logging_page.logging_page import LoggingPage
+from noctua.ui_gen.SettingsDialog import Ui_SettingsDialog
+from noctua.context import ctx
+from noctua.logger.logger import logger
 
 class SettingsDialog(QDialog):
 

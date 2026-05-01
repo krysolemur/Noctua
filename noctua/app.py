@@ -6,10 +6,9 @@ import sys
 from PySide6.QtWidgets import QApplication # type: ignore
 from PySide6.QtGui import QFont # type: ignore
 
-from Application.MainWindow.MainWindow import MainWindow
-from Application.Logger.Logger import logger
-
-from Application.AppContext import ctx
+from noctua.main_window.main_window import MainWindow
+from noctua.logger.logger import logger
+from noctua.context import ctx
 
 class Application(QApplication):
 

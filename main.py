@@ -3,9 +3,7 @@
 import sys
 import signal
 
-from noctua.context import ctx
-from noctua.logger.Logger import logger
-
+from noctua.logger.logger import logger
 from noctua.app import Application
 
 def main() -> None:

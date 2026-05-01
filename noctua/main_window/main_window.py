@@ -5,14 +5,11 @@ import jsbeautifier # type: ignore
 
 from PySide6.QtWidgets import QDialog, QApplication, QMainWindow # type: ignore
 
-from Application.SettingsDialog.SettingsDialog import SettingsDialog
-
-from Application.QtFiles.MainWindow import Ui_MainWindow
-from Application.QtFiles.AboutDialog import Ui_aboutDialog
-
-from Application.AppContext import ctx
-
-from Application.Logger.Logger import logger
+from noctua.settings_dialog.settings_dialog import SettingsDialog
+from noctua.ui_gen.MainWindow import Ui_MainWindow
+from noctua.ui_gen.AboutDialog import Ui_aboutDialog
+from noctua.context import ctx
+from noctua.logger.logger import logger
 
 class MainWindow(QMainWindow):
 
