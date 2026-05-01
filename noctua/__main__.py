@@ -3,7 +3,7 @@
 import sys
 import signal
 
-from noctua.app import Application
+from noctua.noctua import Noctua
 from noctua.context import ctx
 
 def main() -> None:
@@ -12,7 +12,7 @@ def main() -> None:
 
     try:
         # Create and execute app
-        app = Application()
+        app = Noctua()
         sys.exit(app.exec())
 
     except KeyboardInterrupt:
@@ -21,12 +21,8 @@ def main() -> None:
         sys.exit(0)
         
     except Exception as e:
-        # Log error
-        ctx.logger.critical(e)
-
         # Exit 
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

@@ -6,10 +6,10 @@ import sys
 from PySide6.QtWidgets import QApplication # type: ignore
 from PySide6.QtGui import QFont # type: ignore
 
-from noctua.main_window.main_window import MainWindow
+from noctua.main_window import MainWindow
 from noctua.context import ctx
 
-class Application(QApplication):
+class Noctua(QApplication):
 
     # Version 
     VERSION = "0.1.0"

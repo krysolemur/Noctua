@@ -1,1 +1,1 @@
-# main.py
+from .settings_dialog import SettingsDialog

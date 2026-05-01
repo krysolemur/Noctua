@@ -1,1 +1,1 @@
-# main.py
+from .general_page import GeneralPage

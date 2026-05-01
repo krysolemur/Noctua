@@ -6,7 +6,7 @@ import os
 class ConfigManager:
 
     # Config file 
-    configPath = "Config/config.json"
+    configPath = "config/config.json"
 
     # Default config
     defaultConfig = {

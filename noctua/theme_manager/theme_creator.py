@@ -10,10 +10,10 @@ from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # 
 from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap # type: ignore
 from PySide6.QtCore import Qt # type: ignore
 
-from noctua.error_dialog.error_dialog import ErrorDialog
+from noctua.error_dialog import ErrorDialog
 from noctua.ui_gen.ThemeCreator import Ui_ThemeCreator
 from noctua.ui_gen.ThemePreview import Ui_ThemePreview
-from noctua.context import ctx
+# from noctua.context import ctx
 
 class ThemeCreator(QDialog):
         

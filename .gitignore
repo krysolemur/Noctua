@@ -4,9 +4,6 @@
 __pycache__/
 *.pyc
 *.pyo
-*.egg-info/
-dist/
-build/
 
 # Qt source files
 noctua/ui/
@@ -20,9 +17,4 @@ config/config.json
 
 # IDE
 .vscode/
-.idea/
-*.swp
 
-# OS
-.DS_Store
-Thumbs.db

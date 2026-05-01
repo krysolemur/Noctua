@@ -1,1 +1,1 @@
-# main.py
+from .error_dialog import ErrorDialog

@@ -1,1 +1,1 @@
-# main.py
+from .main_window import MainWindow

@@ -1,1 +1,1 @@
-# main.py
+from .logging_page import LoggingPage

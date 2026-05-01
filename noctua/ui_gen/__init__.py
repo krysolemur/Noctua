@@ -1,1 +1,9 @@
-# main.py
+from .MainWindow import Ui_MainWindow
+from .SettingsDialog import Ui_SettingsDialog
+from .ErrorDialog import Ui_ErrorDialog
+from .GeneralPage import Ui_GeneralPage
+from .LoggingPage import Ui_LoggingPage
+from .SourcePage import Ui_sourcePage
+from .StyleCreator import Ui_StyleCreator
+from .ThemeCreator import Ui_ThemeCreator
+from .ThemePreview import Ui_ThemePreview
