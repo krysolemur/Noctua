@@ -1,5 +1,5 @@
 # Python
-.linux-env/
+.linux-env
 .linux-env/
 __pycache__/
 *.pyc
