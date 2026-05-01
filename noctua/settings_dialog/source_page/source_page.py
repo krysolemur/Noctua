@@ -8,8 +8,7 @@ from PySide6.QtCore import QSignalBlocker # type: ignore
 from PySide6.QtGui import QColor # type: ignore
 
 # Importing program files
-from Application.QtFiles.StyleDialog import Ui_styleDialog
-from Application.QtFiles.SourcePage import Ui_sourcePage
+from noctua.ui_gen.SourcePage import Ui_sourcePage
 
 # Class with color picker
 class SourcePage(QWidget):

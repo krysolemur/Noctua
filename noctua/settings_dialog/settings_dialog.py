@@ -7,13 +7,12 @@ from noctua.settings_dialog.general_page.general_page import GeneralPage
 from noctua.settings_dialog.logging_page.logging_page import LoggingPage
 from noctua.ui_gen.SettingsDialog import Ui_SettingsDialog
 from noctua.context import ctx
-from noctua.logger.logger import logger
 
 class SettingsDialog(QDialog):
 
     def __init__(self) -> None:
 
-        logger.info("Opening settings.")
+        ctx.logger.info("Opening settings.")
 
         super().__init__()
 
@@ -87,14 +86,14 @@ class SettingsDialog(QDialog):
             # Save settings
             ctx.ConfigManager.save_settings(config)
             self.ui.statusLabel.setText(self.ui.statusLabel.text() + "SUCCESS")
-            logger.success("Settings saved.")
+            ctx.logger.success("Settings saved.")
 
             # Update logger
             self._update_logger()
         except Exception as e:
             # Show error
             self.ui.statusLabel.setText(self.ui.statusLabel.text() + "ERROR")
-            logger.error("Error while saving settings!")
+            ctx.logger.error("Error while saving settings!")
 
     # Reset configuration
     def _reset_settings(self) -> None:
@@ -116,12 +115,12 @@ class SettingsDialog(QDialog):
     @staticmethod
     def _update_logger() -> None:
         # Check logger
-        if logger:
-            logger.update(ctx.config.get("LoggingPage"))
+        if ctx.logger:
+            ctx.logger.update(ctx.config.get("LoggingPage"))
 
     # Overrided close event 
     @staticmethod
     def closeEvent(event) -> None:
         # Log and close
-        logger.info("Closing settings.")
+        ctx.logger.info("Closing settings.")
         event.accept()

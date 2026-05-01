@@ -5,9 +5,8 @@ from PySide6.QtWidgets import QSlider, QComboBox, QCheckBox, QPushButton, QWidge
 from PySide6.QtGui import QFont # type: ignore
 
 # Import program files
-from Application.QtFiles.GeneralPage import Ui_GeneralPage
-
-from Application.AppContext import ctx
+from noctua.ui_gen.GeneralPage import Ui_GeneralPage
+from noctua.context import ctx
 
 # Main class GeneralPage
 class GeneralPage(QWidget):

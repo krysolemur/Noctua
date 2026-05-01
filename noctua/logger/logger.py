@@ -9,8 +9,6 @@ import json
 import inspect
 import os
 
-from noctua.context import ctx
-
 # Default configuration
 DEFAULT_CONFIG = {
     "cb_console_time": "Yes",

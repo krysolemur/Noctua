@@ -2,7 +2,7 @@
 
 import shutil
 
-from noctua.theme_manager.ThemeCreator import ThemeCreator
+from noctua.theme_manager.theme_creator import ThemeCreator
 
 class ThemesManager:
 

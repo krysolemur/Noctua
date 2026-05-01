@@ -3,8 +3,8 @@
 import sys
 import signal
 
-from noctua.logger.logger import logger
 from noctua.app import Application
+from noctua.context import ctx
 
 def main() -> None:
     # Allow Ctrl+C to work properly with Qt
@@ -22,7 +22,7 @@ def main() -> None:
         
     except Exception as e:
         # Log error
-        logger.critical(e)
+        ctx.logger.critical(e)
 
         # Exit 
         sys.exit(1)

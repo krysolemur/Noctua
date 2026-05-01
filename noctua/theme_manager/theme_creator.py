@@ -10,12 +10,10 @@ from PySide6.QtWidgets import QDialog, QColorDialog, QMessageBox, QFileDialog # 
 from PySide6.QtGui import QColor, QPalette, QIcon, QPixmap # type: ignore
 from PySide6.QtCore import Qt # type: ignore
 
-from noctua.error_dialog.ErrorDialog import ErrorDialog
-
+from noctua.error_dialog.error_dialog import ErrorDialog
 from noctua.ui_gen.ThemeCreator import Ui_ThemeCreator
 from noctua.ui_gen.ThemePreview import Ui_ThemePreview
-
-from noctua.logger.Logger import logger
+from noctua.context import ctx
 
 class ThemeCreator(QDialog):
         
@@ -474,13 +472,10 @@ class ThemeCreator(QDialog):
                 self._export_as_py(file_path)
         # Show error in dialog and console
         except PermissionError as e:
-            logger.error("")
+            ctx.logger.error("")
             self._display_error(exception=e, msg="")
         except OSError as e:
-            logger.error("")
-            self._display_error(exception=e, msg="")
-        except Exception as e:
-            logger.error("")
+            ctx.logger.error("")
             self._display_error(exception=e, msg="")
 
     # Display error

@@ -9,13 +9,12 @@ from noctua.settings_dialog.settings_dialog import SettingsDialog
 from noctua.ui_gen.MainWindow import Ui_MainWindow
 from noctua.ui_gen.AboutDialog import Ui_aboutDialog
 from noctua.context import ctx
-from noctua.logger.logger import logger
 
 class MainWindow(QMainWindow):
 
     def __init__(self) -> None:
 
-        logger.info("Opening main window.")
+        ctx.logger.info("Opening main window.")
 
         super().__init__()
 
@@ -147,5 +146,5 @@ class MainWindow(QMainWindow):
     # Close event overwritten.
     def closeEvent(self, event) -> None:
         # Quit application
-        logger.info("Closing main window.")
+        ctx.logger.info("Closing main window.")
         ctx.app.quit_application()

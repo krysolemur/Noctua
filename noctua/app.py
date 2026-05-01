@@ -7,7 +7,6 @@ from PySide6.QtWidgets import QApplication # type: ignore
 from PySide6.QtGui import QFont # type: ignore
 
 from noctua.main_window.main_window import MainWindow
-from noctua.logger.logger import logger
 from noctua.context import ctx
 
 class Application(QApplication):
@@ -69,11 +68,11 @@ class Application(QApplication):
     # Restart application function
     def restart_application(self) -> None:
         # Restart command
-        logger.info("Restarting application.")
+        ctx.logger.info("Restarting application.")
         os.execv(sys.executable, [sys.executable] + sys.argv)
 
     # Quit application
     def quit_application(self) -> None:
         # Quit
-        logger.info("Quiting application.")
+        ctx.logger.info("Quiting application.")
         QApplication.quit()
