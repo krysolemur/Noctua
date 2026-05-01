@@ -8,8 +8,7 @@ __pycache__/
 dist/
 build/
 
-# Qt generated files
-noctua/ui_gen/
+# Qt source files
 noctua/ui/
 
 # Logs
