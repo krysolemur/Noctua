@@ -16,6 +16,9 @@ noctua/ui/
 Logs/
 *.log
 
+# Config
+config/config.json
+
 # IDE
 .vscode/
 .idea/

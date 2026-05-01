@@ -3,4 +3,3 @@ shiboken6
 requests
 beautifulsoup4
 jsbeautifier
-loguru
